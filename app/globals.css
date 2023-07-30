@@ -3,7 +3,23 @@
 @tailwind utilities;
 
 :root {
+  --primary-color: #236bfe;
+  --shade-color: #f6f6f6;
+  --black-color: #070707;
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body,
+html {
+  height: 100%;
+  font-family: "DM Sans", sans-serif;
+}
+.line {
+  height: 0.1rem;
 }
