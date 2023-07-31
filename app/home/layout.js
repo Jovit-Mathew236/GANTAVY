@@ -1,9 +1,4 @@
-import { DM_Sans } from "next/font/google";
-
-const inter = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-});
+import Dashboard from "@/src/components/templates/dashboard/dashboard";
 
 export const metadata = {
   title: "Create  App",
@@ -11,9 +6,5 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  return (
-    <html className=" " lang="en">
-      <body className={[inter.className, ""]}>{children}</body>
-    </html>
-  );
+  return <Dashboard children={children} />;
 }
