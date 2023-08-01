@@ -24,7 +24,7 @@ export default function SideNav() {
     },
   ];
   return (
-    <div className="sidenav flex-row p-3 pl-8    flex ">
+    <div className="sidenav flex-row p-3 pl-8 flex items-center">
       {items.map((item) => {
         return (
           <SideNavItem

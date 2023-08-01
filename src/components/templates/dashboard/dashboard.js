@@ -12,10 +12,11 @@ export default function Dashboard({ children }) {
   return (
     <html className=" " lang="en">
       <body className={[inter.className, ""]}>
-        <main className="bg-white h-screen overflow-hidden  flex flex-col">
+        <main className="bg-white h-screen  flex flex-col">
           <Header />
-          <Line />
-          <div className="flex mt-2 flex-grow   flex-col">
+
+          <div className="flex  flex-grow   flex-col">
+            <Line />
             <SideNav />
 
             {children}
