@@ -1,5 +1,6 @@
 import CreateButton from "../../atom/createButton/createButton";
 import HomeCard from "../../molecules/homeCard/homeCard";
+import Popup from "../../templates/popup/popup";
 export default function HomePage() {
   const data = [
     {
@@ -20,6 +21,7 @@ export default function HomePage() {
       <h3 className="text-2xl mb-2 mt-2 font-medium  tracking-tight text-gray-600">
         My Clinics
       </h3>
+      <Popup />
       <CreateButton text={"Create Clinic"} />
       <div className="grid grid-cols-3 gap-x-4">
         {data.map((item) => {

@@ -3,6 +3,7 @@ import {
   IoCopyOutline,
   IoLocationOutline,
 } from "react-icons/io5";
+import Button from "../../atom/button/button";
 export default function HomeCard({ item }) {
   return (
     <div className="bg-white shadow-xl transition-all cursor-pointer hover:shadow-gray-200 shadow-gray-100 overflow-hidden relative rounded-md p-4 m-2">
@@ -32,11 +33,7 @@ export default function HomeCard({ item }) {
             Copy Link
           </p>
         </div>
-        <div className="px-5 py-1 bg-primary-color rounded-full">
-          <p className="font-medium text-white text-md text-primary-color tracking-tight">
-            Share
-          </p>
-        </div>
+        <Button text="Share" />
       </div>
     </div>
   );
