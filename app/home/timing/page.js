@@ -16,7 +16,7 @@ import {
 
 import Select, { StylesConfig } from "react-select";
 
-export default function DeatilsPage() {
+export default function TimingPage() {
   const options = [
     { value: "chocolate", label: "Chocolate" },
     { value: "strawberry", label: "Strawberry" },
@@ -113,7 +113,7 @@ export default function DeatilsPage() {
         <div className="w-8/12 bg-white  m-8">
           <div className="p-4 flex flex-row justify-between items-center">
             <p className="tracking-tight text-2xl  text-black-color   font-medium">
-              Add Clinic Details
+              Add Clinic Timing
             </p>
             <div className="flex flex-row justify-center items-center">
               <p className="font-medium text-md text-black-color mr-3 tracking-tight">
@@ -123,24 +123,57 @@ export default function DeatilsPage() {
             </div>
           </div>
           <Line />
-          <div className="w-3/5 p-6 px-10">
-            <InputHolder label="Clinic Name">
-              <InputField placeholder={"Enter Clinic Name"} />
-            </InputHolder>
-            <InputHolder label="Location">
-              <InputField placeholder={"Near Technopark Trivandrum"} />
-            </InputHolder>
-            <InputHolder label="Location Link">
-              <InputField
-                placeholder={"Paste your location link from Google Maps"}
-              />
-            </InputHolder>
-            <InputHolder label="Description">
-              <InputField placeholder={"Describe about your clinic"} />
-            </InputHolder>
-            <InputHolder label="Clinic Name">
-              <InputField placeholder={"Near Technopark Trivandrum"} />
-            </InputHolder>{" "}
+          <div className="w-5/5 ">
+            <div className="p-6 w-4/5 px-10">
+              <InputHolder label="Date range">
+                <p className="tracking-tight text-md mb-1 mt-2">
+                  Patients can schedule...
+                </p>
+                <div className="flex flex-row items-center">
+                  <InputField type={"number"} placeholder={"Weekdays"} />
+
+                  <p className="w-3/5 ml-3 tracking-tight text-md">
+                    into the future
+                  </p>
+                </div>
+              </InputHolder>
+            </div>
+            <Line />
+
+            <div className="p-6  w-4/5 px-10">
+              <InputHolder label="How do you want to offer your availability">
+                <div className="flex mb-2 flex-row">
+                  <div className="m-1 text-black-color tracking-tight cursor-pointer ml-0 p-2 border-1 rounded-md hover:border-primary-color border-spacing-2">
+                    Slot Based
+                  </div>
+                  <div className="m-1 text-black-color tracking-tight cursor-pointer  p-2 border-1 rounded-md hover:border-primary-color border-spacing-2">
+                    Token Based
+                  </div>
+                </div>
+
+                <div className="flex flex-row items-center">
+                  <InputHolder label="Duration">
+                    <div className="flex flex-row items-center">
+                      <InputField type={"number"} placeholder={"in Minutes"} />
+
+                      <p className="w-3/5 ml-3 tracking-tight text-md">
+                        Define how long your consultation will be
+                      </p>
+                    </div>
+                  </InputHolder>
+                </div>
+                <div className="">
+                  <input
+                    id="bordered-checkbox-2"
+                    type="checkbox"
+                    value=""
+                    name="bordered-checkbox"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                </div>
+              </InputHolder>
+            </div>
+            <Line />
             <InputHolder label="Clinic Category">
               <Select
                 classNamePrefix="custom-select"
