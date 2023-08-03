@@ -3,6 +3,7 @@ import Button from "@/src/components/atom/button/button";
 import InputField from "@/src/components/atom/inputField/inputField";
 import Line from "@/src/components/atom/line/line";
 import InputHolder from "@/src/components/molecules/inputHolder/inputHolder";
+import TimePicker from "@/src/components/organisms/timePicker/timePicker";
 import HomePage from "@/src/components/pages/home/home";
 import { useEffect } from "react";
 import {
@@ -151,7 +152,8 @@ export default function TimingPage() {
                   </div>
                 </div>
 
-                <div className="flex flex-row items-center">
+                <div className=""></div>
+                <div className="flex flex-row mb-2 items-center">
                   <InputHolder label="Duration">
                     <div className="flex flex-row items-center">
                       <InputField type={"number"} placeholder={"in Minutes"} />
@@ -162,15 +164,7 @@ export default function TimingPage() {
                     </div>
                   </InputHolder>
                 </div>
-                <div className="">
-                  <input
-                    id="bordered-checkbox-2"
-                    type="checkbox"
-                    value=""
-                    name="bordered-checkbox"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                </div>
+                <TimePicker />
               </InputHolder>
             </div>
             <Line />
