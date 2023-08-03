@@ -6,11 +6,11 @@ export default function TimePicker() {
   const weekdays = ["SUN", "MON", "TUE", "WED", "THU"];
   const duaration = 10;
   const [data, setData] = useState({
-    0: [["09:00 AM", "05:30 PM"]],
-    1: [["09:00 AM", "05:30 PM"]],
-    2: [["09:00 AM", "05:30 PM"]],
-    3: [["09:00 AM", "05:30 PM"]],
-    4: [["09:00 AM", "05:30 PM"]],
+    0: [],
+    1: [],
+    2: [],
+    3: [],
+    4: [],
   });
 
   const [error, setError] = useState([
@@ -22,6 +22,7 @@ export default function TimePicker() {
     [""],
     [""],
   ]);
+  const [conflicts, setConflicts] = useState(["", "", "", "", "", "", ""]);
   let objectList = [];
   const timeList = getTimeList();
 
@@ -83,13 +84,11 @@ export default function TimePicker() {
     if (selectionIndex <= startIndex) {
       errors[index][innerArrayindex] = "Full error";
       setError([...errors]);
-      console.log(error);
     } else {
       errors[index][innerArrayindex] = "";
       setError([...errors]);
-
-      console.log(selectionIndex, startIndex);
     }
+    checkConflict();
   };
   const handleSelectChangeStartDate = (
     selectedOption,
@@ -98,26 +97,25 @@ export default function TimePicker() {
   ) => {
     let timeData = data;
     timeData[index][innerArrayindex][0] = selectedOption.value;
-    setData(timeData);
+    setData({ ...timeData });
     const selectionIndex = timeList.indexOf(selectedOption.value);
     const endIndex = timeList.indexOf(timeData[index][innerArrayindex][1]);
     let errors = error;
     if (selectionIndex >= endIndex) {
       errors[index][innerArrayindex] = "Full error";
       setError([...errors]);
-      console.log(error);
     } else {
       errors[index][innerArrayindex] = "";
       setError([...errors]);
-      console.log(selectionIndex, endIndex);
     }
+    checkConflict();
   };
   const createNewInterval = (index) => {
     let dataarray = data;
     const len = dataarray[index].length;
     if (len == 0) {
-      dataarray[index].push(["09:00 AM", "05.30 PM"]);
-      setData(dataarray);
+      dataarray[index].push([timeList[10], timeList[18]]);
+      setData({ ...dataarray });
       addtoErrorList("");
       return;
     }
@@ -137,40 +135,54 @@ export default function TimePicker() {
       setError([...errors]);
     }
     if (endItemIndex + 1 >= totaltimelen) {
-      console.log("Not able to add");
+      //console.log("Not able to add");
     } else if (endItemIndex + 2 >= totaltimelen) {
       dataarray[index].push([
         timeList[endItemIndex + 1],
         timeList[endItemIndex + 1],
       ]);
       addtoErrorList("Full Error");
-      setData(dataarray);
+      setData({ ...dataarray });
     } else {
       dataarray[index].push([
         timeList[endItemIndex + 1],
         timeList[endItemIndex + 2],
       ]);
-      setData(dataarray);
+
+      setData({ ...dataarray });
+      console.log(data);
       addtoErrorList("");
     }
 
     //first add a new item to error array at index
+    checkConflict();
   };
 
   const deleteInterval = (index, itemindex, deleteall = false) => {
     let dataarray = data;
     //find interval array
     let intervalArray = dataarray[index];
-
+    console.log(intervalArray, "intervalArray");
+    let intervalArraySorted = [];
     if (deleteall) {
       intervalArray = [];
     } else {
-      intervalArray = intervalArray.filter((item, index) => {
-        return index != itemindex;
+      intervalArraySorted = intervalArray.filter((item, i) => {
+        return i != itemindex;
       });
     }
-    dataarray[index] = intervalArray;
-    setData(dataarray);
+
+    //console.log(index, itemindex, intervalArray);
+    dataarray[index] = [...intervalArraySorted];
+    console.log(dataarray, "Data array");
+    setData({
+      0: [],
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+    });
+    setData({ ...dataarray });
     let errors = error;
     let errorIndexArray = error[index];
     if (deleteall) {
@@ -186,6 +198,7 @@ export default function TimePicker() {
     // remove interval array at item index
     //set data
     //remove item at itemindex at position index
+    checkConflict();
   };
   const handleCheckboxChange = (checked, index) => {
     if (!checked) {
@@ -254,10 +267,53 @@ export default function TimePicker() {
       color: "#070707",
     }),
   };
+  const checkConflict = () => {
+    function check(array, index) {
+      //sort items based on the value at index 0
+      let intervals = [];
+      array.map((item) => {
+        //console.log(item);
+        intervals.push([timeList.indexOf(item[0]), timeList.indexOf(item[1])]);
+      });
+      intervals.sort((a, b) => a[0] - b[0]);
+      ////console.log(intervals, "Before operation");
 
+      let sortedArrayitems = [];
+      intervals.map((item) => {
+        sortedArrayitems.push(item[0]);
+        sortedArrayitems.push(item[1]);
+      });
+      //make a list
+      const unsorted = [...sortedArrayitems];
+      // //console.log(unsorted, "After operation");
+      sortedArrayitems.sort((a, b) => a - b);
+      // sort the list if sorted list is not same as the baove list means conflict
+      ////console.log("Non sorted Array", unsorted);
+      ////console.log("Sorted Array", sortedArrayitems);
+      const result =
+        JSON.stringify(unsorted) === JSON.stringify(sortedArrayitems);
+      ////console.log(result);
+
+      if (!result) {
+        let errors = conflicts;
+        conflicts[index] = "Conflicting Shedules";
+        setConflicts([...errors]);
+      } else {
+        let errors = conflicts;
+        conflicts[index] = "";
+        setConflicts([...errors]);
+      }
+    }
+    Object.keys(data).map((day, index) => {
+      check(data[day], index);
+    });
+  };
+  useEffect(() => {
+    console.log(data, "value of data");
+  }, [data]);
   return (
     <div className="flex flex-col ">
-      {Object.keys(data).map((dayitem, i) => {
+      {Object.entries(data).map((dayitem, i) => {
         return (
           <div className="">
             <div className="flex flex-row justify-start">
@@ -334,6 +390,7 @@ export default function TimePicker() {
                   );
                 })}{" "}
               </div>
+
               <div className="">
                 <IoAddCircleSharp
                   className="text-primary-color text-2xl my-2 ml-4"
@@ -341,6 +398,7 @@ export default function TimePicker() {
                 />
               </div>
             </div>
+            {conflicts[i]}
             <div className="my-2">
               <Line />
             </div>

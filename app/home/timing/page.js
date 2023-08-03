@@ -86,6 +86,8 @@ export default function TimingPage() {
       color: "#070707",
     }),
   };
+
+ 
   return (
     <>
       <Line />
