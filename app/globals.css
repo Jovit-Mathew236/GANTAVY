@@ -19,6 +19,7 @@ body,
 html {
   height: 100%;
   font-family: "DM Sans", sans-serif;
+  background-color: var(--shade-color);
 }
 .line {
   height: 0.1rem;

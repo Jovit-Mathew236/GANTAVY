@@ -4,10 +4,9 @@ import {
   IoSettingsOutline,
 } from "react-icons/io5";
 import SubNavItem from "../../atom/subNavItem/subNavItem";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 export default function HomeSubNav({ selected = false }) {
-  const router = useRouter();
   const path = usePathname();
   console.log(path);
   const items = [

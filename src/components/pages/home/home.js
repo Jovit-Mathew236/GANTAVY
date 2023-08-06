@@ -1,7 +1,5 @@
 import CreateButton from "../../atom/createButton/createButton";
 import HomeCard from "../../molecules/homeCard/homeCard";
-import CreateClinicPopup from "../../organisms/createClinicPopup/createClinicPopup";
-import Popup from "../../templates/popup/popup";
 export default function HomePage() {
   const data = [
     {
