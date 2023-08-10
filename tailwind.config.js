@@ -16,6 +16,7 @@ module.exports = {
       4: "4px",
       6: "6px",
       8: "8px",
+      sm: ".5px",
     },
     extend: {
       colors: {
