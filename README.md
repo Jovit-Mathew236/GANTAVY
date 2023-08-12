@@ -1,4 +1,6 @@
-![Project Logo](https://www.oronium.com/img/logo.svg)
+<div align="center">
+  <img src="https://www.oronium.com/img/logo.svg" alt="Project Logo">
+</div>
 
 <div align="center">
   <img src="https://img.icons8.com/plasticine/24/000000/react.png" alt="React">
@@ -7,6 +9,7 @@
   <img src="https://img.icons8.com/color/24/000000/html.png" alt="HTML">
   <img src="https://img.icons8.com/color/24/000000/css.png" alt="CSS">
 </div>
+
 # Oronium Next.js Starter template
 
 Please read this: https://probable-joggers-7e7.notion.site/Next-Js-Best-Practices-Oronium-202de579a8a845b380abeef6e35bd481?pvs=4
