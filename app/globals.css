@@ -22,7 +22,7 @@ html {
   background-color: var(--shade-color);
 }
 .line {
-  height: 0.1rem;
+  height: 0.08rem;
 }
 .line2 {
   height: 0.2rem;
