@@ -1,20 +1,31 @@
-<div align="center">
-  <img src="https://www.oronium.com/img/logo.svg" alt="Project Logo">
+<div width="200px" align="center">
+  <img width="150" src="https://www.oronium.com/img/logo.svg" alt="Project Logo">
 </div>
 
 <div align="center">
-  <img src="https://img.icons8.com/plasticine/24/000000/react.png" alt="React">
-  <img src="https://img.icons8.com/color/24/000000/next.png" alt="Next.js">
-  <img src="https://img.icons8.com/color/24/000000/javascript.png" alt="JavaScript">
-  <img src="https://img.icons8.com/color/24/000000/html.png" alt="HTML">
-  <img src="https://img.icons8.com/color/24/000000/css.png" alt="CSS">
+  <img src="https://img.icons8.com/color/48/000000/react-native.png" alt="React Native">
+  <img src="https://img.icons8.com/color/48/000000/nextjs.png" alt="Next.js">
+  <img src="https://img.icons8.com/color/48/000000/javascript.png" alt="JavaScript">
+  <img src="https://img.icons8.com/color/48/000000/html-5.png" alt="HTML5">
+  <img src="https://img.icons8.com/color/48/000000/css3.png" alt="CSS3">
 </div>
 
 # Oronium Next.js Starter template
 
-Please read this: https://probable-joggers-7e7.notion.site/Next-Js-Best-Practices-Oronium-202de579a8a845b380abeef6e35bd481?pvs=4
-
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Packages Installed
+
+```bash
+   "autoprefixer": "10.4.14",
+    "framer-motion": "^10.15.1",
+    "next": "13.4.12",
+    "postcss": "8.4.27",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.10.1",
+    "tailwindcss": "3.3.3"
+```
 
 ## Getting Started
 
