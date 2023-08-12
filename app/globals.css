@@ -21,9 +21,3 @@ html {
   font-family: "DM Sans", sans-serif;
   background-color: var(--shade-color);
 }
-.line {
-  height: 0.08rem;
-}
-.line2 {
-  height: 0.2rem;
-}

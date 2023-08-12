@@ -1,10 +1,8 @@
-import DoctorPage from "@/src/components/pages/doctorPage/doctorPage";
-import Image from "next/image";
-
+// Please read the readme file before editing
 export default function Home() {
   return (
     <main className="">
-      <DoctorPage />
+      <h1>Oronium Next.js Template</h1>
     </main>
   );
 }
