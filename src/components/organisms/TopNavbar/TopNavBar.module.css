@@ -1,0 +1,25 @@
+.topNav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.topNav .notification {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background: url(../../atom/images/notificationicon.png), #141220;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.topNav .profilePic {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background: url(../../atom/images/profilepic.png), #141220;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
