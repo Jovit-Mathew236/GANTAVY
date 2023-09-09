@@ -10,14 +10,22 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body,
 html {
   height: 100%;
   font-family: "DM Sans", sans-serif;
-  background-color: var(--shade-color);
+  background-color: #fff;
+}
+
+main {
+  margin-left: 230px;
+  max-width: calc(100vw - 230px);
+  padding: 40px 30px 0px;
 }
