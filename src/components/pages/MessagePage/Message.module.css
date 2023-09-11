@@ -1,0 +1,68 @@
+.messagePage {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.messagePage h1 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.messagePage h2 {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.messagePage .msgHeading,
+.messagePage .msgInput input {
+    border-radius: 32px;
+    border: 1px solid #DEDEDE;
+    min-width: 300px;
+    width: 70%;
+    height: 45px;
+    padding: 20px;
+}
+
+.messagePage .msgInput {
+    width: 100%;
+    display: flex;
+    gap: 30px;
+}
+
+.messagePage .msgInput button {
+    border-radius: 32px;
+    background: #0F0F0F;
+    width: 120px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.messagePage .msgInput button p {
+    margin-left: 10px;
+}
+
+.messagePage .messages {
+    width: 100%;
+}
+
+.messagePage .messages .msgContainer .msgBox {
+    display: flex;
+    gap: 30px;
+    border-bottom: 0.5px solid #E4E4E4;
+    width: 100%;
+    padding: 20px 0px;
+}
+
+.messagePage .messages .msgContainer .msgBox .date {
+    color: #C1C1C1;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}

@@ -1,8 +1,11 @@
+'use client'
 import React from "react";
 import styles from "./SideNavBar.module.css";
+// import { useRouter } from 'next/router'
 
 const SideNav = () => {
-  const url = "/";
+  // const router = useRouter()
+  const url = "/"
   return (
     <nav className={styles.navBar}>
       <div className={styles.logo}></div>
