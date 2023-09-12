@@ -1,0 +1,43 @@
+.adminPage {
+    margin-top: 30px;
+}
+
+.adminPage h1 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.adminPage .adminContainer {
+    margin: 20px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.adminPage .adminContainer .adminFiled {
+    position: relative;
+    width: 60%;
+}
+
+.adminPage .adminContainer .adminFiled input {
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 6px;
+    border: 0.5px solid #DEDEDE;
+}
+
+.adminPage .adminContainer .adminFiled .adminControl {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    display: flex;
+    gap: 20px;
+}
+
+.adminPage button {
+    border-radius: 30px;
+    margin-top: 30px;
+    background: #000;
+    padding: 10px 25px;
+    color: white;
+}
