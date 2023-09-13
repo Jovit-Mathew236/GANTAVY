@@ -7,9 +7,9 @@ const SearchBar = () => {
     <div>
       <div className={styles.searchBarContainer}>
         <p className={styles.searchIcon}>
-          <SearchIcon/>
+          <SearchIcon />
         </p>
-        <input type="text" className={styles.searchBar} placeholder="Search..." />
+        <input type="text" id="searchBar" name="searchBar" className={styles.searchBar} placeholder="Search..." autoComplete="off" />
         <p>By</p>
         <select className={styles.searchBar}>
           <option value="name">Name</option>

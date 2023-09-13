@@ -6,9 +6,9 @@ import Message from '../../atom/svgs/Message'
 const MessagePage = () => {
   return (
     <div className={styles.messagePage}>
-      <input className={styles.msgHeading} type="text" placeholder='Heading' />
+      <input className={styles.msgHeading} type="text" id="msgHeading" name="msgHeading" placeholder='Heading' autoComplete="off"/>
       <div className={styles.msgInput}>
-        <input type="text" placeholder='Message' />
+        <input type="text"  id="msgText" name="msgText" placeholder='Message' autoComplete="off"/>
         <button>
           <p>Send</p>
           <Send />

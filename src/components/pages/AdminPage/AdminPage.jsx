@@ -9,31 +9,32 @@ const AdminPage = () => {
       <h1>Admin</h1>
 
       <div className={styles.adminContainer}>
-        
+
         <div className={styles.adminFiled}>
-          <input type="text" value={"jovitmathew236@gmail.com"} disabled />
+          <input type="text" id="" name='email' value={"jovitmathew236@gmail.com"} disabled autoComplete="email"/>
           <div className={styles.adminControl}>
-            <p><Edit/></p>
-            <p><Delete/></p>
+            <p><Edit /></p>
+            <p><Delete /></p>
           </div>
         </div>
-        
+
         <div className={styles.adminFiled}>
-          <input type="text" value={"jovitmathew236@gmail.com"} disabled />
+          <input type="text" id="" name='email' value={"jovitmathew236@gmail.com"} disabled autoComplete="email"/>
           <div className={styles.adminControl}>
-            <p><Edit/></p>
-            <p><Delete/></p>
+            <p><Edit /></p>
+            <p><Delete /></p>
           </div>
         </div>
-        
+
         <div className={styles.adminFiled}>
-          <input type="text" value={"jovitmathew236@gmail.com"} disabled />
+          <input type="text" id="" name='email' value={"jovitmathew236@gmail.com"} disabled autoComplete="email"/>
           <div className={styles.adminControl}>
-            <p><Edit/></p>
-            <p><Delete/></p>
+            <p><Edit /></p>
+            <p><Delete /></p>
           </div>
         </div>
-        
+
+
       </div>
 
       <button>Add new</button>

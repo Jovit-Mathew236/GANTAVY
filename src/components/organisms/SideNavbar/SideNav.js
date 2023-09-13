@@ -44,6 +44,8 @@ const SideNav = () => {
           Help
         </a>
       </div>
+
+      <p className={styles.companyBrand}>Oronium</p>
     </nav>
   );
 };

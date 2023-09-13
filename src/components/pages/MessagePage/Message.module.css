@@ -34,8 +34,9 @@
 
 .messagePage .msgInput button {
     border-radius: 32px;
+    border: none;
     background: #0F0F0F;
-    width: 120px;
+    width: 105px;
     color: white;
     display: flex;
     align-items: center;
@@ -44,6 +45,8 @@
 }
 
 .messagePage .msgInput button p {
+    font-weight: 300;
+    font-size: 14px;
     margin-left: 10px;
 }
 
