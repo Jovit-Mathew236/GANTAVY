@@ -2,12 +2,13 @@ import React from 'react'
 import SearchBar from '../../molecules/SearchBar'
 import styles from './Home.module.css'
 import RightArrow from '../../atom/svgs/RightArrow'
+import AddClient from '../../molecules/AddClient'
 
 function HomePage() {
   return (
     <div className={styles.homePage}>
       <SearchBar />
-
+      <AddClient />
       <section>
         <p>March 2023</p>
         <div className={styles.cardsContainer}>
