@@ -1,14 +1,42 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import SearchBar from '../../molecules/SearchBar'
 import styles from './Home.module.css'
 import RightArrow from '../../atom/svgs/RightArrow'
-import AddClient from '../../molecules/AddClient'
+import AddClient from '../../molecules/BottomIcon'
+import Add from '../../atom/svgs/Add'
+import BottomIcon from '../../molecules/BottomIcon'
 
 function HomePage() {
+  const [popUp, setPopUp] = useState(false)
+  const handleCancelClick = () => {
+    setPopUp(false);
+  };
   return (
     <div className={styles.homePage}>
       <SearchBar />
-      <AddClient />
+      <BottomIcon setPopUp={setPopUp} icon={<Add />} text={"Add client"} />
+      {popUp && <div className={styles.addClientPopUp}>
+        <div className={styles.popUpContainer}>
+          <div className={styles.popUpFields}>
+            <label htmlFor="">Client full name</label>
+            <input type="text" id="" name='email' placeholder="Name" autoComplete="email" />
+          </div>
+          <div>
+            <label htmlFor="">Email</label>
+            <input type="text" id="" name='email' placeholder="example@gmail.com" autoComplete="email" />
+          </div>
+          <div>
+            <label htmlFor="">Phone number</label>
+            <input type="text" id="" name='email' placeholder="+91 1234567890" autoComplete="email" />
+          </div>
+          <div className={styles.btnS}>
+            <button onClick={handleCancelClick}>Cancel</button>
+            <button>Save</button>
+          </div>
+        </div>
+      </div>}
+
       <section>
         <p>March 2023</p>
         <div className={styles.cardsContainer}>
@@ -28,9 +56,9 @@ function HomePage() {
                 <p className={styles.country}>au</p>
                 <p className={styles.country}>in</p>
               </div>
-              <p>
+              <a href='/client-details' >
                 <RightArrow />
-              </p>
+              </a>
             </div>
           </div>
 
@@ -49,9 +77,9 @@ function HomePage() {
                 <p className={styles.country}>au</p>
                 <p className={styles.country}>in</p>
               </div>
-              <p>
+              <a>
                 <RightArrow />
-              </p>
+              </a>
             </div>
           </div>
 
@@ -77,9 +105,9 @@ function HomePage() {
                 <p className={styles.country}>au</p>
                 <p className={styles.country}>in</p>
               </div>
-              <p>
+              <a>
                 <RightArrow />
-              </p>
+              </a>
             </div>
           </div>
 

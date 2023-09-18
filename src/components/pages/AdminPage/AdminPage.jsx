@@ -70,58 +70,6 @@ const ClientButton = ({ setPopUP }) => {
     </button>
   );
 };
-// const CancelButton = ({ setPopUP }) => {
-//   const handleCancelClick = () => {
-//     setPopUP(false);
-//   };
 
-//   return (
-//     <button onClick={handleCancelClick}>Cancel</button>
-//   );
-// };
 
 export default AdminPage;
-
-
-
-
-// return (
-//   <div className={styles.adminPage}>
-//     <h1>Admin</h1>
-
-//     <div className={styles.adminContainer}>
-//       <AdminField email="jovitmathew236@gmail.com" />
-//       <AdminField email="another@example.com" />
-//       {/* Add more AdminField components as needed */}
-//     </div>
-
-//     <ClientButton />
-//   </div>
-// );
-
-// const AdminField = ({ email }) => {
-//   const handleEditClick = () => {
-//     console.log(`Editing ${email}`);
-//   };
-
-//   const handleDeleteClick = () => {
-//     console.log(`Deleting ${email}`);
-//   };
-
-//   return (
-//     <div className={styles.adminField}>
-//       <input
-//         type="text"
-//         value={email}
-//         disabled
-//         autoComplete="email"
-//       />
-//       <div className={styles.adminControl}>
-//         <p onClick={handleEditClick}><Edit /></p>
-//         <p onClick={handleDeleteClick}><Delete /></p>
-//       </div>
-//     </div>
-//   );
-// };
-
-
