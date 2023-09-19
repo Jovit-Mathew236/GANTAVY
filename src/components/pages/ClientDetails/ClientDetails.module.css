@@ -4,9 +4,90 @@
     /* justify-content: space-around; */
 }
 
+.clientDetailsPage .addClientPopUp {
+    position: absolute;
+    padding: 20px 30px;
+    margin-left: -30px;
+    top: 0px;
+    width: -webkit-fill-available;
+    height: 100vh;
+    -webkit-backdrop-filter: brightness(0.5);
+    backdrop-filter: brightness(0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.clientDetailsPage .addClientPopUp .popUpContainer {
+    background: #fff;
+    border-radius: 20px;
+    width: 500px;
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.clientDetailsPage .addClientPopUp .popUpContainer button {
+    border-radius: 10px;
+    margin-top: 30px;
+    font-weight: 500;
+    border: 1px solid #D3D3D3;
+    background: #000;
+    padding: 10px 10px;
+    color: white;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.clientDetailsPage .addClientPopUp .popUpContainer label {
+    margin-left: 10px;
+}
+
+.clientDetailsPage .addClientPopUp .popUpContainer input,
+.clientDetailsPage .addClientPopUp .popUpContainer select {
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 26px;
+    border: none;
+    border: 1px solid #EFEFEF;
+    background: #F6F6F6;
+    margin-top: 5px;
+    outline: none;
+}
+
+.clientDetailsPage .addClientPopUp .popUpContainer input::placeholder {
+    color: #A3A3A3;
+    font-weight: 300;
+}
+
+.clientDetailsPage .addClientPopUp .popUpContainer .btnS {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.clientDetailsPage .addClientPopUp .popUpContainer .btnS button {
+    width: 100px;
+    font-weight: 300;
+    margin-top: 20px;
+}
+
+.clientDetailsPage .addClientPopUp .popUpContainer .btnS button:nth-child(1) {
+    background: #fff;
+    color: #000;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+
 .clientDetailsPage .detailsContainer {
     border-radius: 20px;
     background: #F8F8F8;
+    min-width: 380px;
 }
 
 .clientDetailsPage .detailsContainer hr {
@@ -125,8 +206,11 @@
 
 .clientDetailsPage .applicationContainer .applications {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    /* justify-content: center; */
 }
 
 .clientDetailsPage .applicationContainer .applications .application {

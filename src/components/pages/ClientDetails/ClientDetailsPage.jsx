@@ -1,4 +1,5 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import styles from './ClientDetails.module.css'
 import SendBlack from '../../atom/svgs/SendBlack'
 import RightArrow from '../../atom/svgs/RightArrow'
@@ -6,9 +7,49 @@ import New from '../../atom/svgs/New'
 import BottomIcon from '../../molecules/BottomIcon'
 
 const ClientDetailsPage = () => {
+  const [popUp, setPopUp] = useState(false)
+  const handleCancelClick = () => {
+    setPopUp(false);
+  };
   return (
     <div className={styles.clientDetailsPage}>
-      <BottomIcon icon={<New />} text={"Add new"} />
+      <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
+
+      {popUp && <div className={styles.addClientPopUp}>
+        <div className={styles.popUpContainer}>
+          <div className={styles.popUpFields}>
+            <label htmlFor="">Country</label>
+            <select name="" id="">
+              <option value="">India</option>
+              <option value="">Australia</option>
+              <option value="">Canada</option>
+              <option value="">USA</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="">Visa</label>
+            <select name="" id="">
+              <option value="">Visiting Visa</option>
+              <option value="">Student Visa</option>
+              <option value="">Work Visa</option>
+              <option value="">PR</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="">Payment type</label>
+            <input type="radio" name="Upfront" id="" />
+            <label htmlFor="">Upfront</label>
+            <input type="radio" name="Installment" id="" />
+            <label htmlFor="">Installment</label>
+          </div>
+          <div className={styles.btnS}>
+            <button onClick={handleCancelClick}>Cancel</button>
+            <button>Save</button>
+          </div>
+        </div>
+      </div>}
+
+
       <div className={styles.detailsContainer}>
         <div className={styles.detailsHeader}>
           <p className={styles.id}>#1203</p>
@@ -103,6 +144,27 @@ const ClientDetailsPage = () => {
               </a>
             </div>
           </div>
+
+          <div className={styles.application}>
+            <div className={styles.applicationHeader}>
+              <div className={styles.idAndNotification}>
+                <p className={styles.id}>#1203</p>
+                <p></p>
+              </div>
+              <p className={styles.date}>21 March 2023</p>
+            </div>
+            <div className={styles.applicationBody}>
+              <h3 className={styles.country}>Canada <p className={styles.countryIcon}>Ca</p></h3>
+              <p className={styles.visaType}>Visiting Visa</p>
+            </div>
+            <div className={styles.applicationFooter}>
+              <p className={styles.paymentType}>Installment <span>5</span></p>
+              <a href='/' >
+                <RightArrow />
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
