@@ -1,0 +1,51 @@
+.loginPage {
+    height: 100dvh;
+    width: 100vw;
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loginPage .log {
+    height: 140px;
+    width: 300px;
+    background: url(../../atom/images/Logo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.loginPage .loginContainer {
+    background: #fff;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.loginPage .loginContainer button {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    color: #757575;
+    font-weight: 600;
+    align-items: center;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.28);
+    cursor: pointer;
+}
+
+.loginPage .loginContainer button p {
+    height: 20px;
+    width: 20px;
+    background-image: url("../../atom/images/google.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+
+}

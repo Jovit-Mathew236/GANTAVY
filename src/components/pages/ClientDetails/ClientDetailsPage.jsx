@@ -1,16 +1,30 @@
 'use client'
-import React, { useState } from 'react'
-import styles from './ClientDetails.module.css'
-import SendBlack from '../../atom/svgs/SendBlack'
-import RightArrow from '../../atom/svgs/RightArrow'
-import New from '../../atom/svgs/New'
-import BottomIcon from '../../molecules/BottomIcon'
+import { useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import styles from './ClientDetails.module.css';
+import SendBlack from '../../atom/svgs/SendBlack';
+import RightArrow from '../../atom/svgs/RightArrow';
+import New from '../../atom/svgs/New';
+import BottomIcon from '../../molecules/BottomIcon';
+import firebase from '../../../firebase/config';
 
 const ClientDetailsPage = () => {
-  const [popUp, setPopUp] = useState(false)
+  const [popUp, setPopUp] = useState(false);
+  const [clientDetails, setClientDetails] = useState(null);
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
   const handleCancelClick = () => {
     setPopUp(false);
   };
+
+  useEffect(() => {
+    if (id && id.trim() !== '') {
+      firebase.firestore().collection('clients').doc('66995').get().then((snapshot) => {
+        const data = snapshot.data();
+        setClientDetails(data);
+      });
+    }
+  }, [id])
   return (
     <div className={styles.clientDetailsPage}>
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
@@ -36,10 +50,14 @@ const ClientDetailsPage = () => {
             </select>
           </div>
           <div>
-            <label htmlFor="">Payment type</label>
-            <input type="radio" name="Upfront" id="" />
-            <label htmlFor="">Upfront</label>
-            <input type="radio" name="Installment" id="" />
+            <div>
+              <label htmlFor="">Payment type</label>
+              <input type="radio" name="Upfront" id="" />
+            </div>
+            <div>
+              <label htmlFor="">Upfront</label>
+              <input type="radio" name="Installment" id="" />
+            </div>
             <label htmlFor="">Installment</label>
           </div>
           <div className={styles.btnS}>
@@ -52,10 +70,10 @@ const ClientDetailsPage = () => {
 
       <div className={styles.detailsContainer}>
         <div className={styles.detailsHeader}>
-          <p className={styles.id}>#1203</p>
-          <h1>Don Jose Mathew</h1>
-          <p className={styles.email}>johnsnow@gmail.com</p>
-          <p className={styles.phone}>+91 1234567890</p>
+          <p className={styles.id}>#{clientDetails && clientDetails.clientId}</p>
+          <h1>{clientDetails && clientDetails.name}</h1>
+          <p className={styles.email}>{clientDetails && clientDetails.email}</p>
+          <p className={styles.phone}>{clientDetails && clientDetails.phone}</p>
           <div className={styles.countries}>
             <p className={styles.country}>in</p>
             <p className={styles.country}>au</p>

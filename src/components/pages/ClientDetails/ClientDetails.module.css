@@ -1,7 +1,8 @@
 .clientDetailsPage {
     display: flex;
     gap: 30px;
-    /* justify-content: space-around; */
+    padding: 30px 70px;
+    justify-content: space-around;
 }
 
 .clientDetailsPage .addClientPopUp {
@@ -197,6 +198,7 @@
 
 .clientDetailsPage .applicationContainer {
     margin-top: 50px;
+    width: 350px;
 }
 
 .clientDetailsPage .applicationContainer h1 {
