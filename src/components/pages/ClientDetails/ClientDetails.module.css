@@ -6,7 +6,7 @@
 }
 
 .clientDetailsPage .addClientPopUp {
-    position: absolute;
+    position: fixed;
     padding: 20px 30px;
     margin-left: -30px;
     top: 0px;
@@ -198,7 +198,7 @@
 
 .clientDetailsPage .applicationContainer {
     margin-top: 50px;
-    width: 350px;
+    /* width: 350px; */
 }
 
 .clientDetailsPage .applicationContainer h1 {
@@ -300,4 +300,28 @@
     align-items: center;
     font-weight: 100;
     justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .clientDetailsPage {
+        flex-direction: column;
+        padding: 30px 20px;
+    }
+
+    .clientDetailsPage .detailsContainer {
+        width: 100%;
+    }
+
+    .clientDetailsPage .applicationContainer {
+        margin-top: 50px;
+        width: 100%;
+    }
+
+    .clientDetailsPage .applicationContainer .applications {
+        justify-content: center;
+    }
+
+    .clientDetailsPage .applicationContainer .applications .application {
+        width: 100%;
+    }
 }

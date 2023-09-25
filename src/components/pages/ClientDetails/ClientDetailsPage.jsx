@@ -1,16 +1,21 @@
 'use client'
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './ClientDetails.module.css';
 import SendBlack from '../../atom/svgs/SendBlack';
 import RightArrow from '../../atom/svgs/RightArrow';
 import New from '../../atom/svgs/New';
 import BottomIcon from '../../molecules/BottomIcon';
 import firebase from '../../../firebase/config';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const ClientDetailsPage = () => {
   const [popUp, setPopUp] = useState(false);
   const [clientDetails, setClientDetails] = useState(null);
+  const [clientApplicationDetails, setClientApplicationDetails] = useState(null);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const handleCancelClick = () => {
@@ -18,13 +23,40 @@ const ClientDetailsPage = () => {
   };
 
   useEffect(() => {
+    const auth = getAuth(firebase);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        router.push('/login');
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     if (id && id.trim() !== '') {
-      firebase.firestore().collection('clients').doc('66995').get().then((snapshot) => {
+      firebase.firestore().collection('clients').doc(id).get().then((snapshot) => {
         const data = snapshot.data();
         setClientDetails(data);
       });
+      const clientId = '21692'; // Replace this with the desired clientId value
+
+      firebase.firestore().collection('applications').where('clientid', '==', '21692').get().then((snapshot) => {
+        const data = snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        });
+        setClientApplicationDetails(data);
+      })
+        .catch((error) => {
+          console.error('Error fetching documents: ', error);
+        });
+
     }
   }, [id])
+
   return (
     <div className={styles.clientDetailsPage}>
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
@@ -123,65 +155,31 @@ const ClientDetailsPage = () => {
         <h1>Applications</h1>
         <div className={styles.applications}>
 
-          <div className={styles.application}>
-            <div className={styles.applicationHeader}>
-              <div className={styles.idAndNotification}>
-                <p className={styles.id}>#1203</p>
-                <p ></p>
-              </div>
-              <p className={styles.date}>21 March 2023</p>
-            </div>
-            <div className={styles.applicationBody}>
-              <h3 className={styles.country}>Canada <p className={styles.countryIcon}>Ca</p></h3>
-              <p className={styles.visaType}>Visiting Visa</p>
-            </div>
-            <div className={styles.applicationFooter}>
-              <p className={styles.paymentType}>Installment <span>5</span></p>
-              <a href='/' >
-                <RightArrow />
-              </a>
-            </div>
-          </div>
-
-          <div className={styles.application}>
-            <div className={styles.applicationHeader}>
-              <div className={styles.idAndNotification}>
-                <p className={styles.id}>#1203</p>
-                <p></p>
-              </div>
-              <p className={styles.date}>21 March 2023</p>
-            </div>
-            <div className={styles.applicationBody}>
-              <h3 className={styles.country}>Canada <p className={styles.countryIcon}>Ca</p></h3>
-              <p className={styles.visaType}>Visiting Visa</p>
-            </div>
-            <div className={styles.applicationFooter}>
-              <p className={styles.paymentType}>Installment <span>5</span></p>
-              <a href='/' >
-                <RightArrow />
-              </a>
-            </div>
-          </div>
-
-          <div className={styles.application}>
-            <div className={styles.applicationHeader}>
-              <div className={styles.idAndNotification}>
-                <p className={styles.id}>#1203</p>
-                <p></p>
-              </div>
-              <p className={styles.date}>21 March 2023</p>
-            </div>
-            <div className={styles.applicationBody}>
-              <h3 className={styles.country}>Canada <p className={styles.countryIcon}>Ca</p></h3>
-              <p className={styles.visaType}>Visiting Visa</p>
-            </div>
-            <div className={styles.applicationFooter}>
-              <p className={styles.paymentType}>Installment <span>5</span></p>
-              <a href='/' >
-                <RightArrow />
-              </a>
-            </div>
-          </div>
+          {
+            clientApplicationDetails && clientApplicationDetails.map((data, i) => {
+              return (
+                <div className={styles.application} key={i}>
+                  <div className={styles.applicationHeader}>
+                    <div className={styles.idAndNotification}>
+                      <p className={styles.id}>#{data.applicationId}</p>
+                      <p ></p>
+                    </div>
+                    <p className={styles.date}>21 March 2023</p>
+                  </div>
+                  <div className={styles.applicationBody}>
+                    <h3 className={styles.country}>{data.country} <p className={styles.countryIcon}>Ca</p></h3>
+                    <p className={styles.visaType}>{data.visatype}</p>
+                  </div>
+                  <div className={styles.applicationFooter}>
+                    <p className={styles.paymentType}>{data.paymenttype} <span>5</span></p>
+                    <a href='/' >
+                      <RightArrow />
+                    </a>
+                  </div>
+                </div>
+              )
+            })
+          }
 
         </div>
       </div>

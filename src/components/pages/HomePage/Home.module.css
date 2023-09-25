@@ -10,7 +10,7 @@ text-align: left;
 }
 
 .homePage .addClientPopUp {
-    position: absolute;
+    position: fixed;
     padding: 20px 30px;
     margin-left: -30px;
     top: 0px;

@@ -105,3 +105,10 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
+
+@media (max-width: 600px) {
+    .adminPage .adminContainer .adminFiled {
+        position: relative;
+        width: unset;
+    }
+}

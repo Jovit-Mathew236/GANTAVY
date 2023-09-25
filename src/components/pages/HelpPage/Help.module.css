@@ -43,7 +43,8 @@
     transition: all 0.3s ease-in-out;
     cursor: pointer;
 }
-.helpPage .btnS button:hover{
+
+.helpPage .btnS button:hover {
     background: #000;
     color: white;
     /* border: none; */
@@ -53,4 +54,10 @@
     font-weight: 300;
     margin-top: 10px;
     font-size: 20px;
+}
+
+@media (max-width: 768px) {
+    .helpPage {
+        margin-top: 70px;
+    }
 }

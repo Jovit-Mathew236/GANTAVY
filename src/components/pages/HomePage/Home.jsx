@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import SearchBar from '../../molecules/SearchBar'
 import styles from './Home.module.css'
 import RightArrow from '../../atom/svgs/RightArrow'
-import AddClient from '../../molecules/BottomIcon'
 import Add from '../../atom/svgs/Add'
 import BottomIcon from '../../molecules/BottomIcon'
 import firebase from '../../../firebase/config'
