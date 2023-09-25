@@ -1,3 +1,24 @@
+.menu_btn {
+    left: 30px;
+    top: 58px;
+    position: fixed;
+    height: 25px;
+    display: none;
+    gap: 6px;
+    justify-content: space-evenly;
+    align-items: center;
+    cursor: pointer;
+    z-index: 110;
+    flex-direction: column;
+}
+
+.menu_btn .lines {
+    width: 45px;
+    height: 4px;
+    background-color: #141220;
+    border-radius: 5px;
+}
+
 .navBar {
     width: 230px;
     height: 100dvh;
@@ -55,4 +76,26 @@
     font-weight: 700;
     position: absolute;
     bottom: 24px;
+}
+
+@media (max-width: 850px) {
+    .menu_btn {
+        display: flex;
+    }
+
+    .navBar {
+        display: none;
+        width: 100vw;
+        height: 100dvh;
+        z-index: 100;
+    }
+
+    .navBar .menu {
+        align-items: center;
+    }
+}
+@media (max-width: 500px) {
+    .menu_btn {
+        top: 40px;
+    }
 }

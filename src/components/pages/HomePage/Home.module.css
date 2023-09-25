@@ -90,7 +90,7 @@ text-align: left;
 .homePage .cardsContainer {
     margin-top: 20px;
     display: flex;
-    gap: 30px;
+    gap: 30px 10px;
     flex-wrap: wrap;
     justify-content: flex-start;
 }
@@ -157,4 +157,20 @@ text-align: left;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media (max-width: 850px) {
+    .homePage .cardsContainer {
+        justify-content: center;
+    }
+
+    .homePage .cardsContainer .card {
+        min-width: 300px;
+    }
+}
+
+@media (max-width: 500px) {
+    .homePage {
+        margin-top: 70px;
+    }
 }

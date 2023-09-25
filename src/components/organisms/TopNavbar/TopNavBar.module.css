@@ -31,3 +31,14 @@
     border: none;
     cursor: pointer;
 }
+
+@media (max-width: 500px) {
+    .topNav {
+        position: fixed;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        margin: -40px 0px;
+        padding: 20px;
+    }
+}

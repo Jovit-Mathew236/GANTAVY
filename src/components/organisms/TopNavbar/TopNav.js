@@ -18,6 +18,7 @@ const TopNav = () => {
 
   return (
     <div className={styles.topNav}>
+
       <p className={styles.notification}></p>
       {/* Profile picture */}
       <p
