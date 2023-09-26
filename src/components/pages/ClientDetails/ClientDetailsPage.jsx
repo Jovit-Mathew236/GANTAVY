@@ -9,6 +9,7 @@ import New from '../../atom/svgs/New';
 import BottomIcon from '../../molecules/BottomIcon';
 import firebase from '../../../firebase/config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Topnav from '../../molecules/Topnav';
 
 const ClientDetailsPage = () => {
   const [popUp, setPopUp] = useState(false);
@@ -20,6 +21,11 @@ const ClientDetailsPage = () => {
   const id = searchParams.get('id');
   const handleCancelClick = () => {
     setPopUp(false);
+  };
+  const [paymentType, setPaymentType] = useState('upfront'); // Default to 'upfront'
+
+  const handlePaymentTypeChange = (event) => {
+    setPaymentType(event.target.value);
   };
 
   useEffect(() => {
@@ -59,6 +65,7 @@ const ClientDetailsPage = () => {
 
   return (
     <div className={styles.clientDetailsPage}>
+      <Topnav />
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
 
       {popUp && <div className={styles.addClientPopUp}>
@@ -82,16 +89,44 @@ const ClientDetailsPage = () => {
             </select>
           </div>
           <div>
-            <div>
-              <label htmlFor="">Payment type</label>
-              <input type="radio" name="Upfront" id="" />
+            <label htmlFor="">Payment type</label>
+            <div className={styles.radioBtnsContainer}>
+              <div className={styles.radioBtns}>
+                <input
+                  type="radio"
+                  name="paymentType"
+                  id="upfront"
+                  value="upfront"
+                  checked={paymentType === 'upfront'}
+                  onChange={handlePaymentTypeChange}
+                />
+                <label htmlFor="upfront">Upfront</label>
+              </div>
+              <div className={styles.radioBtns}>
+                <input
+                  type="radio"
+                  name="paymentType"
+                  id="installment"
+                  value="installment"
+                  checked={paymentType === 'installment'}
+                  onChange={handlePaymentTypeChange}
+                />
+                <label htmlFor="installment">Installment</label>
+              </div>
             </div>
-            <div>
-              <label htmlFor="">Upfront</label>
-              <input type="radio" name="Installment" id="" />
-            </div>
-            <label htmlFor="">Installment</label>
           </div>
+          {paymentType === 'installment' && (
+            <div id="installment">
+              <label htmlFor="">Number of installments</label>
+              <select name="" id="">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+          )}
+
           <div className={styles.btnS}>
             <button onClick={handleCancelClick}>Cancel</button>
             <button>Save</button>

@@ -93,3 +93,17 @@
         right: 20px;
     }
 }
+
+.topnav {
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px 40px;
+}
+.topnav .btns{
+    display: flex;
+    gap: 20px;
+}

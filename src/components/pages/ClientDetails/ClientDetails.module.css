@@ -1,6 +1,7 @@
 .clientDetailsPage {
     display: flex;
     gap: 30px;
+    margin-top: 60px;
     padding: 30px 70px;
     justify-content: space-around;
 }
@@ -45,6 +46,7 @@
 
 .clientDetailsPage .addClientPopUp .popUpContainer label {
     margin-left: 10px;
+    font-weight: 500;
 }
 
 .clientDetailsPage .addClientPopUp .popUpContainer input,
@@ -84,6 +86,22 @@
     transition: all 0.3s ease-in-out;
 }
 
+.clientDetailsPage .addClientPopUp .popUpContainer .radioBtnsContainer {
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.clientDetailsPage .addClientPopUp .popUpContainer .radioBtnsContainer .radioBtns {
+    display: flex;
+    width: fit-content;
+}
+
+.clientDetailsPage .addClientPopUp .popUpContainer .radioBtnsContainer .radioBtns input {
+    margin-top: 0px;
+    accent-color: #000;
+}
 
 .clientDetailsPage .detailsContainer {
     border-radius: 20px;
