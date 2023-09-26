@@ -8,6 +8,7 @@ import New from '../../atom/svgs/New'
 import RightArrow from '../../atom/svgs/RightArrow'
 import firebase from '../../../firebase/config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Add2 from '../../atom/svgs/Add2';
 
 const ApplicationDetails = () => {
   const [popUp, setPopUp] = useState(false);
@@ -68,9 +69,31 @@ const ApplicationDetails = () => {
 
       {popUp && <div className={styles.addClientPopUp}>
         <div className={styles.popUpContainer}>
+          <div className={styles.popUpFields}>
+            <label htmlFor="">Stage Name</label>
+            <input type="text" placeholder='Level 1' />
+          </div>
 
+          <div className={styles.subContainer}>
+            <select name="options" id="option">
+              <option value="">File Upload</option>
+              <option value="">Text button</option>
+              <option value="">Payment info</option>
+              <option value="">Link share</option>
 
-
+            </select>
+            <div className={styles.popUpFields}>
+              <label htmlFor="">Heading</label>
+              <input type="text" placeholder='Upload your passport' />
+            </div>
+            <div className={styles.popUpFields}>
+              <label htmlFor="">Description</label>
+              <input type="text" placeholder='Enter deatils' />
+            </div>
+            <p className={styles.addBtn}>
+              <Add2 />
+            </p>
+          </div>
           <div className={styles.btnS}>
             <button onClick={handleCancelClick}>Cancel</button>
             <button>Save</button>
@@ -122,7 +145,7 @@ const ApplicationDetails = () => {
                   <p>{stageDetail.stageNumber}</p>
                 </div>
                 <div>
-                  <h2>{stageDetail.heading}</h2>
+                  <h2 className={styles.head}>{stageDetail.heading}</h2>
                   <p className={styles.status}>{
                     stageDetail.completed ? 'Completed' : 'On going'
                   }</p>

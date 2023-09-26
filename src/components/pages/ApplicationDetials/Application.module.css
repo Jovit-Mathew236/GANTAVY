@@ -4,6 +4,7 @@
     margin-top: 60px;
     padding: 30px 70px;
     justify-content: space-around;
+    text-align: center;
 }
 
 .applicationDetails .addClientPopUp {
@@ -29,6 +30,11 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    text-align: left;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer .popUpFields {
+    width: 100%;
 }
 
 .applicationDetails .addClientPopUp .popUpContainer button {
@@ -55,15 +61,39 @@
     width: 100%;
     border-radius: 26px;
     border: none;
-    border: 1px solid #EFEFEF;
-    background: #F6F6F6;
+    border: 1px solid #EDEDED;
+    background: #FCFCFC;
     margin-top: 5px;
     outline: none;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer select {
+    width: fit-content;
+    border-radius: 10px;
 }
 
 .applicationDetails .addClientPopUp .popUpContainer input::placeholder {
     color: #A3A3A3;
     font-weight: 300;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer .subContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 10px 20px;
+    border: 1px solid #EDEDED;
+    border-radius: 20px;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer .subContainer .option {
+    margin-bottom: -30px;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer .subContainer .addBtn {
+    margin-top: -10px;
 }
 
 .applicationDetails .addClientPopUp .popUpContainer .btnS {
@@ -178,6 +208,11 @@
     color: #A4A4A4;
 }
 
+.applicationDetails .stageContainer .stage .head {
+    min-width: 260px;
+    word-break: break-word;
+}
+
 .applicationDetails .stageContainer .stage a {
     position: absolute;
     bottom: 10px;
@@ -198,12 +233,4 @@
         margin-top: 50px;
         width: 100%;
     }
-
-    /* .applicationDetails .stageContainer .stage {
-        justify-content: center;
-    }
-
-    .applicationDetails .stageContainer .stage .application {
-        width: 100%;
-    } */
 }
