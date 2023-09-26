@@ -1,5 +1,8 @@
 import React from 'react'
 import styles from './molecules.module.css'
+import Back from '../atom/svgs/Back'
+import Edit2 from '../atom/svgs/Edit2'
+import Delete2 from '../atom/svgs/Delete2'
 
 const Topnav = () => {
     return (
@@ -8,10 +11,10 @@ const Topnav = () => {
                 () => {
                     window.history.back()
                 }
-            }>back</p>
+            }><Back /> </p>
             <div className={styles.btns}>
-                <p>edit</p>
-                <p>delete</p>
+                <p><Edit2 /></p>
+                <p><Delete2 /></p>
             </div>
         </div>
     )

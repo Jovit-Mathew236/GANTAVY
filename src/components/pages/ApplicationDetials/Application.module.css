@@ -1,0 +1,185 @@
+.applicationDetails {
+    display: flex;
+    gap: 30px;
+    margin-top: 60px;
+    padding: 30px 70px;
+    justify-content: space-around;
+}
+
+.applicationDetails .addClientPopUp {
+    position: fixed;
+    padding: 20px 30px;
+    margin-left: -30px;
+    top: 0px;
+    width: -webkit-fill-available;
+    height: 100vh;
+    -webkit-backdrop-filter: brightness(0.5);
+    backdrop-filter: brightness(0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer {
+    background: #fff;
+    border-radius: 20px;
+    width: 500px;
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer button {
+    border-radius: 10px;
+    margin-top: 30px;
+    font-weight: 500;
+    border: 1px solid #D3D3D3;
+    background: #000;
+    padding: 10px 10px;
+    color: white;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer label {
+    margin-left: 10px;
+    font-weight: 500;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer input,
+.applicationDetails .addClientPopUp .popUpContainer select {
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 26px;
+    border: none;
+    border: 1px solid #EFEFEF;
+    background: #F6F6F6;
+    margin-top: 5px;
+    outline: none;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer input::placeholder {
+    color: #A3A3A3;
+    font-weight: 300;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer .btnS {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer .btnS button {
+    width: 100px;
+    font-weight: 300;
+    margin-top: 20px;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer .btnS button:nth-child(1) {
+    background: #fff;
+    color: #000;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.applicationDetails .applicationDetailsContainer {
+    border-radius: 20px;
+    background: #F4F4F4;
+    /* min-width: 380px; */
+    padding: 30px 70px;
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.applicationDetails .applicationDetailsContainer select {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 40px;
+    background: #000;
+    color: white;
+}
+
+.applicationDetails .applicationDetailsContainer .id {
+    padding: 2px 40px;
+    border-radius: 16px;
+    border: 0.5px solid #DEDEDE;
+    background: #E8E8E8;
+    font-weight: bold;
+}
+
+.applicationDetails .applicationDetailsContainer .paymentType {
+    padding: 5px 7px 5px 20px;
+    border: 1px solid #CAC9C9;
+    border-radius: 20px;
+    display: flex;
+    gap: 20px;
+    font-weight: 600;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.applicationDetails .applicationDetailsContainer .paymentType span {
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    height: 30px;
+    width: 30px;
+    background: #E8E8E8;
+    align-items: center;
+    font-weight: 100;
+    justify-content: center;
+}
+
+.applicationDetails .applicationDetailsContainer .createdDate {
+    margin-top: 150px;
+}
+
+.applicationDetails .stageContainer {
+    min-width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.applicationDetails .stageContainer .stage {
+    padding: 20px;
+    border: 1px solid #D9D9D9;
+    border-radius: 20px;
+    display: flex;
+    min-height: 150px;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+    text-align: center;
+}
+
+.applicationDetails .stageContainer .stage .date {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.applicationDetails .stageContainer .stage .level {
+    height: 70px;
+    width: 70px;
+    border: 1px solid #E0E0E0;
+    display: flex;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 50px;
+    color: #A4A4A4;
+}
+
+.applicationDetails .stageContainer .stage a {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}

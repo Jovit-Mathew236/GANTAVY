@@ -207,7 +207,7 @@ const ClientDetailsPage = () => {
                   </div>
                   <div className={styles.applicationFooter}>
                     <p className={styles.paymentType}>{data.paymenttype} <span>5</span></p>
-                    <a href='/' >
+                    <a href='/client-details/application' >
                       <RightArrow />
                     </a>
                   </div>

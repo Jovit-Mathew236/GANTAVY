@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
   const url = usePathname();
   return (
     <html lang="en">
-      {url !== "/client-details" && url !== "/login" ? (
+      {url !== "/client-details" && url !== "/login" && url !== "/client-details/application" ? (
         <body className={inter.className}>
           <SideNav />
           <main>

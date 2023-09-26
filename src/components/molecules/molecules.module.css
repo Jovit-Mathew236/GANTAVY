@@ -103,7 +103,12 @@
     width: 100%;
     padding: 20px 40px;
 }
-.topnav .btns{
+
+.topnav p {
+    cursor: pointer;
+}
+
+.topnav .btns {
     display: flex;
     gap: 20px;
 }
