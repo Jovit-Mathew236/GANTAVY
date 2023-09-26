@@ -183,3 +183,27 @@
     bottom: 10px;
     right: 10px;
 }
+
+@media (max-width: 768px) {
+    .applicationDetails {
+        flex-direction: column;
+        padding: 30px 20px;
+    }
+
+    .applicationDetails .applicationDetailsContainer {
+        width: 100%;
+    }
+
+    .applicationDetails .stageContainer {
+        margin-top: 50px;
+        width: 100%;
+    }
+
+    /* .applicationDetails .stageContainer .stage {
+        justify-content: center;
+    }
+
+    .applicationDetails .stageContainer .stage .application {
+        width: 100%;
+    } */
+}

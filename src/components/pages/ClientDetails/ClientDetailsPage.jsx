@@ -13,6 +13,10 @@ import Topnav from '../../molecules/Topnav';
 
 const ClientDetailsPage = () => {
   const [popUp, setPopUp] = useState(false);
+  const [country, setCountry] = useState('');
+  const [visa, setVisa] = useState('');
+  const [paymentType, setPaymentType] = useState('upfront'); // Default to 'upfront'
+  const [installment, setInstallment] = useState('');
   const [clientDetails, setClientDetails] = useState(null);
   const [clientApplicationDetails, setClientApplicationDetails] = useState(null);
   const [user, setUser] = useState(null);
@@ -22,7 +26,13 @@ const ClientDetailsPage = () => {
   const handleCancelClick = () => {
     setPopUp(false);
   };
-  const [paymentType, setPaymentType] = useState('upfront'); // Default to 'upfront'
+
+  function generateApplicationID() {
+    const min = 10000; // Minimum 5-digit number
+    const max = 99999; // Maximum 5-digit number
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  const newApplicationID = generateApplicationID().toString()
 
   const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);
@@ -47,7 +57,7 @@ const ClientDetailsPage = () => {
       });
       const clientId = '21692'; // Replace this with the desired clientId value
 
-      firebase.firestore().collection('applications').where('clientid', '==', '21692').get().then((snapshot) => {
+      firebase.firestore().collection('applications').where('clientid', '==', id).get().then((snapshot) => {
         const data = snapshot.docs.map((doc) => {
           return {
             id: doc.id,
@@ -72,20 +82,30 @@ const ClientDetailsPage = () => {
         <div className={styles.popUpContainer}>
           <div className={styles.popUpFields}>
             <label htmlFor="">Country</label>
-            <select name="" id="">
-              <option value="">India</option>
-              <option value="">Australia</option>
-              <option value="">Canada</option>
-              <option value="">USA</option>
+            <select name="" id="" onChange={(e) => {
+              setCountry(e.target.value);
+            }}>
+              <option value="">Select Country</option>
+              <option value="India">India</option>
+              <option value="Australia">Australia</option>
+              <option value="Canada">Canada</option>
+              <option value="New Zealand">New Zealand</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="United States">United States</option>
             </select>
           </div>
           <div>
             <label htmlFor="">Visa</label>
-            <select name="" id="">
-              <option value="">Visiting Visa</option>
-              <option value="">Student Visa</option>
-              <option value="">Work Visa</option>
-              <option value="">PR</option>
+            <select name="" id="" onChange={(e) => {
+              setVisa(e.target.value);
+            }}>
+              <option value="">Select Visa type</option>
+              <option value="Education Visa">Education Visa</option>
+              <option value="Visiting Visa">Visiting Visa</option>
+              <option value="Education Visa">Education Visa</option>
+              <option value="Work Visa">Work Visa</option>
+              <option value="Student Visa">Student Visa</option>
+              <option value="PR">PR</option>
             </select>
           </div>
           <div>
@@ -118,7 +138,10 @@ const ClientDetailsPage = () => {
           {paymentType === 'installment' && (
             <div id="installment">
               <label htmlFor="">Number of installments</label>
-              <select name="" id="">
+              <select name="" id="" onChange={(e) => {
+                setInstallment(e.target.value);
+              }}>
+                <option value="">Select number of installments</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -129,7 +152,40 @@ const ClientDetailsPage = () => {
 
           <div className={styles.btnS}>
             <button onClick={handleCancelClick}>Cancel</button>
-            <button>Save</button>
+            <button onClick={() => {
+              firebase.firestore().collection('applications').add({
+                applicationId: newApplicationID,
+                country,
+                visatype: visa,
+                paymenttype: paymentType,
+                installment,
+                clientid: id,
+                createdAt: new Date(),
+              })
+                .then((docRef) => {
+                  setClientApplicationDetails((prev) => {
+                    return [
+                      ...prev,
+                      {
+                        applicationId: newApplicationID,
+                        id: docRef.id,
+                        country,
+                        visatype: visa,
+                        paymenttype: paymentType,
+                        installment,
+                        clientid: id,
+                        createdAt: new Date(),
+                      },
+                    ];
+                  });
+                  setPopUp(false);
+                })
+                .catch((error) => {
+                  console.error('Error adding application: ', error);
+                });
+
+
+            }} >Save</button>
           </div>
         </div>
       </div>}
@@ -192,6 +248,14 @@ const ClientDetailsPage = () => {
 
           {
             clientApplicationDetails && clientApplicationDetails.map((data, i) => {
+              const milliseconds = data.createdAt.seconds * 1000;
+              const date = new Date(milliseconds);
+
+              const day = date.getDate();
+              const month = date.toLocaleString('en-US', { month: 'long' });
+              const year = date.getFullYear();
+
+              const formattedDate = `${day} ${month} ${year}`;
               return (
                 <div className={styles.application} key={i}>
                   <div className={styles.applicationHeader}>
@@ -199,7 +263,7 @@ const ClientDetailsPage = () => {
                       <p className={styles.id}>#{data.applicationId}</p>
                       <p ></p>
                     </div>
-                    <p className={styles.date}>21 March 2023</p>
+                    <p className={styles.date}>{formattedDate}</p>
                   </div>
                   <div className={styles.applicationBody}>
                     <h3 className={styles.country}>{data.country} <p className={styles.countryIcon}>Ca</p></h3>
@@ -207,9 +271,9 @@ const ClientDetailsPage = () => {
                   </div>
                   <div className={styles.applicationFooter}>
                     <p className={styles.paymentType}>{data.paymenttype} <span>5</span></p>
-                    <a href='/client-details/application' >
-                      <RightArrow />
-                    </a>
+                    <a href={`/client-details/application?id=${data.applicationId}`}>
+                            <RightArrow />
+                          </a>
                   </div>
                 </div>
               )

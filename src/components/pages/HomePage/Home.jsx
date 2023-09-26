@@ -148,7 +148,24 @@ function HomePage() {
                 clientId: newClientId,
                 addedAt: new Date()
               }).then(() => {
-                console.log('Client added');
+                setClients((prev) => {
+                  const month = new Date().toLocaleString('en-US', { month: 'long' });
+                  const year = new Date().getFullYear();
+                  const key = `${month} ${year}`;
+
+                  if (!prev[key]) {
+                    prev[key] = [];
+                  }
+                  prev[key].push({
+                    name,
+                    email,
+                    phone,
+                    clientId: newClientId,
+                    addedAt: new Date()
+                  });
+                  return { ...prev };
+                });
+                setPopUp(false)
               });
 
             }} >Save</button>
