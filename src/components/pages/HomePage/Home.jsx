@@ -8,6 +8,7 @@ import Add from '../../atom/svgs/Add'
 import BottomIcon from '../../molecules/BottomIcon'
 import firebase from '../../../firebase/config'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Loading from '../../molecules/Loading';
 
 
 function HomePage() {
@@ -21,6 +22,8 @@ function HomePage() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState("name");
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const auth = getAuth(firebase);
@@ -73,7 +76,9 @@ function HomePage() {
         }, {});
 
         setClients(finalData);
-      });
+      }).then(() => {
+        setLoading(false);
+      })
   }, []);
   function generateClientID() {
     const min = 10000; // Minimum 5-digit number
@@ -111,6 +116,7 @@ function HomePage() {
 
   return (
     <div className={styles.homePage}>
+      {loading && <Loading />}
       <SearchBar
         searchQuery={searchQuery}
         searchField={searchField}

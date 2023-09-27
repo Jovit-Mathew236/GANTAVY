@@ -9,10 +9,20 @@ import RightArrow from '../../atom/svgs/RightArrow'
 import firebase from '../../../firebase/config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Add2 from '../../atom/svgs/Add2';
+import Loading from '../../molecules/Loading';
 
 const ApplicationDetails = () => {
   const [popUp, setPopUp] = useState(false);
   const [user, setUser] = useState(null);
+  const [stageName, setStageName] = useState('');
+  const [heading, setHeading] = useState('');
+  const [description, setDescription] = useState('');
+  const [link, setLink] = useState();
+  const [file, setFile] = useState();
+  const [docId, setDocId] = useState();
+  const [loading, setLoading] = useState(true);
+
+
   const [clientApplicationDetails, setClientApplicationDetails] = useState([]);
   const [stageDetails, setStageDetails] = useState([])
   const handleCancelClick = () => {
@@ -31,13 +41,14 @@ const ApplicationDetails = () => {
       }
     });
   }, []);
-  let firstDocumentId = null;
+  let documentID;
   useEffect(() => {
     if (id && id.trim() !== '') {
 
       firebase.firestore().collection('applications').where('applicationId', '==', id).get().then((snapshot) => {
         const data = snapshot.docs.map((doc) => {
-          firstDocumentId = doc.id;
+          setDocId(doc.id);
+          documentID = doc.id;
           return {
             id: doc.id,
             ...doc.data(),
@@ -45,7 +56,7 @@ const ApplicationDetails = () => {
         });
         setClientApplicationDetails(data);
       }).then(() => {
-        firebase.firestore().collection('applications').doc(firstDocumentId).collection('stages').get().then((snapshot) => {
+        firebase.firestore().collection('applications').doc(documentID).collection('stages').get().then((snapshot) => {
           const data = snapshot.docs.map((doc) => {
             return {
               id: doc.id,
@@ -54,6 +65,7 @@ const ApplicationDetails = () => {
           });
           setStageDetails(data);
         })
+        setLoading(false);
       })
         .catch((error) => {
           console.error('Error fetching documents: ', error);
@@ -61,9 +73,10 @@ const ApplicationDetails = () => {
 
     }
   }, [id])
-  console.log(stageDetails);
+  // console.log(stageDetails);
   return (
     <div className={styles.applicationDetails}>
+      {loading && <Loading />}
       <Topnav />
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />
 
@@ -71,7 +84,9 @@ const ApplicationDetails = () => {
         <div className={styles.popUpContainer}>
           <div className={styles.popUpFields}>
             <label htmlFor="">Stage Name</label>
-            <input type="text" placeholder='Level 1' />
+            <input type="text" placeholder='Level 1' onChange={(e) => {
+              setStageName(e.target.value)
+            }} />
           </div>
 
           <div className={styles.subContainer}>
@@ -84,11 +99,15 @@ const ApplicationDetails = () => {
             </select>
             <div className={styles.popUpFields}>
               <label htmlFor="">Heading</label>
-              <input type="text" placeholder='Upload your passport' />
+              <input type="text" placeholder='Upload your passport' onChange={(e) => {
+                setHeading(e.target.value)
+              }} />
             </div>
             <div className={styles.popUpFields}>
               <label htmlFor="">Description</label>
-              <input type="text" placeholder='Enter deatils' />
+              <input type="text" placeholder='Enter deatils' onChange={(e) => {
+                setDescription(e.target.value)
+              }} />
             </div>
             <p className={styles.addBtn}>
               <Add2 />
@@ -96,7 +115,49 @@ const ApplicationDetails = () => {
           </div>
           <div className={styles.btnS}>
             <button onClick={handleCancelClick}>Cancel</button>
-            <button>Save</button>
+            <button onClick={() => {
+              console.log(docId);
+              firebase.firestore().collection('applications').doc(docId).collection('stages').add({
+                stageName, // Update with the correct value
+                heading,
+                description,
+                // link: link, // Update with the correct value
+                // // file,
+                completed: false,
+                stageNumber: stageDetails.length + 1,
+                addedAt: new Date(),
+              })
+
+                .then((docRef) => {
+                  setStageDetails((prev) => {
+                    const month = new Date().toLocaleString('en-US', { month: 'long' });
+                    const year = new Date().getFullYear();
+                    const key = `${month} ${year}`;
+
+                    if (!prev[key]) {
+                      prev[key] = [];
+                    }
+
+                    prev[key].push({
+                      stageName, // Update with the correct value
+                      heading: heading,
+                      description,
+                      // link: link, // Update with the correct value
+                      // // file,
+                      completed: false,
+                      stageNumber: stageDetails.length + 1,
+                      addedAt: new Date(),
+                    });
+                    return { ...prev };
+                  });
+                  setPopUp(false);
+                })
+                .catch((error) => {
+                  console.error('Error adding application: ', error);
+                });
+
+
+            }} >Save</button>
           </div>
         </div>
       </div>}

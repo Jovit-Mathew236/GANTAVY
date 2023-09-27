@@ -114,3 +114,35 @@
     display: flex;
     gap: 20px;
 }
+
+.loadingContainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+.loadingContainer p{
+    background: url(../atom/images/Logo.png) no-repeat center center;
+    background-size: contain;
+    height: 500px;
+    width: 500px;
+    animation: fade 2s ease-in-out infinite;
+}
+
+@keyframes fade{
+    0%{
+        opacity: 0.4;
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0.4;
+    }
+}

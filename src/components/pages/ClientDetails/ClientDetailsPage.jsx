@@ -10,6 +10,7 @@ import BottomIcon from '../../molecules/BottomIcon';
 import firebase from '../../../firebase/config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Topnav from '../../molecules/Topnav';
+import Loading from '../../molecules/Loading';
 
 const ClientDetailsPage = () => {
   const [popUp, setPopUp] = useState(false);
@@ -22,6 +23,7 @@ const ClientDetailsPage = () => {
   const [user, setUser] = useState(null);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(true);
   const id = searchParams.get('id');
   const handleCancelClick = () => {
     setPopUp(false);
@@ -55,7 +57,6 @@ const ClientDetailsPage = () => {
         const data = snapshot.data();
         setClientDetails(data);
       });
-      const clientId = '21692'; // Replace this with the desired clientId value
 
       firebase.firestore().collection('applications').where('clientid', '==', id).get().then((snapshot) => {
         const data = snapshot.docs.map((doc) => {
@@ -65,6 +66,9 @@ const ClientDetailsPage = () => {
           };
         });
         setClientApplicationDetails(data);
+
+      }).then(() => {
+        setLoading(false);
       })
         .catch((error) => {
           console.error('Error fetching documents: ', error);
@@ -75,6 +79,7 @@ const ClientDetailsPage = () => {
 
   return (
     <div className={styles.clientDetailsPage}>
+      {loading && <Loading />}
       <Topnav />
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
 
@@ -174,7 +179,7 @@ const ClientDetailsPage = () => {
                         paymenttype: paymentType,
                         installment,
                         clientid: id,
-                        createdAt: new Date(),
+                        createdAt: new Date().milliseconds,
                       },
                     ];
                   });
@@ -272,8 +277,8 @@ const ClientDetailsPage = () => {
                   <div className={styles.applicationFooter}>
                     <p className={styles.paymentType}>{data.paymenttype} <span>5</span></p>
                     <a href={`/client-details/application?id=${data.applicationId}`}>
-                            <RightArrow />
-                          </a>
+                      <RightArrow />
+                    </a>
                   </div>
                 </div>
               )
