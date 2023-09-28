@@ -13,6 +13,7 @@ const MessagePage = () => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
   useEffect(() => {
     const auth = getAuth(firebase);
     onAuthStateChanged(auth, (user) => {
@@ -43,15 +44,20 @@ const MessagePage = () => {
     <div className={styles.messagePage}>
       {loading && <Loading />}
 
-      <input className={styles.msgHeading} type="text" id="msgHeading" name="msgHeading" placeholder='Heading' autoComplete="off" onChange={(e) => {
+      <input className={styles.msgHeading} type="text" id="msgHeading" name="msgHeading" placeholder='Heading' autoComplete="off" required onChange={(e) => {
         setTitle(e.target.value)
       }} />
       <div className={styles.msgInput}>
-        <input type="text" id="msgText" name="msgText" placeholder='Message' autoComplete="off" onChange={(e) => {
+        <input type="text" id="msgText" name="msgText" placeholder='Message' autoComplete="off" required onChange={(e) => {
           setMessage(e.target.value)
         }} />
         <button
           onClick={() => {
+            // validation
+            if (title.trim() === '' || message.trim() === '') {
+              setHasError(true);
+              return;
+            }
             firebase.firestore().collection('notifications').add({
               title,
               message,
@@ -61,6 +67,7 @@ const MessagePage = () => {
               sender: "admin",
               // time: Date.now()
             }).then(() => {
+              const currentDate = Date.now();
               setTitle('')
               setMessage('')
               setNotification([{
@@ -68,7 +75,10 @@ const MessagePage = () => {
                 message,
                 recipient: "all",
                 messageStatus: false,
-                sendAt: new Date(),
+                sendAt: {
+                  seconds: Math.floor(currentDate / 1000),
+                  nanoseconds: (currentDate % 1000) * 1000000,
+                },
                 sender: "admin",
                 // time: Date.now()
               }, ...notification])

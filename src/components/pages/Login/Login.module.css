@@ -7,6 +7,18 @@
     align-items: center;
     flex-direction: column;
 }
+.loginPage .error{
+    position: absolute;
+    bottom: 10px;
+    padding: 20px;
+    background: #f44336;
+    color: #fff;
+    width: fit-content;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.2rem;
+    /* font-weight: 600; */
+}
 
 .loginPage .log {
     height: 140px;

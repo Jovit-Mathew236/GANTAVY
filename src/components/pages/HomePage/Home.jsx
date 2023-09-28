@@ -154,6 +154,7 @@ function HomePage() {
                 clientId: newClientId,
                 addedAt: new Date()
               }).then(() => {
+                const currentDate = Date.now();
                 setClients((prev) => {
                   const month = new Date().toLocaleString('en-US', { month: 'long' });
                   const year = new Date().getFullYear();
@@ -167,7 +168,10 @@ function HomePage() {
                     email,
                     phone,
                     clientId: newClientId,
-                    addedAt: new Date()
+                    addedAt:  {
+                      seconds: Math.floor(currentDate / 1000),
+                      nanoseconds: (currentDate % 1000) * 1000000,
+                    }
                   });
                   return { ...prev };
                 });

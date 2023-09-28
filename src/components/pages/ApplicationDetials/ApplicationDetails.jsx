@@ -129,6 +129,7 @@ const ApplicationDetails = () => {
               })
 
                 .then((docRef) => {
+                  const currentDate = new Date();
                   setStageDetails((prev) => {
                     const month = new Date().toLocaleString('en-US', { month: 'long' });
                     const year = new Date().getFullYear();
@@ -146,7 +147,10 @@ const ApplicationDetails = () => {
                       // // file,
                       completed: false,
                       stageNumber: stageDetails.length + 1,
-                      addedAt: new Date(),
+                      addedAt:  {
+                        seconds: Math.floor(currentDate / 1000),
+                        nanoseconds: (currentDate % 1000) * 1000000,
+                      },
                     });
                     return { ...prev };
                   });

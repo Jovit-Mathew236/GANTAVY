@@ -76,7 +76,6 @@ const ClientDetailsPage = () => {
 
     }
   }, [id])
-
   return (
     <div className={styles.clientDetailsPage}>
       {loading && <Loading />}
@@ -168,6 +167,7 @@ const ClientDetailsPage = () => {
                 createdAt: new Date(),
               })
                 .then((docRef) => {
+                  const currentDate = new Date();
                   setClientApplicationDetails((prev) => {
                     return [
                       ...prev,
@@ -179,7 +179,10 @@ const ClientDetailsPage = () => {
                         paymenttype: paymentType,
                         installment,
                         clientid: id,
-                        createdAt: new Date().milliseconds,
+                        createdAt: {
+                          seconds: Math.floor(currentDate / 1000),
+                          nanoseconds: (currentDate % 1000) * 1000000,
+                        }
                       },
                     ];
                   });
