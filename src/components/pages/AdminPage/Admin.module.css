@@ -33,6 +33,9 @@
     display: flex;
     gap: 20px;
 }
+.adminPage .adminContainer .adminFiled .adminControl p{
+    cursor: pointer;
+}
 
 .adminPage button {
     border-radius: 30px;

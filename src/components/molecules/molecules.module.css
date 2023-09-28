@@ -115,7 +115,7 @@
     gap: 20px;
 }
 
-.loadingContainer{
+.loadingContainer {
     position: fixed;
     top: 0;
     left: 0;
@@ -127,22 +127,17 @@
     align-items: center;
     z-index: 100;
 }
-.loadingContainer p{
-    background: url(../atom/images/Logo.png) no-repeat center center;
-    background-size: contain;
-    height: 500px;
-    width: 500px;
-    animation: fade 2s ease-in-out infinite;
-}
 
-@keyframes fade{
-    0%{
+@keyframes fade {
+    0% {
         opacity: 0.4;
     }
-    50%{
+
+    50% {
         opacity: 1;
     }
-    100%{
+
+    100% {
         opacity: 0.4;
     }
 }
