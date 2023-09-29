@@ -21,6 +21,10 @@ const ClientDetailsPage = () => {
   const [clientDetails, setClientDetails] = useState(null);
   const [clientApplicationDetails, setClientApplicationDetails] = useState(null);
   const [user, setUser] = useState(null);
+  const [notification, setNotification] = useState([]);
+  const [title, setTitle] = useState('')
+  const [message, setMessage] = useState('');
+  const [hasError, setHasError] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
@@ -53,11 +57,26 @@ const ClientDetailsPage = () => {
 
   useEffect(() => {
     if (id && id.trim() !== '') {
-      firebase.firestore().collection('clients').doc(id).get().then((snapshot) => {
-        const data = snapshot.data();
-        setClientDetails(data);
-      });
+      firebase.firestore().collection('clients').where('clientId', '==', id).get().then((snapshot) => {
+        const data = snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        });
+        setClientDetails(data[0]);
+      })
 
+      firebase.firestore().collection('notifications').where('recipient', '==', id).get().then((snapshot) => {
+        const allDocs = snapshot.docs.map((infos) => {
+          return {
+            ...infos.data(),
+            id: infos.id,
+          };
+        });
+        const sorted = allDocs.sort((a, b) => b.sendAt - a.sendAt);
+        setNotification(sorted);
+      })
       firebase.firestore().collection('applications').where('clientid', '==', id).get().then((snapshot) => {
         const data = snapshot.docs.map((doc) => {
           return {
@@ -79,7 +98,7 @@ const ClientDetailsPage = () => {
   return (
     <div className={styles.clientDetailsPage}>
       {loading && <Loading />}
-      <Topnav />
+      <Topnav id={id} collection={"clients"} where={'clientId'}/>
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
 
       {popUp && <div className={styles.addClientPopUp}>
@@ -214,38 +233,69 @@ const ClientDetailsPage = () => {
         <hr />
         <div className={styles.messageSection}>
           <div className={styles.messageHeader}>
-            <input type="text" placeholder='Caption' />
-            <input type="text" placeholder='Message' />
-            <button>Send  <SendBlack /></button>
+            <input type="text" placeholder='Caption' value={title} onChange={(e) => {
+              setTitle(e.target.value)
+            }} />
+            <input type="text" placeholder='Message' value={message} onChange={(e) => {
+              setMessage(e.target.value)
+            }} />
+            <button
+              onClick={() => {
+                // validation
+                if (title.trim() === '' || message.trim() === '') {
+                  setHasError(true);
+                  return;
+                }
+                firebase.firestore().collection('notifications').add({
+                  title,
+                  message,
+                  recipient: id,
+                  messageStatus: false,
+                  sendAt: new Date(),
+                  sender: "admin",
+                }).then(() => {
+                  const currentDate = Date.now();
+                  setTitle('')
+                  setMessage('')
+                  setNotification([{
+                    title,
+                    message,
+                    recipient: id,
+                    messageStatus: false,
+                    sendAt: {
+                      seconds: Math.floor(currentDate / 1000),
+                      nanoseconds: (currentDate % 1000) * 1000000,
+                    },
+                    sender: "admin",
+                  }, ...notification])
+                })
+              }}
+            >Send  <SendBlack /></button>
           </div>
+
           <div className={styles.messageBody}>
-            <div className={styles.message}>
-              <p className={styles.date}> 27 Aug 2022</p>
-              <div className={styles.body}>
-                <h2>Application Approval</h2>
-                <p>Hello Don, Your application is approved.</p>
-              </div>
-              <hr />
-            </div>
 
-            <div className={styles.message}>
-              <p className={styles.date}> 27 Aug 2022</p>
-              <div className={styles.body}>
-                <h2>Application Approval</h2>
-                <p>Hello Don, Your application is approved.</p>
-              </div>
-              <hr />
-            </div>
+            {
+              notification && notification.map((data, i) => {
+                const milliseconds = data.sendAt.seconds * 1000;
+                const date = new Date(milliseconds);
 
-            <div className={styles.message}>
-              <p className={styles.date}> 27 Aug 2022</p>
-              <div className={styles.body}>
-                <h2>Application Approval</h2>
-                <p>Hello Don, Your application is approved.</p>
-              </div>
-              <hr />
-            </div>
+                const day = date.getDate();
+                const month = date.toLocaleString('en-US', { month: 'long' });
+                const year = date.getFullYear();
 
+                const formattedDate = `${day} ${month} ${year}`;
+                return (
+                  <div className={styles.message}>
+                    <p className={styles.date}> {formattedDate}</p>
+                    <div className={styles.body}>
+                      <h2>{data.title}</h2>
+                      <p>{data.message}</p>
+                    </div>
+                    <hr />
+                  </div>
+                )
+              })}
           </div>
         </div>
       </div>

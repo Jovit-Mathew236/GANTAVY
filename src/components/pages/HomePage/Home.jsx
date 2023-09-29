@@ -147,7 +147,7 @@ function HomePage() {
           <div className={styles.btnS}>
             <button onClick={handleCancelClick}>Cancel</button>
             <button onClick={() => {
-              firebase.firestore().collection('clients').doc(newClientId).set({
+              firebase.firestore().collection('clients').add({
                 name,
                 email,
                 phone,

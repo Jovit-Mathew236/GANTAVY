@@ -77,7 +77,7 @@ const ApplicationDetails = () => {
   return (
     <div className={styles.applicationDetails}>
       {loading && <Loading />}
-      <Topnav />
+      <Topnav id={id} collection={"applications"} where={'applicationId'}/>
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />
 
       {popUp && <div className={styles.addClientPopUp}>
@@ -109,14 +109,16 @@ const ApplicationDetails = () => {
                 setDescription(e.target.value)
               }} />
             </div>
-            <p className={styles.addBtn}>
+            <p className={styles.addBtn} onClick={() => {
+
+            }}>
               <Add2 />
             </p>
           </div>
           <div className={styles.btnS}>
             <button onClick={handleCancelClick}>Cancel</button>
             <button onClick={() => {
-              console.log(docId);
+              // console.log(docId);
               firebase.firestore().collection('applications').doc(docId).collection('stages').add({
                 stageName, // Update with the correct value
                 heading,
@@ -130,37 +132,24 @@ const ApplicationDetails = () => {
 
                 .then((docRef) => {
                   const currentDate = new Date();
-                  setStageDetails((prev) => {
-                    const month = new Date().toLocaleString('en-US', { month: 'long' });
-                    const year = new Date().getFullYear();
-                    const key = `${month} ${year}`;
-
-                    if (!prev[key]) {
-                      prev[key] = [];
+                  setStageDetails([...stageDetails, {
+                    stageName, // Update with the correct value
+                    heading,
+                    description,
+                    // link: link, // Update with the correct value
+                    // // file,
+                    completed: false,
+                    stageNumber: stageDetails.length + 1,
+                    addedAt: {
+                      seconds: Math.floor(currentDate / 1000),
+                      nanoseconds: (currentDate % 1000) * 1000000,
                     }
-
-                    prev[key].push({
-                      stageName, // Update with the correct value
-                      heading: heading,
-                      description,
-                      // link: link, // Update with the correct value
-                      // // file,
-                      completed: false,
-                      stageNumber: stageDetails.length + 1,
-                      addedAt:  {
-                        seconds: Math.floor(currentDate / 1000),
-                        nanoseconds: (currentDate % 1000) * 1000000,
-                      },
-                    });
-                    return { ...prev };
-                  });
+                  }])
                   setPopUp(false);
                 })
                 .catch((error) => {
                   console.error('Error adding application: ', error);
                 });
-
-
             }} >Save</button>
           </div>
         </div>
@@ -203,9 +192,17 @@ const ApplicationDetails = () => {
 
         {
           stageDetails.map((stageDetail) => {
+            const milliseconds = stageDetail.addedAt ? stageDetail.addedAt.seconds * 1000 : 0;
+            const date = new Date(milliseconds);
+
+            const day = date.getDate();
+            const month = date.toLocaleString('en-US', { month: 'long' });
+            const year = date.getFullYear();
+
+            const formattedDate = `${day} ${month} ${year}`;
             return (
               <div className={styles.stage}>
-                <p className={styles.date}>date</p>
+                <p className={styles.date}>{formattedDate ? formattedDate : ""}</p>
                 <div className={styles.level}>
                   <p>{stageDetail.stageNumber}</p>
                 </div>
