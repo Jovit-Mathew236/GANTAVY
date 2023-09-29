@@ -31,6 +31,12 @@
     flex-direction: column;
     gap: 20px;
     text-align: left;
+    height: 530px;
+    overflow-y: scroll;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer::-webkit-scrollbar {
+    display: none;
 }
 
 .applicationDetails .addClientPopUp .popUpContainer .popUpFields {
@@ -86,14 +92,22 @@
     padding: 10px 20px;
     border: 1px solid #EDEDED;
     border-radius: 20px;
+    position: relative;
 }
 
 .applicationDetails .addClientPopUp .popUpContainer .subContainer .option {
     margin-bottom: -30px;
 }
 
-.applicationDetails .addClientPopUp .popUpContainer .subContainer .addBtn {
+.applicationDetails .addClientPopUp .popUpContainer .subContainer .addAndRmvBtn {
     margin-top: -10px;
+    cursor: pointer;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer .subContainer .rmvBtn {
+    position: absolute;
+    left: 12px;
+    cursor: pointer;
 }
 
 .applicationDetails .addClientPopUp .popUpContainer .btnS {

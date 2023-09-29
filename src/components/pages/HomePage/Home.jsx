@@ -168,7 +168,7 @@ function HomePage() {
                     email,
                     phone,
                     clientId: newClientId,
-                    addedAt:  {
+                    addedAt: {
                       seconds: Math.floor(currentDate / 1000),
                       nanoseconds: (currentDate % 1000) * 1000000,
                     }
@@ -187,48 +187,62 @@ function HomePage() {
           Object.entries(clients).map(([monthYear, clientData], i) => {
             // Filter the clientData based on the search criteria here
             const filteredClientData = clientData.filter(filterClients);
+
             return (
               <div key={i}>
-                <p>{monthYear}</p>
-                <div className={styles.cardsContainer}>
-                  {filteredClientData.map((client, j) => {
-                    const milliseconds = client.addedAt.seconds * 1000;
-                    const date = new Date(milliseconds);
 
-                    const day = date.getDate();
-                    const month = date.toLocaleString('en-US', { month: 'long' });
-                    const year = date.getFullYear();
+                {filteredClientData.length > 0 ? ( // Check if there are filtered clients
+                  <>
+                    <p>{monthYear}</p>
+                    <div className={styles.cardsContainer}>
+                      {filteredClientData.map((client, j) => {
+                        const milliseconds = client.addedAt.seconds * 1000;
+                        const date = new Date(milliseconds);
 
-                    const formattedDate = `${day} ${month} ${year}`;
+                        const day = date.getDate();
+                        const month = date.toLocaleString('en-US', { month: 'long' });
+                        const year = date.getFullYear();
 
-                    return (
-                      <div key={j} className={styles.card}>
-                        <div className={styles.cardTopSection}>
-                          <p className={styles.id}>#{client.clientId}</p>
-                          <p className={styles.date}>{formattedDate}</p>
-                        </div>
-                        <div className={styles.cardMainSection}>
-                          <p>{client.name}</p>
-                          <p>{client.email}</p>
-                        </div>
-                        <div className={styles.cardBottomSection}>
-                          <div className={styles.countries}>
-                            <p className={styles.country}>in</p>
-                            <p className={styles.country}>au</p>
-                            <p className={styles.country}>in</p>
+                        const formattedDate = `${day} ${month} ${year}`;
+
+                        return (
+                          <div key={j} className={styles.card}>
+                            <div className={styles.cardTopSection}>
+                              <p className={styles.id}>#{client.clientId}</p>
+                              <p className={styles.date}>{formattedDate}</p>
+                            </div>
+                            <div className={styles.cardMainSection}>
+                              <p>{client.name}</p>
+                              <p>{client.email}</p>
+                            </div>
+                            <div className={styles.cardBottomSection}>
+                              <div className={styles.countries}>
+                                <p className={styles.country}>in</p>
+                                <p className={styles.country}>au</p>
+                                <p className={styles.country}>in</p>
+                              </div>
+                              <a href={`/client-details?id=${client.clientId}`}>
+                                <RightArrow />
+                              </a>
+                            </div>
                           </div>
-                          <a href={`/client-details?id=${client.clientId}`}>
-                            <RightArrow />
-                          </a>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
+                        )
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <div className={styles.errContainer}>
+                    <p className={styles.err}></p>
+                    <p className={styles.errMessage}><span>Oops!</span>
+                      <br />
+                      no records found.</p>
+                  </div>
+                )}
               </div>
             )
           })
         }
+
       </section>
 
 

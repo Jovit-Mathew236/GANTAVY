@@ -10,6 +10,7 @@ import firebase from '../../../firebase/config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Add2 from '../../atom/svgs/Add2';
 import Loading from '../../molecules/Loading';
+import Remove from '../../atom/svgs/Remove';
 
 const ApplicationDetails = () => {
   const [popUp, setPopUp] = useState(false);
@@ -17,8 +18,9 @@ const ApplicationDetails = () => {
   const [stageName, setStageName] = useState('');
   const [heading, setHeading] = useState('');
   const [description, setDescription] = useState('');
-  const [link, setLink] = useState();
-  const [file, setFile] = useState();
+  // const [link, setLink] = useState();
+  // const [file, setFile] = useState();
+  const [type, settype] = useState('')
   const [docId, setDocId] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -30,6 +32,24 @@ const ApplicationDetails = () => {
   };
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
+
+  const [formElements, setFormElements] = useState([
+    {
+      option: "",
+      heading: "",
+      description: ""
+    }
+  ]);
+
+  const addFormElement = () => {
+    setFormElements([...formElements, { option: "", heading: "", description: "" }]);
+  };
+
+  const removeFormElement = (index) => {
+    const updatedFormElements = [...formElements];
+    updatedFormElements.splice(index, 1);
+    setFormElements(updatedFormElements);
+  };
 
   useEffect(() => {
     const auth = getAuth(firebase);
@@ -77,7 +97,7 @@ const ApplicationDetails = () => {
   return (
     <div className={styles.applicationDetails}>
       {loading && <Loading />}
-      <Topnav id={id} collection={"applications"} where={'applicationId'}/>
+      <Topnav id={id} collection={"applications"} where={'applicationId'} />
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />
 
       {popUp && <div className={styles.addClientPopUp}>
@@ -89,32 +109,66 @@ const ApplicationDetails = () => {
             }} />
           </div>
 
-          <div className={styles.subContainer}>
-            <select name="options" id="option">
-              <option value="">File Upload</option>
-              <option value="">Text button</option>
-              <option value="">Payment info</option>
-              <option value="">Link share</option>
-
-            </select>
-            <div className={styles.popUpFields}>
-              <label htmlFor="">Heading</label>
-              <input type="text" placeholder='Upload your passport' onChange={(e) => {
-                setHeading(e.target.value)
-              }} />
+          {formElements.map((element, index) => (
+            <div key={index} className={styles.subContainer}>
+               {index !== formElements.length - 1 && (
+                <p className={styles.rmvBtn} onClick={() => removeFormElement(index)}>
+                  <Remove />
+                </p>
+              )} 
+              <select
+                name="options"
+                id="option"
+                value={element.option}
+                onChange={(e) => {
+                  const updatedFormElements = [...formElements];
+                  updatedFormElements[index].option = e.target.value;
+                  setFormElements(updatedFormElements);
+                }}
+              >
+                <option value="fileupload">File Upload</option>
+                <option value="textbtn">Text button</option>
+                <option value="payment">Payment info</option>
+                <option value="link">Link share</option>
+              </select>
+              <div className={styles.popUpFields}>
+                <label htmlFor="">Heading</label>
+                <input
+                  type="text"
+                  placeholder='Upload your passport'
+                  value={element.heading}
+                  onChange={(e) => {
+                    const updatedFormElements = [...formElements];
+                    updatedFormElements[index].heading = e.target.value;
+                    setFormElements(updatedFormElements);
+                  }}
+                />
+              </div>
+              <div className={styles.popUpFields}>
+                <label htmlFor="">Description</label>
+                <input
+                  type="text"
+                  placeholder='Enter details'
+                  value={element.description}
+                  onChange={(e) => {
+                    const updatedFormElements = [...formElements];
+                    updatedFormElements[index].description = e.target.value;
+                    setFormElements(updatedFormElements);
+                  }}
+                />
+              </div>
+              {index === formElements.length - 1 && (
+                <p className={styles.addAndRmvBtn} onClick={addFormElement}>
+                  <Add2 />
+                </p>
+              )}
+              {/* {index !== formElements.length - 1 && (
+                <p className={styles.addAndRmvBtn} onClick={() => removeFormElement(index)}>
+                  <Remove />
+                </p>
+              )} */}
             </div>
-            <div className={styles.popUpFields}>
-              <label htmlFor="">Description</label>
-              <input type="text" placeholder='Enter deatils' onChange={(e) => {
-                setDescription(e.target.value)
-              }} />
-            </div>
-            <p className={styles.addBtn} onClick={() => {
-
-            }}>
-              <Add2 />
-            </p>
-          </div>
+          ))}
           <div className={styles.btnS}>
             <button onClick={handleCancelClick}>Cancel</button>
             <button onClick={() => {

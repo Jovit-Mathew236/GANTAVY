@@ -87,6 +87,36 @@ text-align: left;
     transition: all 0.3s ease-in-out;
 }
 
+.homePage .errContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100dvh - 300px);
+}
+
+.homePage .errContainer .err {
+    background-image: url(../../atom/images/404.png);
+    background-size: contain;
+    height: 300px;
+    width: 420px;
+    background-repeat: no-repeat;
+}
+
+.homePage .errContainer p {
+    text-align: center;
+}
+
+.homePage .errContainer .errMessage span {
+    color: #8B8B8B;
+    font-size: 30px;
+}
+
+.homePage .errContainer .errMessage {
+    color: #8B8B8B;
+    font-size: 25px;
+}
+
 .homePage .cardsContainer {
     margin-top: 20px;
     display: flex;
