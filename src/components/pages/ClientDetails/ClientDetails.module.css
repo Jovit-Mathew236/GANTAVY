@@ -330,6 +330,8 @@
 
     .clientDetailsPage .detailsContainer {
         width: 100%;
+        margin-top: 30px;
+        min-width: unset;
     }
 
     .clientDetailsPage .applicationContainer {

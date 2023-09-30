@@ -78,23 +78,6 @@
     font-size: 16px;
 }
 
-@media (max-width: 700px) {
-    .searchBarContainer {
-        position: unset;
-        min-width: 0;
-        width: 100%;
-    }
-
-    .searchBarContainer input {
-        width: 120px
-    }
-
-    .addClientBtn {
-        bottom: 20px;
-        right: 20px;
-    }
-}
-
 .topnav {
     position: absolute;
     top: 0;
@@ -139,5 +122,26 @@
 
     100% {
         opacity: 0.4;
+    }
+}
+
+
+@media (max-width: 700px) {
+    .searchBarContainer {
+        position: unset;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .searchBarContainer input {
+        width: 120px
+    }
+
+    .addClientBtn {
+        bottom: 20px;
+        right: 20px;
+    }
+    .topnav{
+        padding: 20px 10px;
     }
 }

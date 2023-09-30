@@ -210,8 +210,6 @@ const ClientDetailsPage = () => {
                 .catch((error) => {
                   console.error('Error adding application: ', error);
                 });
-
-
             }} >Save</button>
           </div>
         </div>

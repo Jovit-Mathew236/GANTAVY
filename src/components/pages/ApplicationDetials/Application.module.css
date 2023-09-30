@@ -99,9 +99,10 @@
     margin-bottom: -30px;
 }
 
-.applicationDetails .addClientPopUp .popUpContainer .subContainer .addAndRmvBtn {
+.applicationDetails .addClientPopUp .popUpContainer .addAndRmvBtn {
     margin-top: -10px;
     cursor: pointer;
+    margin: 0 0 0 auto;
 }
 
 .applicationDetails .addClientPopUp .popUpContainer .subContainer .rmvBtn {
@@ -241,6 +242,7 @@
 
     .applicationDetails .applicationDetailsContainer {
         width: 100%;
+        margin-top: 30px;
     }
 
     .applicationDetails .stageContainer {

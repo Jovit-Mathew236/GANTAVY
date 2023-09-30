@@ -32,25 +32,86 @@ const ApplicationDetails = () => {
   };
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
-
-  const [formElements, setFormElements] = useState([
+  const [fields, setFields] = useState([
     {
-      option: "",
-      heading: "",
-      description: ""
-    }
+      type: 'fileupload',
+      heading: '',
+      subtext: '',
+      btntxt: '', // if type is textbtn
+      link: '', // if type is link / payment
+      amount: '', // if type is payment
+      status: '', // notsubmitted/notverified/verified/rejected
+      response: null, // if type is fileupload answer will be URL, if type is textbtn response will be just completed
+      adminResponse: '', // if admin wants to send a response to the task
+    },
   ]);
 
-  const addFormElement = () => {
-    setFormElements([...formElements, { option: "", heading: "", description: "" }]);
+  const addField = () => {
+    setFields([
+      ...fields,
+      {
+        type: 'fileupload',
+        heading: '',
+        subtext: '',
+        btntxt: '',
+        link: '',
+        amount: '',
+        status: '',
+        response: null,
+        adminResponse: '',
+      },
+    ]);
   };
 
-  const removeFormElement = (index) => {
-    const updatedFormElements = [...formElements];
-    updatedFormElements.splice(index, 1);
-    setFormElements(updatedFormElements);
+  const removeField = (index) => {
+    const updatedFields = [...fields];
+    updatedFields.splice(index, 1);
+    setFields(updatedFields);
   };
 
+  const handleSave = () => {
+    // Prepare the data to submit
+    const dataToSubmit = {
+      fields: fields.map((field) => ({
+        type: field.type,
+        heading: field.heading,
+        subtext: field.subtext,
+        btntxt: field.btntxt,
+        link: field.link,
+        amount: field.amount,
+        status: field.status,
+        response: field.response,
+        adminResponse: field.adminResponse,
+      })),
+      stageNumber: stageDetails.length + 1, // Increment automatically
+      completed: false, // Initially marked as false
+      heading: stageName,
+      addedAt: new Date(),
+    };
+
+    // Submit the data
+    // console.log(docId);
+    console.log('dataToSubmit:', dataToSubmit);
+    firebase.firestore().collection('applications').doc(docId).collection('stages').add(dataToSubmit).then((docRef) => {
+      const currentDate = new Date();
+      setStageDetails([
+        ...stageDetails,
+        {
+          completed: false,
+          stageNumber: stageDetails.length + 1,
+          heading: stageName,
+          addedAt: {
+            seconds: Math.floor(currentDate / 1000),
+            nanoseconds: (currentDate % 1000) * 1000000,
+          },
+        },
+      ]);
+      setPopUp(false);
+    })
+      .catch((error) => {
+        console.error('Error adding application: ', error);
+      });
+  };
   useEffect(() => {
     const auth = getAuth(firebase);
     onAuthStateChanged(auth, (user) => {
@@ -109,21 +170,21 @@ const ApplicationDetails = () => {
             }} />
           </div>
 
-          {formElements.map((element, index) => (
+          {fields.map((field, index) => (
             <div key={index} className={styles.subContainer}>
-               {index !== formElements.length - 1 && (
-                <p className={styles.rmvBtn} onClick={() => removeFormElement(index)}>
+              {index > 0 && (
+                <p className={styles.rmvBtn} onClick={() => removeField(index)}>
                   <Remove />
                 </p>
-              )} 
+              )}
               <select
                 name="options"
                 id="option"
-                value={element.option}
+                value={field.type}
                 onChange={(e) => {
-                  const updatedFormElements = [...formElements];
-                  updatedFormElements[index].option = e.target.value;
-                  setFormElements(updatedFormElements);
+                  const updatedFields = [...fields];
+                  updatedFields[index].type = e.target.value;
+                  setFields(updatedFields);
                 }}
               >
                 <option value="fileupload">File Upload</option>
@@ -131,80 +192,194 @@ const ApplicationDetails = () => {
                 <option value="payment">Payment info</option>
                 <option value="link">Link share</option>
               </select>
-              <div className={styles.popUpFields}>
-                <label htmlFor="">Heading</label>
-                <input
-                  type="text"
-                  placeholder='Upload your passport'
-                  value={element.heading}
-                  onChange={(e) => {
-                    const updatedFormElements = [...formElements];
-                    updatedFormElements[index].heading = e.target.value;
-                    setFormElements(updatedFormElements);
-                  }}
-                />
-              </div>
-              <div className={styles.popUpFields}>
-                <label htmlFor="">Description</label>
-                <input
-                  type="text"
-                  placeholder='Enter details'
-                  value={element.description}
-                  onChange={(e) => {
-                    const updatedFormElements = [...formElements];
-                    updatedFormElements[index].description = e.target.value;
-                    setFormElements(updatedFormElements);
-                  }}
-                />
-              </div>
-              {index === formElements.length - 1 && (
-                <p className={styles.addAndRmvBtn} onClick={addFormElement}>
+
+              {field.type === "fileupload" && (
+                <>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Heading</label>
+                    <input
+                      type="text"
+                      placeholder='Upload your passport'
+                      value={field.heading}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].heading = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Sub Heading</label>
+                    <input
+                      type="text"
+                      placeholder="Enter details"
+                      value={field.subtext}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].subtext = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                </>
+              )}
+              {field.type === "textbtn" && (
+                <>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Heading</label>
+                    <input
+                      type="text"
+                      placeholder='Upload your passport'
+                      value={field.heading}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].heading = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Sub Heading</label>
+                    <input
+                      type="text"
+                      placeholder="Enter details"
+                      value={field.subtext}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].subtext = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Button Text</label>
+                    <input
+                      type="text"
+                      placeholder='Button text'
+                      value={field.btntxt}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].btntxt = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                </>
+              )}
+              {field.type === "payment" && (
+                <>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Heading</label>
+                    <input
+                      type="text"
+                      placeholder='Upload your passport'
+                      value={field.heading}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].heading = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Sub Heading</label>
+                    <input
+                      type="text"
+                      placeholder='Enter sub heading'
+                      value={field.subtext}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].subtext = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Amount</label>
+                    <input
+                      type="text"
+                      placeholder='Amount'
+                      value={field.amount}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].amount = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Button Text</label>
+                    <input
+                      type="text"
+                      placeholder='Button text'
+                      value={field.btntxt}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].btntxt = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Payment Link</label>
+                    <input
+                      type="text"
+                      placeholder='Payment link'
+                      value={field.link}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].link = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                </>
+              )}
+
+              {field.type === "link" && (
+                <>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Subheading</label>
+                    <input
+                      type="text"
+                      placeholder="Enter subheading"
+                      value={field.subtext}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].subtext = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Link</label>
+                    <input
+                      type="text"
+                      placeholder="Enter link"
+                      value={field.link}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].link = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                </>
+              )}
+              {index === fields.length - 1 && (
+                <p className={styles.addAndRmvBtn} onClick={addField}>
                   <Add2 />
                 </p>
               )}
-              {/* {index !== formElements.length - 1 && (
-                <p className={styles.addAndRmvBtn} onClick={() => removeFormElement(index)}>
-                  <Remove />
-                </p>
-              )} */}
             </div>
           ))}
+
+          {/* <p className={styles.addAndRmvBtn} onClick={addField}>
+            <Add2 />
+          </p> */}
           <div className={styles.btnS}>
             <button onClick={handleCancelClick}>Cancel</button>
-            <button onClick={() => {
-              // console.log(docId);
-              firebase.firestore().collection('applications').doc(docId).collection('stages').add({
-                stageName, // Update with the correct value
-                heading,
-                description,
-                // link: link, // Update with the correct value
-                // // file,
-                completed: false,
-                stageNumber: stageDetails.length + 1,
-                addedAt: new Date(),
-              })
-
-                .then((docRef) => {
-                  const currentDate = new Date();
-                  setStageDetails([...stageDetails, {
-                    stageName, // Update with the correct value
-                    heading,
-                    description,
-                    // link: link, // Update with the correct value
-                    // // file,
-                    completed: false,
-                    stageNumber: stageDetails.length + 1,
-                    addedAt: {
-                      seconds: Math.floor(currentDate / 1000),
-                      nanoseconds: (currentDate % 1000) * 1000000,
-                    }
-                  }])
-                  setPopUp(false);
-                })
-                .catch((error) => {
-                  console.error('Error adding application: ', error);
-                });
-            }} >Save</button>
+            <button onClick={handleSave}>Save</button>
           </div>
         </div>
       </div>}
@@ -266,7 +441,7 @@ const ApplicationDetails = () => {
                     stageDetail.completed ? 'Completed' : 'On going'
                   }</p>
                 </div>
-                <a href='' >
+                <a href={`/client-details/application/stage?id=${stageDetail.stageNumber}`}>
                   <RightArrow />
                 </a>
               </div>
