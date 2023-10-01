@@ -85,7 +85,7 @@ function HomePage() {
     const max = 99999; // Maximum 5-digit number
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  const newClientId = generateClientID().toString()
+  const newClientId = generateClientID()
 
   const handleSearchFieldChange = (e) => {
     setSearchField(e.target.value);
@@ -159,21 +159,19 @@ function HomePage() {
                   const month = new Date().toLocaleString('en-US', { month: 'long' });
                   const year = new Date().getFullYear();
                   const key = `${month} ${year}`;
-
-                  if (!prev[key]) {
-                    prev[key] = [];
-                  }
-                  prev[key].push({
-                    name,
-                    email,
-                    phone,
-                    clientId: newClientId,
-                    addedAt: {
-                      seconds: Math.floor(currentDate / 1000),
-                      nanoseconds: (currentDate % 1000) * 1000000,
-                    }
-                  });
-                  return { ...prev };
+                  return {
+                    ...prev,
+                    [key]: [...prev[key], {
+                      name,
+                      email,
+                      phone,
+                      clientId: newClientId,
+                      addedAt: {
+                        seconds: Math.floor(currentDate / 1000),
+                        nanoseconds: (currentDate % 1000) * 1000000,
+                      },
+                    }],
+                  };
                 });
                 setPopUp(false)
               });

@@ -28,7 +28,7 @@ const ClientDetailsPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
-  const id = searchParams.get('id');
+  const id = parseInt(searchParams.get('id'));
   const handleCancelClick = () => {
     setPopUp(false);
   };
@@ -56,7 +56,7 @@ const ClientDetailsPage = () => {
   }, []);
 
   useEffect(() => {
-    if (id && id.trim() !== '') {
+    if (id && id !== '') {
       firebase.firestore().collection('clients').where('clientId', '==', id).get().then((snapshot) => {
         const data = snapshot.docs.map((doc) => {
           return {
@@ -65,8 +65,9 @@ const ClientDetailsPage = () => {
           };
         });
         setClientDetails(data[0]);
-      })
-
+      }).catch((error) => {
+        console.error('Error fetching documents: ', error);
+      });
       firebase.firestore().collection('notifications').where('recipient', '==', id).get().then((snapshot) => {
         const allDocs = snapshot.docs.map((infos) => {
           return {
@@ -98,7 +99,7 @@ const ClientDetailsPage = () => {
   return (
     <div className={styles.clientDetailsPage}>
       {loading && <Loading />}
-      <Topnav id={id} collection={"clients"} where={'clientId'}/>
+      <Topnav id={id} collection={"clients"} where={'clientId'} />
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
 
       {popUp && <div className={styles.addClientPopUp}>

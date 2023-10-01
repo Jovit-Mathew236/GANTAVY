@@ -18,8 +18,6 @@ const ApplicationDetails = () => {
   const [stageName, setStageName] = useState('');
   const [heading, setHeading] = useState('');
   const [description, setDescription] = useState('');
-  // const [link, setLink] = useState();
-  // const [file, setFile] = useState();
   const [type, settype] = useState('')
   const [docId, setDocId] = useState();
   const [loading, setLoading] = useState(true);
@@ -89,9 +87,6 @@ const ApplicationDetails = () => {
       addedAt: new Date(),
     };
 
-    // Submit the data
-    // console.log(docId);
-    console.log('dataToSubmit:', dataToSubmit);
     firebase.firestore().collection('applications').doc(docId).collection('stages').add(dataToSubmit).then((docRef) => {
       const currentDate = new Date();
       setStageDetails([
@@ -112,6 +107,7 @@ const ApplicationDetails = () => {
         console.error('Error adding application: ', error);
       });
   };
+
   useEffect(() => {
     const auth = getAuth(firebase);
     onAuthStateChanged(auth, (user) => {
@@ -122,6 +118,7 @@ const ApplicationDetails = () => {
       }
     });
   }, []);
+  
   let documentID;
   useEffect(() => {
     if (id && id.trim() !== '') {
@@ -441,7 +438,7 @@ const ApplicationDetails = () => {
                     stageDetail.completed ? 'Completed' : 'On going'
                   }</p>
                 </div>
-                <a href={`/client-details/application/stage?id=${stageDetail.stageNumber}`}>
+                <a href={`/client-details/application/stage?id=${stageDetail.stageNumber}&docId=${docId}`}>
                   <RightArrow />
                 </a>
               </div>
