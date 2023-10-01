@@ -31,21 +31,17 @@ const AdminPage = () => {
   }, []);
 
   useEffect(() => {
-    firebase
-      .firestore()
-      .collection('admins')
-      .get()
-      .then((snapshot) => {
-        const allDocs = snapshot.docs.map((infos) => {
-          return {
-            ...infos.data(),
-            id: infos.id,
-          };
-        });
+    firebase.firestore().collection('admins').get().then((snapshot) => {
+      const allDocs = snapshot.docs.map((infos) => {
+        return {
+          ...infos.data(),
+          id: infos.id,
+        };
+      });
 
-        setAdmins(allDocs)
-        setLoading(false)
-      })
+      setAdmins(allDocs)
+      setLoading(false)
+    })
       .catch((error) => {
         console.log(error);
       });
@@ -53,7 +49,7 @@ const AdminPage = () => {
 
   return (
     <div className={styles.adminPage}>
-{loading && <Loading />}
+      {loading && <Loading />}
       {popUp && <div className={styles.addAdminPopUp}>
         <div className={styles.popUpContainer}>
           <h1>&nbsp;&nbsp;&nbsp; Add email</h1>
