@@ -57,17 +57,37 @@ const ClientDetailsPage = () => {
 
   useEffect(() => {
     if (id && id !== '') {
-      firebase.firestore().collection('clients').where('clientId', '==', id).get().then((snapshot) => {
-        const data = snapshot.docs.map((doc) => {
-          return {
+      firebase.firestore()
+        .collection('clients')
+        .where('clientId', '==', id)
+        .get()
+        .then(async (snapshot) => {
+          const data = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
-          };
+          }));
+
+          const clientsWithCountries = await Promise.all(
+            data.map(async (doc) => {
+              const snapshot = await firebase
+                .firestore()
+                .collection('applications')
+                .where('clientid', '==', doc.clientId)
+                .get();
+              const allDocs = snapshot.docs.map((infos) => ({
+                ...infos.data(),
+                id: infos.id,
+              }));
+              const countries = allDocs.map((doc) => doc.country);
+              return { ...doc, country: countries };
+            })
+          );
+
+          setClientDetails(clientsWithCountries[0]);
+        })
+        .catch((error) => {
+          console.error('Error fetching documents: ', error);
         });
-        setClientDetails(data[0]);
-      }).catch((error) => {
-        console.error('Error fetching documents: ', error);
-      });
       firebase.firestore().collection('notifications').where('recipient', '==', id).get().then((snapshot) => {
         const allDocs = snapshot.docs.map((infos) => {
           return {
@@ -96,6 +116,8 @@ const ClientDetailsPage = () => {
 
     }
   }, [id])
+  // console.log(clientDetails.country);
+
   return (
     <div className={styles.clientDetailsPage}>
       {loading && <Loading />}
@@ -110,12 +132,10 @@ const ClientDetailsPage = () => {
               setCountry(e.target.value);
             }}>
               <option value="">Select Country</option>
-              <option value="India">India</option>
-              <option value="Australia">Australia</option>
-              <option value="Canada">Canada</option>
-              <option value="New Zealand">New Zealand</option>
+              <option value="United States">United States of America</option>
               <option value="United Kingdom">United Kingdom</option>
-              <option value="United States">United States</option>
+              <option value="Canada">Canada</option>
+              <option value="Australia">Australia</option>
             </select>
           </div>
           <div>
@@ -224,9 +244,16 @@ const ClientDetailsPage = () => {
           <p className={styles.email}>{clientDetails && clientDetails.email}</p>
           <p className={styles.phone}>{clientDetails && clientDetails.phone}</p>
           <div className={styles.countries}>
-            <p className={styles.country}>in</p>
-            <p className={styles.country}>au</p>
-            <p className={styles.country}>in</p>
+            {
+              clientDetails && clientDetails.country.map((country, k) => {
+                let countryName = country.split(' ').join('-').toLowerCase();
+                return (
+                  <p key={k} className={styles.country}>
+                    <img width="20" height="20" src={`https://img.icons8.com/emoji/48/${countryName}-emoji.png`} alt="united-states-emoji" />
+                  </p>
+                )
+              })
+            }
           </div>
         </div>
         <hr />
@@ -323,7 +350,13 @@ const ClientDetailsPage = () => {
                     <p className={styles.date}>{formattedDate}</p>
                   </div>
                   <div className={styles.applicationBody}>
-                    <h3 className={styles.country}>{data.country} <p className={styles.countryIcon}>Ca</p></h3>
+                    <h3 className={styles.country}>{data.country}
+                      <p className={styles.countryIcon}>{
+                        // data.country.split(' ').join('-').toLowerCase() === 'united-states' ?
+                        // <img width="20" height="20" src={`https://img.icons8.com/emoji/48/united-states-emoji.png`} alt="united-states-emoji" /> :
+                        <img width="20" height="20" src={`https://img.icons8.com/emoji/48/${data.country.split(' ').join('-').toLowerCase()}-emoji.png`} alt="united-states-emoji" />
+                      }</p>
+                    </h3>
                     <p className={styles.visaType}>{data.visatype}</p>
                   </div>
                   <div className={styles.applicationFooter}>

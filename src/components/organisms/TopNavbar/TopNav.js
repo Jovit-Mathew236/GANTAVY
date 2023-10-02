@@ -22,7 +22,7 @@ const TopNav = () => {
 
   const handleLogout = () => {
     firebase.auth().signOut();
-    localStorage.removeItem("user_photoURL");
+    // localStorage.removeItem("user_photoURL");
     window.location.href = "/login";
   };
 
@@ -66,7 +66,7 @@ const TopNav = () => {
       });
     return () => unsubscribe();
   }, []);
-  console.log(notifications);
+  
   return (
     <div className={styles.topNav}>
       <p className={styles.notification}>

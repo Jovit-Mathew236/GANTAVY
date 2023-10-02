@@ -24,6 +24,7 @@ const Login = () => {
                         if (!querySnapshot.empty) {
                             console.log('Logged in user:', user);
                             localStorage.setItem('user_photoURL', user.photoURL);
+                            localStorage.setItem('user_name', user.displayName);
                             router.push('/');
                         } else {
                             console.error('User is not authorized.');

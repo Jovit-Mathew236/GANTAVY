@@ -1,11 +1,13 @@
+'use client'
 import React from 'react'
 import styles from './Help.module.css'
 
 const HelpPage = () => {
+  const userName = localStorage.getItem('user_name');
   return (
     <div className={styles.helpPage}>
       <p className={styles.img} ></p>
-      <h1>Hey Ros</h1>
+      <h1>{userName}</h1>
       <h2>We would like to hear suggestions</h2>
 
       <div className={styles.btnS}>

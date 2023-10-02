@@ -12,17 +12,16 @@ import Loading from '../../molecules/Loading';
 
 
 function HomePage() {
-  const [popUp, setPopUp] = useState(false)
-  const [clients, setClients] = useState([])
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState("")
+  const [popUp, setPopUp] = useState(false);
+  const [clients, setClients] = useState([]);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [user, setUser] = useState(null);
   const router = useRouter();
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchField, setSearchField] = useState("name");
-
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchField, setSearchField] = useState('name');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,56 +35,11 @@ function HomePage() {
     });
   }, []);
 
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection('clients')
-      .get()
-      .then((snapshot) => {
-        const allDocs = snapshot.docs.map((infos) => {
-          return {
-            ...infos.data(),
-            id: infos.id,
-          };
-        });
-
-        // Group and sort the clients by month and year
-        const groupedClients = allDocs.reduce((acc, client) => {
-          const date = new Date(client.addedAt.seconds * 1000);
-          const year = date.getFullYear();
-          const month = date.toLocaleString('en-US', { month: 'long' });
-
-          const key = `${month} ${year}`;
-          if (!acc[key]) {
-            acc[key] = [];
-          }
-          acc[key].push(client);
-          return acc;
-        }, {});
-
-        // Sort the grouped data by year and month
-        const sortedGroupedClients = Object.keys(groupedClients).sort((a, b) => {
-          const dateA = new Date(a);
-          const dateB = new Date(b);
-          return dateA - dateB;
-        });
-
-        const finalData = sortedGroupedClients.reduce((acc, key) => {
-          acc[key] = groupedClients[key];
-          return acc;
-        }, {});
-
-        setClients(finalData);
-      }).then(() => {
-        setLoading(false);
-      })
-  }, []);
-  function generateClientID() {
-    const min = 10000; // Minimum 5-digit number
-    const max = 99999; // Maximum 5-digit number
+  const generateClientID = () => {
+    const min = 100000;
+    const max = 999999;
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  const newClientId = generateClientID()
+  };
 
   const handleSearchFieldChange = (e) => {
     setSearchField(e.target.value);
@@ -96,23 +50,79 @@ function HomePage() {
   };
 
   const filterClients = (client) => {
-    // Convert the search query to lowercase for case-insensitive matching
     const query = searchQuery.toLowerCase();
-
-    if (searchField === "name") {
+    if (searchField === 'name') {
       return client.name.toLowerCase().includes(query);
-    } else if (searchField === "email") {
+    } else if (searchField === 'email') {
       return client.email.toLowerCase().includes(query);
-    } else if (searchField === "phone") {
+    } else if (searchField === 'phone') {
       return client.phone && client.phone.toLowerCase().includes(query);
     }
-
-    return false; // Default to false if no matching field
+    return false;
   };
 
   const handleCancelClick = () => {
     setPopUp(false);
   };
+
+  const fetchClients = async () => {
+    try {
+      const snapshot = await firebase.firestore().collection('clients').get();
+      const allDocs = snapshot.docs.map((infos) => ({
+        ...infos.data(),
+        id: infos.id,
+      }));
+
+      const allDocsWithCountries = await Promise.all(
+        allDocs.map(async (doc) => {
+          const snapshot = await firebase
+            .firestore()
+            .collection('applications')
+            .where('clientid', '==', doc.clientId)
+            .get();
+          const allDocs = snapshot.docs.map((infos) => ({
+            ...infos.data(),
+            id: infos.id,
+          }));
+          const countries = allDocs.map((doc) => doc.country);
+          return { ...doc, country: countries };
+        })
+      );
+
+      const groupedClients = allDocsWithCountries.reduce((acc, client) => {
+        const date = new Date(client.addedAt.seconds * 1000);
+        const year = date.getFullYear();
+        const month = date.toLocaleString('en-US', { month: 'long' });
+
+        const key = `${month} ${year}`;
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(client);
+        return acc;
+      }, {});
+
+      const sortedGroupedClients = Object.keys(groupedClients).sort((a, b) => {
+        const dateA = new Date(a);
+        const dateB = new Date(b);
+        return dateA - dateB;
+      });
+
+      const finalData = sortedGroupedClients.reduce((acc, key) => {
+        acc[key] = groupedClients[key];
+        return acc;
+      }, {});
+
+      setClients(finalData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching clients:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
 
   return (
     <div className={styles.homePage}>
@@ -147,6 +157,7 @@ function HomePage() {
           <div className={styles.btnS}>
             <button onClick={handleCancelClick}>Cancel</button>
             <button onClick={() => {
+              const newClientId = generateClientID();
               firebase.firestore().collection('clients').add({
                 name,
                 email,
@@ -191,7 +202,7 @@ function HomePage() {
 
                 {filteredClientData.length > 0 ? ( // Check if there are filtered clients
                   <>
-                    <p>{monthYear}</p>
+                    <p className={styles.monthYear}>{monthYear}</p>
                     <div className={styles.cardsContainer}>
                       {filteredClientData.map((client, j) => {
                         const milliseconds = client.addedAt.seconds * 1000;
@@ -202,7 +213,7 @@ function HomePage() {
                         const year = date.getFullYear();
 
                         const formattedDate = `${day} ${month} ${year}`;
-
+                        // console.log(client.country);
                         return (
                           <div key={j} className={styles.card}>
                             <div className={styles.cardTopSection}>
@@ -215,9 +226,17 @@ function HomePage() {
                             </div>
                             <div className={styles.cardBottomSection}>
                               <div className={styles.countries}>
-                                <p className={styles.country}>in</p>
-                                <p className={styles.country}>au</p>
-                                <p className={styles.country}>in</p>
+                                {
+                                  client.country && client.country.map((country, k) => {
+                                    let countryName = country.split(' ').join('-').toLowerCase();
+                                    return (
+                                      <p key={k} className={styles.country}>
+                                        {/* {country.slice(0, 2)} */}
+                                        <img width="20" height="20" src={`https://img.icons8.com/emoji/48/${countryName}-emoji.png`} alt="united-states-emoji" />
+                                      </p>
+                                    )
+                                  })
+                                }
                               </div>
                               <a href={`/client-details?id=${client.clientId}`}>
                                 <RightArrow />

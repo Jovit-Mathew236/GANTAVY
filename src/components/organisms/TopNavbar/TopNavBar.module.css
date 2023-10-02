@@ -70,7 +70,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px;
+    padding: 4px;
     border: 1px solid #CAC3C3;
     border-radius: 6px;
     color: #CAC3C3;
@@ -93,7 +93,7 @@
 }
 
 .topNav .notification .notificationContainer .notificationBody .notificationMessage svg {
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .topNav .profilePic {

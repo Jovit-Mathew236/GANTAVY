@@ -8,6 +8,9 @@ text-align: left;
 .homePage section {
     margin-top: 20px;
 }
+.homePage section .monthYear{
+    margin-top: 20px;
+}
 
 .homePage .addClientPopUp {
     position: fixed;
@@ -144,7 +147,7 @@ text-align: left;
 }
 
 .homePage .cardsContainer .card .cardTopSection p:nth-child(1) {
-    padding: 2px 40px;
+    padding: 2px 30px;
     border-radius: 16px;
     border: 0.5px solid #DEDEDE;
     background: #FAF8F9;
