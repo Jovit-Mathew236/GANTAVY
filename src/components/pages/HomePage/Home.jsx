@@ -134,6 +134,7 @@ function HomePage() {
         onSearchQueryChange={handleSearchQueryChange}
       />
       <BottomIcon setPopUp={setPopUp} icon={<Add />} text={"Add client"} />
+      
       {popUp && <div className={styles.addClientPopUp}>
         <div className={styles.popUpContainer}>
           <div className={styles.popUpFields}>

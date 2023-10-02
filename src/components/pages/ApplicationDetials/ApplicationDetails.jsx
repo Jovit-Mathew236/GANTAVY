@@ -44,6 +44,11 @@ const ApplicationDetails = () => {
   ]);
 
   const addField = () => {
+    // check if type is payment if it is truw then not allow to add a new field
+    if (fields[fields.length - 1].type === 'payment') {
+      alert('You cannot add a new field as payment field is already present')
+      return;
+    }
     setFields([
       ...fields,
       {
@@ -178,6 +183,13 @@ const ApplicationDetails = () => {
                 id="option"
                 value={field.type}
                 onChange={(e) => {
+                  if (e.target.value === 'payment') {
+                    const isNotPaymentAlreadyPresent = fields.some((field) => field.type !== 'payment' && fields.length !== 1);
+                    if (isNotPaymentAlreadyPresent) {
+                      alert('You cannot add a payment field as there is already a field present');
+                      return;
+                    }
+                  }
                   const updatedFields = [...fields];
                   updatedFields[index].type = e.target.value;
                   setFields(updatedFields);

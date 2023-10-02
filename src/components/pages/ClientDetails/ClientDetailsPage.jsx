@@ -10,6 +10,7 @@ import BottomIcon from '../../molecules/BottomIcon';
 import New from '../../atom/svgs/New';
 import SendBlack from '../../atom/svgs/SendBlack';
 import RightArrow from '../../atom/svgs/RightArrow';
+import AddApplicationPopUp from '../../organisms/PopUps/AddApplicationPopUp';
 
 // Component for rendering a single notification
 function Notification({ data }) {
@@ -53,8 +54,8 @@ function Application({ data }) {
           {data.country}
           <p className={styles.countryIcon}>
             <img
-              width="20"
-              height="20"
+              width="15"
+              height="15"
               src={`https://img.icons8.com/emoji/48/${data.country.split(' ').join('-').toLowerCase()}-emoji.png`}
               alt={`${data.country}-emoji`}
             />
@@ -283,87 +284,21 @@ const ClientDetailsPage = () => {
   return (
     <div className={styles.clientDetailsPage}>
       {loading && <Loading />}
-      <Topnav id={id} collection={"clients"} where={'clientId'} />
+      <Topnav id={id} collection={"clients"} where={'clientId'} editPopUp={setPopUp} />
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
 
       {popUp && (
-        <div className={styles.addClientPopUp}>
-          <div className={styles.popUpContainer}>
-            <div className={styles.popUpFields}>
-              <label htmlFor="">Country</label>
-              <select name="" id="" onChange={(e) => {
-                setCountry(e.target.value);
-              }}>
-                <option value="">Select Country</option>
-                <option value="United States">United States of America</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="Canada">Canada</option>
-                <option value="Australia">Australia</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="">Visa</label>
-              <select name="" id="" onChange={(e) => {
-                setVisa(e.target.value);
-              }}>
-                <option value="">Select Visa type</option>
-                <option value="Education Visa">Education Visa</option>
-                <option value="Visiting Visa">Visiting Visa</option>
-                <option value="Education Visa">Education Visa</option>
-                <option value="Work Visa">Work Visa</option>
-                <option value="Student Visa">Student Visa</option>
-                <option value="PR">PR</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="">Payment type</label>
-              <div className={styles.radioBtnsContainer}>
-                <div className={styles.radioBtns}>
-                  <input
-                    type="radio"
-                    name="paymentType"
-                    id="upfront"
-                    value="upfront"
-                    checked={paymentType === 'upfront'}
-                    onChange={handlePaymentTypeChange}
-                  />
-                  <label htmlFor="upfront">Upfront</label>
-                </div>
-                <div className={styles.radioBtns}>
-                  <input
-                    type="radio"
-                    name="paymentType"
-                    id="installment"
-                    value="installment"
-                    checked={paymentType === 'installment'}
-                    onChange={handlePaymentTypeChange}
-                  />
-                  <label htmlFor="installment">Installment</label>
-                </div>
-              </div>
-            </div>
-            {paymentType === 'installment' && (
-              <div id="installment">
-                <label htmlFor="">Number of installments</label>
-                <select name="" id="" onChange={(e) => {
-                  setInstallment(e.target.value);
-                }}>
-                  <option value="">Select number of installments</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                </select>
-              </div>
-            )}
-            <div className={styles.btnS}>
-              <button onClick={handleCancelClick}>Cancel</button>
-              <button onClick={handleSaveClick}>Save</button>
-            </div>
-          </div>
-        </div>
+        <AddApplicationPopUp
+          setCountry={setCountry}
+          setVisa={setVisa}
+          paymentType={paymentType}
+          setPaymentType={setPaymentType}
+          setInstallment={setInstallment}
+          handlePaymentTypeChange={handlePaymentTypeChange}
+          handleCancelClick={handleCancelClick}
+          handleSaveClick={handleSaveClick}
+        />
       )}
-
       <div className={styles.detailsContainer}>
         <div className={styles.detailsHeader}>
           <p className={styles.id}>#{clientDetails && clientDetails.clientId}</p>
