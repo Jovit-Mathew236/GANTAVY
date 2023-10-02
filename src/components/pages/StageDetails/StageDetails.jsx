@@ -11,9 +11,9 @@ const StageDetails = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const docId = searchParams.get('docId');
-    const [status, setStatus] = useState("")
     const [user, setUser] = useState(null);
     const [stage, setStage] = useState({
+        completed: false,
         fields: [{
             link: "",
             response: "",
@@ -37,16 +37,6 @@ const StageDetails = () => {
             }
         });
     }, []);
-    // useEffect(() => {
-    //     firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
-    //         snapshot.docs.map((doc) => {
-    //             setStage(doc.data())
-    //             console.log(doc.data());
-    //         })
-    //     }).then(() => {
-    //         setLoading(false)
-    //     })
-    // }, []);
     useEffect(() => {
         const query = firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id));
         const unsubscribe = query.onSnapshot((snapshot) => {
@@ -54,8 +44,6 @@ const StageDetails = () => {
                 setStage(doc.data())
                 console.log(doc.data());
             });
-            // console.log(updatedStageData);
-            // setStage(updatedStageData);
             setLoading(false);
         });
         return () => unsubscribe();
@@ -99,8 +87,19 @@ const StageDetails = () => {
                                 {field.type === "link" && <p className={styles.assets}><a href={field.link} target='_blank'>{field.link}</a></p>}
 
                             </div>
-                            <select name="" id="" value={status} onChange={(e) => {
-                                setStatus(e.target.value);
+                            <select name="" id="" value={field.status} onChange={(e) => {
+                                setStage({
+                                    ...stage,
+                                    fields: stage.fields.map((item, index) => {
+                                        if (index === i) {
+                                            return {
+                                                ...item,
+                                                status: e.target.value
+                                            }
+                                        }
+                                        return item;
+                                    })
+                                })
                                 const newStatus = e.target.value; // New status value
                                 firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
                                     snapshot.docs.forEach((doc) => {
@@ -137,6 +136,31 @@ const StageDetails = () => {
                     )
                 })}
             </div>
+            <select name="" id="" value={stage.completed} onChange={(e) => {
+                setStage({
+                    ...stage,
+                    completed: JSON.parse(e.target.value)
+                })
+                firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
+                    snapshot.docs.forEach((doc) => {
+                        const stageRef = firebase.firestore().collection('applications').doc(docId).collection('stages').doc(doc.id);
+                        stageRef.update({
+                            addedAt: doc.data().addedAt,
+                            heading: doc.data().heading,
+                            stageNumber: doc.data().stageNumber,
+                            completed: JSON.parse(e.target.value),
+                            fields: doc.data().fields
+                        }).then(() => {
+                            console.log(`Status updated to ${JSON.parse(e.target.value)}`);
+                        }).catch((error) => {
+                            console.error('Error updating status: ', error);
+                        });
+                    });
+                });
+            }}>
+                <option value={false}>Not Completed</option>
+                <option value={true}>Completed</option>
+            </select>
         </div>
     )
 }

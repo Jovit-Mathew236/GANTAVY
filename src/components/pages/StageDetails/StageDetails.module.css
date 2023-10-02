@@ -5,6 +5,8 @@
     padding: 30px 70px;
     justify-content: space-around;
     text-align: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .StageDetailsPage .stageDetailsContainer {
@@ -41,7 +43,7 @@ margin: 10px 0px;
     border-radius: 40px;
 }
 
-.StageDetailsPage .stageDetailsContainer select {
+.StageDetailsPage select {
     border: none;
     padding: 10px 20px;
     border-radius: 40px;

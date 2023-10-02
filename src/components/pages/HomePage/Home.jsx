@@ -9,6 +9,8 @@ import BottomIcon from '../../molecules/BottomIcon'
 import firebase from '../../../firebase/config'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Loading from '../../molecules/Loading';
+import AddClientPopUp from '../../organisms/PopUps/AddClientPopUp';
+import { countryData } from '../../molecules/Countries';
 
 
 function HomePage() {
@@ -124,6 +126,43 @@ function HomePage() {
     fetchClients();
   }, []);
 
+  const handleSaveClient = (clientData) => {
+    const newClientId = generateClientID();
+    firebase
+      .firestore()
+      .collection('clients')
+      .add({
+        ...clientData,
+        clientId: newClientId,
+        addedAt: new Date(),
+      })
+      .then(() => {
+        const currentDate = Date.now();
+        setClients((prev) => {
+          const month = new Date().toLocaleString('en-US', { month: 'long' });
+          const year = new Date().getFullYear();
+          const key = `${month} ${year}`;
+          return {
+            ...prev,
+            [key]: [
+              ...prev[key],
+              {
+                ...clientData,
+                clientId: newClientId,
+                addedAt: {
+                  seconds: Math.floor(currentDate / 1000),
+                  nanoseconds: (currentDate % 1000) * 1000000,
+                },
+              },
+            ],
+          };
+        });
+      })
+      .catch((error) => {
+        console.error('Error adding client data: ', error);
+      });
+  };
+
   return (
     <div className={styles.homePage}>
       {loading && <Loading />}
@@ -134,63 +173,13 @@ function HomePage() {
         onSearchQueryChange={handleSearchQueryChange}
       />
       <BottomIcon setPopUp={setPopUp} icon={<Add />} text={"Add client"} />
-      
-      {popUp && <div className={styles.addClientPopUp}>
-        <div className={styles.popUpContainer}>
-          <div className={styles.popUpFields}>
-            <label htmlFor="">Client full name</label>
-            <input type="text" id="" name='email' placeholder="Name" onChange={(e) => {
-              setName(e.target.value)
-            }} />
-          </div>
-          <div>
-            <label htmlFor="">Email</label>
-            <input type="text" id="" name='email' placeholder="example@gmail.com" onChange={(e) => {
-              setEmail(e.target.value)
-            }} />
-          </div>
-          <div>
-            <label htmlFor="">Phone number</label>
-            <input type="text" id="" name='email' placeholder="+91 1234567890" onChange={(e) => {
-              setPhone(e.target.value)
-            }} />
-          </div>
-          <div className={styles.btnS}>
-            <button onClick={handleCancelClick}>Cancel</button>
-            <button onClick={() => {
-              const newClientId = generateClientID();
-              firebase.firestore().collection('clients').add({
-                name,
-                email,
-                phone,
-                clientId: newClientId,
-                addedAt: new Date()
-              }).then(() => {
-                const currentDate = Date.now();
-                setClients((prev) => {
-                  const month = new Date().toLocaleString('en-US', { month: 'long' });
-                  const year = new Date().getFullYear();
-                  const key = `${month} ${year}`;
-                  return {
-                    ...prev,
-                    [key]: [...prev[key], {
-                      name,
-                      email,
-                      phone,
-                      clientId: newClientId,
-                      addedAt: {
-                        seconds: Math.floor(currentDate / 1000),
-                        nanoseconds: (currentDate % 1000) * 1000000,
-                      },
-                    }],
-                  };
-                });
-                setPopUp(false)
-              });
-            }} >Save</button>
-          </div>
-        </div>
-      </div>}
+
+      {popUp && (
+        <AddClientPopUp
+          setPopUp={setPopUp}
+          onSave={handleSaveClient} // Pass the onSave function
+        />
+      )}
 
       <section>
         {
@@ -229,11 +218,9 @@ function HomePage() {
                               <div className={styles.countries}>
                                 {
                                   client.country && client.country.map((country, k) => {
-                                    let countryName = country.split(' ').join('-').toLowerCase();
                                     return (
                                       <p key={k} className={styles.country}>
-                                        {/* {country.slice(0, 2)} */}
-                                        <img width="20" height="20" src={`https://img.icons8.com/emoji/48/${countryName}-emoji.png`} alt="united-states-emoji" />
+                                        <img width="20" height="20" src={`https://img.icons8.com/emoji/48/${countryData[country].name.split(' ').join('-').toLowerCase()}-emoji.png`} alt="united-states-emoji" />
                                       </p>
                                     )
                                   })

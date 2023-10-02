@@ -11,6 +11,8 @@ import New from '../../atom/svgs/New';
 import SendBlack from '../../atom/svgs/SendBlack';
 import RightArrow from '../../atom/svgs/RightArrow';
 import AddApplicationPopUp from '../../organisms/PopUps/AddApplicationPopUp';
+import AddClientPopUp from '../../organisms/PopUps/AddClientPopUp';
+import { countryData } from '../../molecules/Countries';
 
 // Component for rendering a single notification
 function Notification({ data }) {
@@ -51,12 +53,12 @@ function Application({ data }) {
       </div>
       <div className={styles.applicationBody}>
         <h3 className={styles.country}>
-          {data.country}
+          {countryData[data.country].name}
           <p className={styles.countryIcon}>
             <img
               width="15"
               height="15"
-              src={`https://img.icons8.com/emoji/48/${data.country.split(' ').join('-').toLowerCase()}-emoji.png`}
+              src={`https://img.icons8.com/emoji/48/${countryData[data.country].name.split(' ').join('-').toLowerCase()}-emoji.png`}
               alt={`${data.country}-emoji`}
             />
           </p>
@@ -84,6 +86,7 @@ function Application({ data }) {
 
 const ClientDetailsPage = () => {
   const [popUp, setPopUp] = useState(false);
+  const [editClientPopUp, setEditClientPopUp] = useState(false);
   const [country, setCountry] = useState('');
   const [visa, setVisa] = useState('');
   const [paymentType, setPaymentType] = useState('upfront'); // Default to 'upfront'
@@ -281,10 +284,28 @@ const ClientDetailsPage = () => {
       });
   }
 
+  const handleEditClient = (clientData) => {
+    firebase.firestore().collection('clients').doc(clientDetails.id).update({
+      ...clientData,
+    })
+      .then(() => {
+        setClientDetails((prev) => {
+          return {
+            ...prev,
+            ...clientData,
+          };
+        });
+        setEditClientPopUp(false);
+      })
+      .catch((error) => {
+        console.error('Error adding client data: ', error);
+      });
+  };
+
   return (
     <div className={styles.clientDetailsPage}>
       {loading && <Loading />}
-      <Topnav id={id} collection={"clients"} where={'clientId'} editPopUp={setPopUp} />
+      <Topnav id={id} collection={"clients"} where={'clientId'} setEditClientPopUp={setEditClientPopUp} />
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
 
       {popUp && (
@@ -299,6 +320,16 @@ const ClientDetailsPage = () => {
           handleSaveClick={handleSaveClick}
         />
       )}
+
+      {
+        editClientPopUp && (
+          <AddClientPopUp
+            setPopUp={setEditClientPopUp}
+            onSave={handleEditClient} // Pass the onSave function
+            id={id}
+          />
+        )
+      }
       <div className={styles.detailsContainer}>
         <div className={styles.detailsHeader}>
           <p className={styles.id}>#{clientDetails && clientDetails.clientId}</p>
@@ -308,10 +339,9 @@ const ClientDetailsPage = () => {
           <div className={styles.countries}>
             {
               clientDetails && clientDetails.country.map((country, k) => {
-                let countryName = country.split(' ').join('-').toLowerCase();
                 return (
                   <p key={k} className={styles.country}>
-                    <img width="20" height="20" src={`https://img.icons8.com/emoji/48/${countryName}-emoji.png`} alt="united-states-emoji" />
+                    <img width="20" height="20" src={`https://img.icons8.com/emoji/48/${countryData[country].name.split(' ').join('-').toLowerCase()}-emoji.png`} alt="united-states-emoji" />
                   </p>
                 )
               })

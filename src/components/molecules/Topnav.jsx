@@ -7,7 +7,7 @@ import Delete2 from '../atom/svgs/Delete2'
 import firebase from '../../firebase/config';
 
 
-const Topnav = ({ id, collection, where, deletion, editPopUp }) => {
+const Topnav = ({ id, collection, where, deletion, setEditClientPopUp }) => {
     // console.log(id, collection, where);
     const [popUp, setPopUp] = useState(false);
     return (
@@ -48,9 +48,9 @@ const Topnav = ({ id, collection, where, deletion, editPopUp }) => {
                     }
                 }><Back /> </p>
                 <div className={styles.btns}>
-                    <p onClick={() => {
-                        editPopUp(true)
-                    }}><Edit2 /></p>
+                    {setEditClientPopUp && <p onClick={() => {
+                        setEditClientPopUp(true)
+                    }}><Edit2 /></p>}
                     <p
                         onClick={() => {
                             setPopUp(true)

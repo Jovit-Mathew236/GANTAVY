@@ -10,6 +10,7 @@ const TopNav = () => {
   const [showLogout, setShowLogout] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [unReadNotifications, setUnReadNotifications] = useState(0);
   const userProfilePicURL = localStorage.getItem("user_photoURL");
 
   const toggleLogout = () => {
@@ -17,6 +18,22 @@ const TopNav = () => {
   };
 
   const toggleNotification = () => {
+    const db = firebase.firestore();
+    {
+      showNotification &&
+        db
+          .collection("notifications")
+          .where("recipient", "==", "admin")
+          .where("messageStatus", "==", false)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              db.collection("notifications").doc(doc.id).update({
+                messageStatus: true,
+              });
+            });
+          });
+    }
     setShowNotification(!showNotification);
   };
 
@@ -33,6 +50,10 @@ const TopNav = () => {
       .where("recipient", "==", "admin")
       .onSnapshot((snapshot) => {
         const allNotifications = snapshot.docs.map((doc) => doc.data());
+        setUnReadNotifications(
+          allNotifications.filter((notification) => !notification.messageStatus)
+            .length
+        );
         const groupedNotifications = allNotifications.reduce(
           (acc, notification) => {
             const date = new Date(notification.sendAt.seconds * 1000);
@@ -66,12 +87,16 @@ const TopNav = () => {
       });
     return () => unsubscribe();
   }, []);
-  
+
   return (
     <div className={styles.topNav}>
       <p className={styles.notification}>
         <p className={styles.notificationIcon} onClick={toggleNotification}></p>
-        <span className={styles.notificationCount}>1</span>
+        {unReadNotifications !== 0 && (
+          <span className={styles.notificationCount}>
+            {unReadNotifications}
+          </span>
+        )}
         {showNotification && (
           <div className={styles.notificationContainer}>
             <div className={styles.notificationHeader}>
@@ -88,7 +113,12 @@ const TopNav = () => {
                     {notifications[date].map((notification) => {
                       return (
                         <p className={styles.notificationMessage}>
-                          <MdNotificationsActive /> {notification.message}
+                          {notification.messageStatus ? (
+                            <MdOutlineNotificationsActive />
+                          ) : (
+                            <MdNotificationsActive />
+                          )}{" "}
+                          {notification.message}
                         </p>
                       );
                     })}

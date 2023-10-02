@@ -1,15 +1,37 @@
-import React from 'react'
-import styles from './popUp.module.css'
+'use client'
+import React, { useEffect, useState } from 'react'
+import styles from './popUps.module.css'
+import firebase from '../../../firebase/config';
 
-const AddClientPopUp = ({ setPopUp, onSave }) => {
+const AddClientPopUp = ({ setPopUp, onSave, id }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [clientId, setClientId] = useState('');
+    const [addedAt, setAddedAt] = useState('');
+    useEffect(() => {
+        id && firebase
+            .firestore()
+            .collection('clients')
+            .where('clientId', '==', id)
+            .get().then((snapshot) => {
+                const data = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setName(data[0].name);
+                setEmail(data[0].email);
+                setPhone(data[0].phone);
+                setClientId(data[0].clientId);
+                setAddedAt(data[0].addedAt);
+            }).catch((error) => {
+                console.error('Error fetching documents: ', error);
+            });
+    }, [])
 
     const handleCancelClick = () => {
         setPopUp(false);
     };
-
     const handleSaveClick = () => {
         // Validate the input data
         if (name.trim() === '' || email.trim() === '' || phone.trim() === '') {
@@ -18,7 +40,13 @@ const AddClientPopUp = ({ setPopUp, onSave }) => {
         }
 
         // Call the onSave function to save the client data
-        onSave({
+        id ? onSave({
+            name,
+            email,
+            phone,
+            clientId,
+            addedAt,
+        }) : onSave({
             name,
             email,
             phone,
@@ -29,7 +57,7 @@ const AddClientPopUp = ({ setPopUp, onSave }) => {
     };
 
     return (
-        <div className={styles.addClientPopUp}>
+        <div className={styles.popUp}>
             <div className={styles.popUpContainer}>
                 <div className={styles.popUpFields}>
                     <label htmlFor="name">Client full name</label>
@@ -38,6 +66,7 @@ const AddClientPopUp = ({ setPopUp, onSave }) => {
                         id="name"
                         name="name"
                         placeholder="Name"
+                        value={name}
                         onChange={(e) => {
                             setName(e.target.value);
                         }}
@@ -50,6 +79,7 @@ const AddClientPopUp = ({ setPopUp, onSave }) => {
                         id="email"
                         name="email"
                         placeholder="example@gmail.com"
+                        value={email}
                         onChange={(e) => {
                             setEmail(e.target.value);
                         }}
@@ -62,6 +92,7 @@ const AddClientPopUp = ({ setPopUp, onSave }) => {
                         id="phone"
                         name="phone"
                         placeholder="+91 1234567890"
+                        value={phone}
                         onChange={(e) => {
                             setPhone(e.target.value);
                         }}

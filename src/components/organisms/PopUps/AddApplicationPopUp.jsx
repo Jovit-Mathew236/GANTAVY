@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import styles from './PopUp.module.css'
+import styles from './PopUps.module.css'
 
 const AddApplicationPopUp = ({
     setCountry,
@@ -19,10 +19,10 @@ const AddApplicationPopUp = ({
                     <label htmlFor="">Country</label>
                     <select name="" id="" onChange={(e) => setCountry(e.target.value)}>
                         <option value="">Select Country</option>
-                        <option value="United States">United States of America</option>
-                        <option value="United Kingdom">United Kingdom</option>
-                        <option value="Canada">Canada</option>
-                        <option value="Australia">Australia</option>
+                        <option value="usa">United States of America</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="canada">Canada</option>
+                        <option value="australia">Australia</option>
                     </select>
                 </div>
                 <div>
