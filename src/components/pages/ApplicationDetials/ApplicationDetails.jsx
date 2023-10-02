@@ -16,9 +16,8 @@ const ApplicationDetails = () => {
   const [popUp, setPopUp] = useState(false);
   const [user, setUser] = useState(null);
   const [stageName, setStageName] = useState('');
-  const [heading, setHeading] = useState('');
-  const [description, setDescription] = useState('');
-  const [type, settype] = useState('')
+  // const [heading, setHeading] = useState('');
+  // const [type, setType] = useState('')
   const [docId, setDocId] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +28,7 @@ const ApplicationDetails = () => {
     setPopUp(false);
   };
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');
+  const id = parseInt(searchParams.get('id'));
   const [fields, setFields] = useState([
     {
       type: 'fileupload',
@@ -118,10 +117,10 @@ const ApplicationDetails = () => {
       }
     });
   }, []);
-  
+
   let documentID;
   useEffect(() => {
-    if (id && id.trim() !== '') {
+    if (id !== '') {
 
       firebase.firestore().collection('applications').where('applicationId', '==', id).get().then((snapshot) => {
         const data = snapshot.docs.map((doc) => {
