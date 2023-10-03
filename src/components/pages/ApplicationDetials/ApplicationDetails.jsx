@@ -421,7 +421,7 @@ const ApplicationDetails = () => {
           })
         } <span>5</span></p>
 
-        <p className={styles.createdDate}>Created on september 29 2023</p>
+        <p className={styles.createdDate}>Created on {clientApplicationDetails.createdAt}</p>
       </div>
 
       <div className={styles.stageContainer}>

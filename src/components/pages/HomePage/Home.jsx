@@ -162,7 +162,7 @@ function HomePage() {
         console.error('Error adding client data: ', error);
       });
   };
-
+  let anyFilteredData = false;
   return (
     <div className={styles.homePage}>
       {loading && <Loading />}
@@ -183,14 +183,16 @@ function HomePage() {
 
       <section>
         {
+
           Object.entries(clients).map(([monthYear, clientData], i) => {
             // Filter the clientData based on the search criteria here
             const filteredClientData = clientData.filter(filterClients);
-
+            if (filteredClientData.length > 0) {
+              anyFilteredData = true;
+            }
             return (
-              <div key={i}>
-
-                {filteredClientData.length > 0 ? ( // Check if there are filtered clients
+              filteredClientData.length > 0 ? (
+                <div key={i}>
                   <>
                     <p className={styles.monthYear}>{monthYear}</p>
                     <div className={styles.cardsContainer}>
@@ -216,15 +218,13 @@ function HomePage() {
                             </div>
                             <div className={styles.cardBottomSection}>
                               <div className={styles.countries}>
-                                {
-                                  client.country && client.country.map((country, k) => {
-                                    return (
-                                      <p key={k} className={styles.country}>
-                                        <img width="20" height="20" src={`https://img.icons8.com/emoji/48/${countryData[country].name.split(' ').join('-').toLowerCase()}-emoji.png`} alt="united-states-emoji" />
-                                      </p>
-                                    )
-                                  })
-                                }
+                                {client.country && client.country.map((country, k) => {
+                                  return (
+                                    <p key={k} className={styles.country}>
+                                      <img width="20" height="20" src={`https://img.icons8.com/emoji/48/${countryData[country].name.split(' ').join('-').toLowerCase()}-emoji.png`} alt="united-states-emoji" />
+                                    </p>
+                                  )
+                                })}
                               </div>
                               <a href={`/client-details?id=${client.clientId}`}>
                                 <RightArrow />
@@ -235,19 +235,19 @@ function HomePage() {
                       })}
                     </div>
                   </>
-                ) : (
-                  <div className={styles.errContainer}>
-                    <p className={styles.err}></p>
-                    <p className={styles.errMessage}><span>Oops!</span>
-                      <br />
-                      no records found.</p>
-                  </div>
-                )}
-              </div>
-            )
+                </div>
+              ) : null
+            );
           })
         }
-
+        {!anyFilteredData && (
+          <div className={styles.errContainer}>
+            <p className={styles.err}></p>
+            <p className={styles.errMessage}><span>Oops!</span>
+              <br />
+              no records found.</p>
+          </div>
+        )}
       </section>
 
 

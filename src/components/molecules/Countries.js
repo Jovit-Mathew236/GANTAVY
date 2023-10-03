@@ -1,6 +1,6 @@
 export const countryData = {
   usa: {
-    name: 'United States of America',
+    name: 'United States',
     icon: 'us',
   },
   uk: {
