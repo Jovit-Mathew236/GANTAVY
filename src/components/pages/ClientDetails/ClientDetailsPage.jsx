@@ -92,7 +92,7 @@ const ClientDetailsPage = () => {
   const [paymentType, setPaymentType] = useState('upfront'); // Default to 'upfront'
   const [installment, setInstallment] = useState('');
   const [clientDetails, setClientDetails] = useState(null);
-  const [clientApplicationDetails, setClientApplicationDetails] = useState(null);
+  const [clientApplicationDetails, setClientApplicationDetails] = useState([]);
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState([]);
   const [title, setTitle] = useState('')
@@ -388,9 +388,16 @@ const ClientDetailsPage = () => {
         <h1>Applications</h1>
         <div className={styles.applications}>
           {
-            clientApplicationDetails && clientApplicationDetails.map((data, i) => (
-              <Application key={i} data={data} />
-            ))
+            clientApplicationDetails.length !==0 ?
+              clientApplicationDetails.map((data, i) => (
+                <Application key={i} data={data} />
+              ))
+              : <div className={styles.errContainer}>
+              <p className={styles.err}></p>
+              <p className={styles.errMessage}><span>Oops!</span>
+                <br />
+                no records found.</p>
+            </div>
           }
         </div>
       </div>

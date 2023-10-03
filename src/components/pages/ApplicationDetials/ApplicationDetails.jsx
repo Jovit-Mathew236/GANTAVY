@@ -11,6 +11,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Add2 from '../../atom/svgs/Add2';
 import Loading from '../../molecules/Loading';
 import Remove from '../../atom/svgs/Remove';
+import { countryData } from '../../molecules/Countries';
 
 const ApplicationDetails = () => {
   const [popUp, setPopUp] = useState(false);
@@ -22,7 +23,16 @@ const ApplicationDetails = () => {
   const [loading, setLoading] = useState(true);
 
 
-  const [clientApplicationDetails, setClientApplicationDetails] = useState([]);
+  const [clientApplicationDetails, setClientApplicationDetails] = useState([
+    {
+      applicationId: '',
+      country: '',
+      visatype: '',
+      paymenttype: '',
+      installment: '',
+      createdAt: '',
+    }
+  ]);
   const [stageDetails, setStageDetails] = useState([])
   const handleCancelClick = () => {
     setPopUp(false);
@@ -155,7 +165,16 @@ const ApplicationDetails = () => {
 
     }
   }, [id])
-  // console.log(stageDetails);
+
+  const formattedDate = (date) => {
+    console.log(date);
+    return date ? new Date(date[0].createdAt.seconds * 1000).toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }) : 'no date';
+  };
+  // console.log(clientApplicationDetails);
   return (
     <div className={styles.applicationDetails}>
       {loading && <Loading />}
@@ -419,15 +438,15 @@ const ApplicationDetails = () => {
           clientApplicationDetails.map((clientApplicationDetail) => {
             return clientApplicationDetail.paymenttype
           })
-        } <span>5</span></p>
+        }{clientApplicationDetails.installment ? <span>{clientApplicationDetails.installment}</span> : null}</p>
 
-        <p className={styles.createdDate}>Created on {clientApplicationDetails.createdAt}</p>
+        <p className={styles.createdDate}>Created on {formattedDate(clientApplicationDetails)}</p>
       </div>
 
       <div className={styles.stageContainer}>
         <h1>Stages</h1>
 
-        {
+        {stageDetails.length !== 0 ?
           stageDetails.map((stageDetail) => {
             const milliseconds = stageDetail.addedAt ? stageDetail.addedAt.seconds * 1000 : 0;
             const date = new Date(milliseconds);
@@ -455,6 +474,13 @@ const ApplicationDetails = () => {
               </div>
             )
           })
+          : (
+            <div className={styles.errContainer}>
+              <p className={styles.err}></p>
+              <p className={styles.errMessage}><span>Oops!</span>
+                <br />
+                no records found.</p>
+            </div>)
         }
 
       </div>

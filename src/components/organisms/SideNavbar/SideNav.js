@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SideNavBar.module.css";
 import { usePathname } from "next/navigation";
+import { GoHome } from "react-icons/go";
+import { TbMessage, TbProgressHelp } from "react-icons/tb";
+import { RiAdminLine } from "react-icons/ri";
 
 const SideNav = () => {
   const url = usePathname();
@@ -68,7 +71,7 @@ const SideNav = () => {
               }
               className={styles.menuItem}
             >
-              Home
+              <GoHome /> Home
             </a>
             <a
               href="/message"
@@ -79,7 +82,7 @@ const SideNav = () => {
               }
               className={styles.menuItem}
             >
-              Message
+              <TbMessage /> Message
             </a>
             <a
               href="/admin"
@@ -88,7 +91,7 @@ const SideNav = () => {
               }
               className={styles.menuItem}
             >
-              Admin
+              <RiAdminLine /> Admin
             </a>
             <a
               href="/help"
@@ -97,6 +100,7 @@ const SideNav = () => {
               }
               className={styles.menuItem}
             >
+              <TbProgressHelp />
               Help
             </a>
           </div>

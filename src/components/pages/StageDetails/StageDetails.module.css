@@ -21,6 +21,12 @@
     width: 70%;
 }
 
+.StageDetailsPage .stageDetailsContainer hr {
+    margin-left: -60px;
+    width: calc(100% + 120px);
+
+}
+
 .StageDetailsPage .stageDetailsContainer .assetContainer {
     min-width: 100%;
     min-height: 100px;
@@ -34,7 +40,7 @@
 }
 
 .StageDetailsPage .stageDetailsContainer .assetContainer .label {
-margin: 10px 0px;
+    margin: 10px 0px;
 }
 
 .StageDetailsPage .stageDetailsContainer .assetContainer .assets {

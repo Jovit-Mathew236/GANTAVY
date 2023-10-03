@@ -68,71 +68,74 @@ const StageDetails = () => {
             <div className={styles.stageDetailsContainer}>
                 {fields.map((field, i) => {
                     return (
-                        <div key={i} className={styles.StageDetails}>
-                            <h1>{field.heading}</h1>
-                            <p>{field.subtext}</p>
-                            <div className={styles.assetContainer}>
-                                {field.type === "fileupload" && <p className={styles.assets}>{field.response ? <a href={field.response}>{field.response}</a> : "No file uploaded"}</p>}
-                                {field.type === "textbtn" && <p className={styles.assets}>{field.btntxt}</p>}
-                                {field.type === "payment" && <div>
-                                    <div>
-                                        <p className={styles.label}>Amount</p>
-                                        <p className={styles.assets}>RS 5000</p>
-                                    </div>
-                                    <div>
-                                        <p className={styles.label}>Payment link</p>
-                                        <p className={styles.assets}>{field.link}</p>
-                                    </div>
-                                </div>}
-                                {field.type === "link" && <p className={styles.assets}><a href={field.link} target='_blank'>{field.link}</a></p>}
+                        <>
+                            <div key={i} className={styles.StageDetails}>
+                                <h1>{field.heading}</h1>
+                                <p>{field.subtext}</p>
+                                <div className={styles.assetContainer}>
+                                    {field.type === "fileupload" && <p className={styles.assets}>{field.response ? <a href={field.response}>{field.response}</a> : "No file uploaded"}</p>}
+                                    {field.type === "textbtn" && <p className={styles.assets}>{field.btntxt}</p>}
+                                    {field.type === "payment" && <div>
+                                        <div>
+                                            <p className={styles.label}>Amount</p>
+                                            <p className={styles.assets}>RS 5000</p>
+                                        </div>
+                                        <div>
+                                            <p className={styles.label}>Payment link</p>
+                                            <p className={styles.assets}>{field.link}</p>
+                                        </div>
+                                    </div>}
+                                    {field.type === "link" && <p className={styles.assets}><a href={field.link} target='_blank'>{field.link}</a></p>}
 
-                            </div>
-                            <select name="" id="" value={field.status} onChange={(e) => {
-                                setStage({
-                                    ...stage,
-                                    fields: stage.fields.map((item, index) => {
-                                        if (index === i) {
-                                            return {
-                                                ...item,
-                                                status: e.target.value
+                                </div>
+                                <select name="" id="" value={field.status} onChange={(e) => {
+                                    setStage({
+                                        ...stage,
+                                        fields: stage.fields.map((item, index) => {
+                                            if (index === i) {
+                                                return {
+                                                    ...item,
+                                                    status: e.target.value
+                                                }
                                             }
-                                        }
-                                        return item;
+                                            return item;
+                                        })
                                     })
-                                })
-                                const newStatus = e.target.value; // New status value
-                                firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
-                                    snapshot.docs.forEach((doc) => {
-                                        const stageRef = firebase.firestore().collection('applications').doc(docId).collection('stages').doc(doc.id);
-                                        const updatedStatusObject = {
-                                            link: doc.data().fields[i].link,
-                                            response: doc.data().fields[i].response,
-                                            subtext: doc.data().fields[i].subtext,
-                                            heading: doc.data().fields[i].heading,
-                                            btntxt: doc.data().fields[i].btntxt,
-                                            adminResponse: doc.data().fields[i].adminResponse,
-                                            type: doc.data().fields[i].type,
-                                            status: e.target.value,
-                                        };
-                                        const currentFields = doc.data().fields;
-                                        currentFields[i] = updatedStatusObject;
-                                        stageRef.update({
-                                            fields: currentFields
-                                        }).then(() => {
-                                            console.log(`Status updated to ${newStatus}`);
-                                        }).catch((error) => {
-                                            console.error('Error updating status: ', error);
+                                    const newStatus = e.target.value; // New status value
+                                    firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
+                                        snapshot.docs.forEach((doc) => {
+                                            const stageRef = firebase.firestore().collection('applications').doc(docId).collection('stages').doc(doc.id);
+                                            const updatedStatusObject = {
+                                                link: doc.data().fields[i].link,
+                                                response: doc.data().fields[i].response,
+                                                subtext: doc.data().fields[i].subtext,
+                                                heading: doc.data().fields[i].heading,
+                                                btntxt: doc.data().fields[i].btntxt,
+                                                adminResponse: doc.data().fields[i].adminResponse,
+                                                type: doc.data().fields[i].type,
+                                                status: e.target.value,
+                                            };
+                                            const currentFields = doc.data().fields;
+                                            currentFields[i] = updatedStatusObject;
+                                            stageRef.update({
+                                                fields: currentFields
+                                            }).then(() => {
+                                                console.log(`Status updated to ${newStatus}`);
+                                            }).catch((error) => {
+                                                console.error('Error updating status: ', error);
+                                            });
                                         });
                                     });
-                                });
-                            }}
-                            >
-                                <option value="rejected">Reject</option>
-                                <option value="verified">Approve</option>
-                                <option value="notsubmitted">Not Submitted</option>
-                                <option value="notverified">Not Verified</option>
-                            </select>
-                        </div>
+                                }}
+                                >
+                                    <option value="rejected">Reject</option>
+                                    <option value="verified">Approve</option>
+                                    <option value="notsubmitted">Not Submitted</option>
+                                    <option value="notverified">Not Verified</option>
+                                </select>
+                            </div>
+                            <hr />
+                        </>
                     )
                 })}
             </div>
