@@ -1,8 +1,8 @@
 .clientDetailsPage {
     display: flex;
     gap: 30px 60px;
-    margin-top: 30px;
-    padding: 30px 140px;
+    margin-top: 0px;
+    padding: 60px 130px 10px;
     justify-content: space-around;
 }
 
@@ -204,8 +204,12 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-height: 270px;
+    overflow-y: scroll;
 }
-
+.clientDetailsPage .detailsContainer .messageSection .messageBody::-webkit-scrollbar {
+    display: none;
+}
 .clientDetailsPage .detailsContainer .messageSection .messageBody .message .date {
     font-size: 14px;
     color: #B8B8B8;

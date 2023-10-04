@@ -163,6 +163,14 @@ function HomePage() {
       });
   };
   let anyFilteredData = false;
+
+  const formatDate = (date) => {
+    return new Date(date.seconds * 1000).toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
   return (
     <div className={styles.homePage}>
       {loading && <Loading />}
@@ -197,20 +205,13 @@ function HomePage() {
                     <p className={styles.monthYear}>{monthYear}</p>
                     <div className={styles.cardsContainer}>
                       {filteredClientData.map((client, j) => {
-                        const milliseconds = client.addedAt.seconds * 1000;
-                        const date = new Date(milliseconds);
 
-                        const day = date.getDate();
-                        const month = date.toLocaleString('en-US', { month: 'long' });
-                        const year = date.getFullYear();
-
-                        const formattedDate = `${day} ${month} ${year}`;
                         // console.log(client.country);
                         return (
                           <div key={j} className={styles.card}>
                             <div className={styles.cardTopSection}>
-                              <p className={styles.id}>#{client.clientId}</p>
-                              <p className={styles.date}>{formattedDate}</p>
+                              <p className={styles.id}>#ID{client.clientId}</p>
+                              <p className={styles.date}>{formatDate(client.addedAt)}</p>
                             </div>
                             <div className={styles.cardMainSection}>
                               <p>{client.name}</p>

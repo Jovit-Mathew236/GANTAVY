@@ -29,7 +29,7 @@ function Notification({ data }) {
         <h2>{data.title}</h2>
         <p>{data.message}</p>
       </div>
-      <hr />
+      {data.length !== 0 ? <hr /> : null}
     </div>
   );
 }
@@ -332,7 +332,7 @@ const ClientDetailsPage = () => {
       }
       <div className={styles.detailsContainer}>
         <div className={styles.detailsHeader}>
-          <p className={styles.id}>#{clientDetails && clientDetails.clientId}</p>
+          <p className={styles.id}>#ID{clientDetails && clientDetails.clientId}</p>
           <h1>{clientDetails && clientDetails.name}</h1>
           <p className={styles.email}>{clientDetails && clientDetails.email}</p>
           <p className={styles.phone}>{clientDetails && clientDetails.phone}</p>
@@ -388,16 +388,16 @@ const ClientDetailsPage = () => {
         <h1>Applications</h1>
         <div className={styles.applications}>
           {
-            clientApplicationDetails.length !==0 ?
+            clientApplicationDetails.length !== 0 ?
               clientApplicationDetails.map((data, i) => (
                 <Application key={i} data={data} />
               ))
               : <div className={styles.errContainer}>
-              <p className={styles.err}></p>
-              <p className={styles.errMessage}><span>Oops!</span>
-                <br />
-                no records found.</p>
-            </div>
+                <p className={styles.err}></p>
+                <p className={styles.errMessage}><span>Oops!</span>
+                  <br />
+                  no records found.</p>
+              </div>
           }
         </div>
       </div>

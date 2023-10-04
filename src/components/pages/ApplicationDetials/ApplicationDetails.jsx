@@ -155,7 +155,8 @@ const ApplicationDetails = () => {
               ...doc.data(),
             };
           });
-          setStageDetails(data);
+          // sort data by stageNumber
+          setStageDetails(data.sort((a, b) => a.stageNumber - b.stageNumber));
         })
         setLoading(false);
       })
@@ -167,7 +168,6 @@ const ApplicationDetails = () => {
   }, [id])
 
   const formattedDate = (date) => {
-    console.log(date);
     return date ? new Date(date[0].createdAt.seconds * 1000).toLocaleDateString('en-US', {
       day: 'numeric',
       month: 'long',
