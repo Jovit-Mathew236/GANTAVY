@@ -15,6 +15,7 @@ const AdminPage = () => {
   const [updatedEmail, setUpdatedEmail] = useState('')
   const [isEdit, setIsEdit] = useState(false)
   const [loading, setLoading] = useState(true);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
   const handleCancelClick = () => {
     setPopUp(false);
   };
@@ -135,6 +136,13 @@ const AdminPage = () => {
               <p onClick={() => {
                 firebase.firestore().collection('admins').where('email', '==', admin.email).get().then((querySnapshot) => {
                   querySnapshot.forEach((doc) => {
+                    if (doc.data().isSuperAdmin) {
+                      setIsSuperAdmin(true)
+                      setTimeout(() => {
+                        setIsSuperAdmin(false)
+                      }, 30000);
+                      return
+                    }
                     doc.ref.delete().then(() => {
                       setAdmins((prev) => {
                         return prev.filter((item) => {
@@ -157,7 +165,15 @@ const AdminPage = () => {
         }
 
       </div>
-
+      {isSuperAdmin && <div class="error_message flex items-center p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50" role="alert">
+        <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+        </svg>
+        <span class="sr-only">Info</span>
+        <div>
+          <span class="font-medium">Sorry</span> You can't delete super admin
+        </div>
+      </div>}
       <ClientButton setPopUP={setPopUp} />
     </div>
   )
@@ -169,9 +185,11 @@ const ClientButton = ({ setPopUP }) => {
   };
 
   return (
-    <button onClick={handleAddNewClick}>
-      <p>Add new</p>
-    </button>
+    <>
+      <button onClick={handleAddNewClick}>
+        <p>Add new</p>
+      </button>
+    </>
   );
 };
 

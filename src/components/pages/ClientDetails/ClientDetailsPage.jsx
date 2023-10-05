@@ -69,7 +69,7 @@ function Application({ data }) {
         <p className={styles.paymentType}>
           {data.paymenttype}
           {
-            data.paymenttype.toLowerCase() === 'installment'&& (
+            data.paymenttype.toLowerCase() === 'installment' && (
               <span className={styles.installment}>
                 {data.installment}
               </span>
@@ -275,7 +275,7 @@ const ClientDetailsPage = () => {
               country,
               visatype: visa,
               paymenttype: paymentType,
-              installment:parseInt(installment),
+              installment: parseInt(installment),
               clientid: id,
               createdAt: {
                 seconds: Math.floor(currentDate / 1000),
@@ -384,9 +384,15 @@ const ClientDetailsPage = () => {
 
           <div className={styles.messageBody}>
             {
-              notification && notification.map((data, i) => (
+              notification.length !==0 ? notification.map((data, i) => (
                 <Notification key={i} data={data} />
-              ))
+              )) : <div className={styles.errContainer}>
+                {/* <p className={styles.err}></p> */}
+                <p className={styles.errMessage}><span>Oops!</span>
+                  <br />
+                  no records found.</p>
+              </div>
+
             }
           </div>
         </div>
