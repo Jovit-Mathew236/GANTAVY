@@ -69,7 +69,7 @@ function Application({ data }) {
         <p className={styles.paymentType}>
           {data.paymenttype}
           {
-            data.paymenttype === 'installment' && (
+            data.paymenttype.toLowerCase() === 'installment'&& (
               <span className={styles.installment}>
                 {data.installment}
               </span>
@@ -90,7 +90,7 @@ const ClientDetailsPage = () => {
   const [country, setCountry] = useState('');
   const [visa, setVisa] = useState('');
   const [paymentType, setPaymentType] = useState('upfront'); // Default to 'upfront'
-  const [installment, setInstallment] = useState('');
+  const [installment, setInstallment] = useState(0);
   const [clientDetails, setClientDetails] = useState(null);
   const [clientApplicationDetails, setClientApplicationDetails] = useState([]);
   const [user, setUser] = useState(null);
@@ -245,9 +245,16 @@ const ClientDetailsPage = () => {
     // validation
     if (country.trim() === '' || visa.trim() === '') {
       setHasError(true);
+      setTimeout(() => {
+        setHasError(false);
+      }, 3000);
       return;
     }
-    const newApplicationID = generateApplicationID();
+    // create a new application and check if there is an existing application with the same id
+    let newApplicationID;
+    do {
+      newApplicationID = generateApplicationID();
+    } while (clientApplicationDetails.some((data) => data.applicationId === newApplicationID));
     firebase.firestore().collection('applications').add({
       applicationId: newApplicationID,
       country,
@@ -268,7 +275,7 @@ const ClientDetailsPage = () => {
               country,
               visatype: visa,
               paymenttype: paymentType,
-              installment,
+              installment:parseInt(installment),
               clientid: id,
               createdAt: {
                 seconds: Math.floor(currentDate / 1000),
@@ -305,7 +312,7 @@ const ClientDetailsPage = () => {
   return (
     <div className={styles.clientDetailsPage}>
       {loading && <Loading />}
-      <Topnav id={id} collection={"clients"} where={'clientId'} setEditClientPopUp={setEditClientPopUp} />
+      <Topnav id={id} collection={"clients"} where={'clientId'} setEditClientPopUp={setEditClientPopUp} deletion={"Client"} />
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
 
       {popUp && (
@@ -318,6 +325,7 @@ const ClientDetailsPage = () => {
           handlePaymentTypeChange={handlePaymentTypeChange}
           handleCancelClick={handleCancelClick}
           handleSaveClick={handleSaveClick}
+          hasError={hasError}
         />
       )}
 

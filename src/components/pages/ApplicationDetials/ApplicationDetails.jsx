@@ -21,16 +21,19 @@ const ApplicationDetails = () => {
   // const [type, setType] = useState('')
   const [docId, setDocId] = useState();
   const [loading, setLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [isNotPaymentAlreadyPresent, setIsNotPaymentAlreadyPresent] = useState(false)
 
 
   const [clientApplicationDetails, setClientApplicationDetails] = useState([
     {
       applicationId: '',
-      country: '',
+      country: 'uk',
       visatype: '',
       paymenttype: '',
       installment: '',
       createdAt: '',
+      completed: false,
     }
   ]);
   const [stageDetails, setStageDetails] = useState([])
@@ -82,6 +85,29 @@ const ApplicationDetails = () => {
   };
 
   const handleSave = () => {
+    // Validate the fields before saving
+    const isAnyFieldEmpty = fields.some((field) => {
+      if (field.type === 'fileupload') {
+        return !field.heading || !field.subtext;
+      } else if (field.type === 'textbtn') {
+        return !field.heading || !field.subtext || !field.btntxt;
+      } else if (field.type === 'payment') {
+        return !field.heading || !field.subtext || !field.btntxt || !field.link || !field.amount;
+      } else if (field.type === 'link') {
+        return !field.subtext || !field.link;
+      }
+      return false;
+    });
+    if (isAnyFieldEmpty) {
+      setHasError(true);
+      setTimeout(() => {
+        setHasError(false);
+      }, 3000);
+      return;
+    }
+
+
+
     // Prepare the data to submit
     const dataToSubmit = {
       fields: fields.map((field) => ({
@@ -178,7 +204,7 @@ const ApplicationDetails = () => {
   return (
     <div className={styles.applicationDetails}>
       {loading && <Loading />}
-      <Topnav id={id} collection={"applications"} where={'applicationId'} />
+      <Topnav id={id} collection={"applications"} where={'applicationId'} deletion={"Application"} />
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />
 
       {popUp && <div className={styles.addClientPopUp}>
@@ -205,7 +231,10 @@ const ApplicationDetails = () => {
                   if (e.target.value === 'payment') {
                     const isNotPaymentAlreadyPresent = fields.some((field) => field.type !== 'payment' && fields.length !== 1);
                     if (isNotPaymentAlreadyPresent) {
-                      alert('You cannot add a payment field as there is already a field present');
+                      setIsNotPaymentAlreadyPresent(true);
+                      setTimeout(() => {
+                        setIsNotPaymentAlreadyPresent(false);
+                      }, 3000);
                       return;
                     }
                   }
@@ -409,12 +438,48 @@ const ApplicationDetails = () => {
             <button onClick={handleSave}>Save</button>
           </div>
         </div>
+        {hasError &&
+          <div class="error_message flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div>
+              <span class="font-medium">Invalid Felid!</span> Enter valid data
+            </div>
+          </div>
+        }
+        {isNotPaymentAlreadyPresent &&
+          <div class="error_message flex items-center p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 " role="alert">
+            <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+            </svg>
+            <span class="sr-only">Info</span>
+            <div>
+              <span class="font-medium">Sorry!</span>You cannot add a payment field as there is already a field present
+            </div>
+          </div>
+        }
       </div>}
 
       <div className={styles.applicationDetailsContainer}>
-        <select name="" id="">
-          <option value="">Not Completed</option>
-          <option value="">Completed</option>
+        <select name="" id="" value={clientApplicationDetails[0].completed} onChange={(e) => {
+          firebase.firestore().collection('applications').doc(docId).update({
+            completed: JSON.parse(e.target.value)
+          }).then(() => {
+            setClientApplicationDetails([
+              {
+                ...clientApplicationDetails[0],
+                completed: JSON.parse(e.target.value)
+              }
+            ])
+            console.log(`Status updated to ${JSON.parse(e.target.value)}`);
+          }).catch((error) => {
+            console.error('Error updating status: ', error);
+          });
+        }}>
+          <option value={false}>Not Completed</option>
+          <option value={true}>Completed</option>
         </select>
 
         <div className={styles.id}>#{
@@ -428,17 +493,24 @@ const ApplicationDetails = () => {
             return clientApplicationDetail.visatype
           })
         }</h1>
-        <h1>{
+        <h1 className={styles.country_name}>{
           clientApplicationDetails.map((clientApplicationDetail) => {
-            return clientApplicationDetail.country
-          })
-        }</h1>
+            return (countryData[clientApplicationDetail.country].name)
+          })}
+          <p className={styles.countryIcon}>
+            <img
+              width="15"
+              height="15"
+              src={`https://img.icons8.com/emoji/48/${countryData[clientApplicationDetails[0].country].name.split(' ').join('-').toLowerCase()}-emoji.png`}
+              alt={`${clientApplicationDetails[0].country}-emoji`}
+            />
+          </p></h1>
 
         <p className={styles.paymentType}>{
           clientApplicationDetails.map((clientApplicationDetail) => {
             return clientApplicationDetail.paymenttype
           })
-        }{clientApplicationDetails.installment ? <span>{clientApplicationDetails.installment}</span> : null}</p>
+        }{clientApplicationDetails[0].installment ? <span>{clientApplicationDetails[0].installment}</span> : null}</p>
 
         <p className={styles.createdDate}>Created on {formattedDate(clientApplicationDetails)}</p>
       </div>
@@ -464,7 +536,7 @@ const ApplicationDetails = () => {
                 </div>
                 <div>
                   <h2 className={styles.head}>{stageDetail.heading}</h2>
-                  <p className={styles.status}>{
+                  <p className={styles.status} style={!stageDetail.completed ? { color: "#FF6060" } : { color: "#8AB867" }}>{
                     stageDetail.completed ? 'Completed' : 'On going'
                   }</p>
                 </div>

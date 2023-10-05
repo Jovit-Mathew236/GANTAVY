@@ -15,7 +15,7 @@ import { countryData } from '../../molecules/Countries';
 
 function HomePage() {
   const [popUp, setPopUp] = useState(false);
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState({});
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -127,7 +127,17 @@ function HomePage() {
   }, []);
 
   const handleSaveClient = (clientData) => {
-    const newClientId = generateClientID();
+    let newClientId;
+    let isIDUnique = false;
+    
+    do {
+      newClientId = generateClientID();
+      // Check if the generated ID already exists in any client data array
+      isIDUnique = !Object.values(clients).some((clientDataArray) =>
+        clientDataArray.some((client) => client.clientId === newClientId)
+      );
+    } while (!isIDUnique);
+    
     firebase
       .firestore()
       .collection('clients')

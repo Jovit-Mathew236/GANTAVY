@@ -106,9 +106,14 @@
 .clientDetailsPage .detailsContainer {
     border-radius: 20px;
     background: #F8F8F8;
-    min-width: 380px;
+    min-width: 400px;
     height: fit-content;
     flex: 1;
+}
+
+.clientDetailsPage .detailsContainer h1 {
+    font-size: 30px;
+    font-weight: 600;
 }
 
 .clientDetailsPage .detailsContainer hr {
@@ -135,13 +140,10 @@
     font-weight: bold;
 }
 
-.clientDetailsPage .detailsContainer .detailsHeader h1 {
-    font-size: larger;
-}
-
 .clientDetailsPage .detailsContainer .detailsHeader .email,
 .clientDetailsPage .detailsContainer .detailsHeader .phone {
     font-size: 14px;
+    margin-top: -5px;
 }
 
 .clientDetailsPage .detailsContainer .detailsHeader .countries {
@@ -161,16 +163,16 @@
 }
 
 .clientDetailsPage .detailsContainer .messageSection {
-    border-radius: 20px;
+    border-radius: 30px;
     background: #fff;
     overflow: hidden;
     margin-top: 20px;
-    margin: 20px 30px;
+    margin: 30px 50px;
 }
 
 .clientDetailsPage .detailsContainer .messageSection .messageHeader {
     background: #2D2D2D;
-    padding: 20px;
+    padding: 25px 20px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -180,8 +182,8 @@
 .clientDetailsPage .detailsContainer .messageSection .messageHeader input {
     background: transparent;
     border: 1px solid #858585;
-    border-radius: 20px;
-    padding: 10px;
+    border-radius: 30px;
+    padding: 8px 10px;
     width: 100%;
     color: white;
 }
@@ -191,12 +193,13 @@
     border-radius: 20pc;
     width: -moz-fit-content;
     width: fit-content;
-    padding: 5px 5px 5px 15px;
+    padding: 2px 2px 2px 15px;
     font-size: 16px;
     display: flex;
     align-items: center;
     gap: 11px;
     cursor: pointer;
+    background: #fff;
 }
 
 .clientDetailsPage .detailsContainer .messageSection .messageBody {
@@ -207,9 +210,11 @@
     max-height: 270px;
     overflow-y: scroll;
 }
+
 .clientDetailsPage .detailsContainer .messageSection .messageBody::-webkit-scrollbar {
     display: none;
 }
+
 .clientDetailsPage .detailsContainer .messageSection .messageBody .message .date {
     font-size: 14px;
     color: #B8B8B8;
@@ -230,6 +235,7 @@
 .clientDetailsPage .applicationContainer h1 {
     font-size: 26px;
     margin-bottom: 20px;
+    font-weight: 600;
 }
 
 .clientDetailsPage .applicationContainer .applications {
@@ -279,6 +285,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    font-weight: 600;
 }
 
 .clientDetailsPage .applicationContainer .applications .application .applicationBody .countryIcon {

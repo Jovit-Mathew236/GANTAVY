@@ -5,14 +5,14 @@ export const countryData = {
   },
   uk: {
     name: 'United Kingdom',
-    icon: '🇬🇧',
+    icon: 'uk',
   },
   canada: {
     name: 'Canada',
-    icon: '🇨🇦',
+    icon: 'ca',
   },
   australia: {
     name: 'Australia',
-    icon: '🇦🇺',
+    icon: 'au',
   },
 };

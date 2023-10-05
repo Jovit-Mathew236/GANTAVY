@@ -55,6 +55,10 @@
     border-radius: 40px;
     background: #000;
     color: white;
+    text-align: center;
+}
+.StageDetailsPage .bottomSelect {
+    padding: 15px 20px;
 }
 
 @media (max-width: 768px) {

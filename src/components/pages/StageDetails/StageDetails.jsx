@@ -12,6 +12,7 @@ const StageDetails = () => {
     const id = searchParams.get('id');
     const docId = searchParams.get('docId');
     const [user, setUser] = useState(null);
+    const [stageUpdate, setstageUpdate] = useState(false)
     const [stage, setStage] = useState({
         completed: false,
         fields: [{
@@ -117,6 +118,10 @@ const StageDetails = () => {
                                             };
                                             const currentFields = doc.data().fields;
                                             currentFields[i] = updatedStatusObject;
+                                            setTimeout(() => {
+                                                setstageUpdate(false);
+                                            }, 3000);
+                                            setstageUpdate(true);
                                             stageRef.update({
                                                 fields: currentFields
                                             }).then(() => {
@@ -139,7 +144,7 @@ const StageDetails = () => {
                     )
                 })}
             </div>
-            <select name="" id="" value={stage.completed} onChange={(e) => {
+            <select className={styles.bottomSelect} value={stage.completed} onChange={(e) => {
                 setStage({
                     ...stage,
                     completed: JSON.parse(e.target.value)
@@ -164,6 +169,9 @@ const StageDetails = () => {
                 <option value={false}>Not Completed</option>
                 <option value={true}>Completed</option>
             </select>
+            {stageUpdate && <div class="error_message p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+                <span class="font-medium">Success</span> Status updated successfully
+            </div>}
         </div>
     )
 }

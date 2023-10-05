@@ -5,6 +5,7 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
     borderWidth: {
@@ -27,5 +28,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // require('flowbite/plugin')
+  ],
 };

@@ -6,6 +6,11 @@
     justify-content: space-around;
     text-align: center;
 }
+.applicationDetails h1 {
+    text-align: left;
+    font-size: 25px;
+    font-weight: 600;
+}
 
 .applicationDetails .addClientPopUp {
     position: fixed;
@@ -141,6 +146,24 @@
     flex-direction: column;
     align-items: center;
 }
+.applicationDetails .applicationDetailsContainer .country_name {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+.applicationDetails .applicationDetailsContainer .country_name  .countryIcon {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #E6F5F5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+    font-weight: 100;
+}
 
 .applicationDetails .applicationDetailsContainer select {
     border: none;
@@ -193,6 +216,13 @@
     max-height: 570px;
     overflow-y: scroll;
 }
+
+.applicationDetails .stageContainer h1 {
+    text-align: left;
+    font-size: 25px;
+    font-weight: 600;
+}
+
 .applicationDetails .stageContainer::-webkit-scrollbar {
     display: none;
 }
@@ -211,8 +241,9 @@
 
 .applicationDetails .stageContainer .stage .date {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 30px;
+    color: #AEAEAE;
 }
 
 .applicationDetails .stageContainer .stage .level {
@@ -226,6 +257,8 @@
     font-weight: 900;
     font-size: 50px;
     color: #A4A4A4;
+    position: absolute;
+    left: 25px;
 }
 
 .applicationDetails .stageContainer .stage .head {
@@ -235,8 +268,8 @@
 
 .applicationDetails .stageContainer .stage a {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 15px;
+    right: 30px;
 }
 
 .applicationDetails .errContainer {
