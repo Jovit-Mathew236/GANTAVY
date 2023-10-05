@@ -22,6 +22,7 @@ const ApplicationDetails = () => {
   const [docId, setDocId] = useState();
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const [isNotPaymentAlreadyPresent, setIsNotPaymentAlreadyPresent] = useState(false)
 
 
@@ -205,7 +206,7 @@ const ApplicationDetails = () => {
     <div className={styles.applicationDetails}>
       {loading && <Loading />}
       <Topnav id={id} collection={"applications"} where={'applicationId'} deletion={"Application"} />
-      <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />
+     {!isCompleted && <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />}
 
       {popUp && <div className={styles.addClientPopUp}>
         <div className={styles.popUpContainer}>
@@ -463,7 +464,8 @@ const ApplicationDetails = () => {
       </div>}
 
       <div className={styles.applicationDetailsContainer}>
-        <select name="" id="" value={clientApplicationDetails[0].completed} onChange={(e) => {
+        <select name="" id="" value={isCompleted} onChange={(e) => {
+          setIsCompleted(JSON.parse(e.target.value))
           firebase.firestore().collection('applications').doc(docId).update({
             completed: JSON.parse(e.target.value)
           }).then(() => {
