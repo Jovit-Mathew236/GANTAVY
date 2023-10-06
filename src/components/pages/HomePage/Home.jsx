@@ -45,6 +45,7 @@ function HomePage() {
 
   const handleSearchFieldChange = (e) => {
     setSearchField(e.target.value);
+    console.log(e.target.value);
   };
 
   const handleSearchQueryChange = (e) => {

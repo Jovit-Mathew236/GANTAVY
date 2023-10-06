@@ -54,6 +54,27 @@
     margin-left: 10px;
 }
 
+.searchBarContainer select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.searchBarContainer::after {
+    content: url("../atom/svgs/dd.svg");
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
 .addClientBtn {
     position: fixed;
     bottom: 30px;
@@ -106,13 +127,14 @@
     /* height: 530px; */
     overflow-y: scroll;
 }
-.popUp .popUpContainer  h1{
+
+.popUp .popUpContainer h1 {
     font-size: 24px;
     font-weight: 500;
     text-align: center;
 }
 
-.popUp .popUpContainer .btns{
+.popUp .popUpContainer .btns {
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -134,7 +156,8 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
-.popUp .popUpContainer button:nth-child(1){
+
+.popUp .popUpContainer button:nth-child(1) {
     background: #fff;
     color: #000;
 }
@@ -203,7 +226,8 @@
         bottom: 20px;
         right: 20px;
     }
-    .topnav{
+
+    .topnav {
         padding: 20px 10px;
     }
 }

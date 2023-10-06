@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import styles from './ClientDetails.module.css';
 import firebase from '../../../firebase/config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -13,6 +13,10 @@ import RightArrow from '../../atom/svgs/RightArrow';
 import AddApplicationPopUp from '../../organisms/PopUps/AddApplicationPopUp';
 import AddClientPopUp from '../../organisms/PopUps/AddClientPopUp';
 import { countryData } from '../../molecules/Countries';
+import Edit2 from '../../atom/svgs/Edit2';
+import Delete2 from '../../atom/svgs/Delete2';
+import { MdEdit } from 'react-icons/md'
+import Delete3 from '../../atom/svgs/Delete3';
 
 // Component for rendering a single notification
 function Notification({ data }) {
@@ -86,6 +90,7 @@ function Application({ data }) {
 
 const ClientDetailsPage = () => {
   const [popUp, setPopUp] = useState(false);
+  const [deletePopUp, setDeletePopUp] = useState(false);
   const [editClientPopUp, setEditClientPopUp] = useState(false);
   const [country, setCountry] = useState('');
   const [visa, setVisa] = useState('');
@@ -99,6 +104,7 @@ const ClientDetailsPage = () => {
   const [message, setMessage] = useState('');
   const [hasError, setHasError] = useState(false);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const id = parseInt(searchParams.get('id'));
 
@@ -312,7 +318,7 @@ const ClientDetailsPage = () => {
   return (
     <div className={styles.clientDetailsPage}>
       {loading && <Loading />}
-      <Topnav id={id} collection={"clients"} where={'clientId'} setEditClientPopUp={setEditClientPopUp} deletion={"Client"} />
+      <Topnav id={id} collection={"clients"} where={'clientId'} setEditClientPopUp={setEditClientPopUp} deletion={"Client"} isBtn={false} />
       <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add new"} />
 
       {popUp && (
@@ -327,6 +333,36 @@ const ClientDetailsPage = () => {
           handleSaveClick={handleSaveClick}
           hasError={hasError}
         />
+      )}
+
+      {deletePopUp && (
+        <div className={styles.popUp}>
+          <div className={styles.popUpContainer}>
+            <h1>Are you sure you want to delete this client?</h1>
+            <div className={styles.btns}>
+              <button
+                onClick={() => {
+                  setDeletePopUp(false);
+                }}
+              >
+                No
+              </button>
+              <button
+                onClick={() => {
+                  firebase.firestore().collection('clients').doc(clientDetails.id).delete()
+                    .then(() => {
+                      router.push('/');
+                    })
+                    .catch((error) => {
+                      console.error('Error deleting client: ', error);
+                    });
+                }}
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {
@@ -354,6 +390,24 @@ const ClientDetailsPage = () => {
                 )
               })
             }
+          </div>
+          <div className={styles.buttons}>
+            <button
+              onClick={() => {
+                setEditClientPopUp(true);
+              }}
+            >
+              <MdEdit />
+              Edit Profile
+            </button>
+            <button
+              onClick={() => {
+                setDeletePopUp(true);
+              }}
+            >
+              <Delete3 />
+              Delete Profile
+            </button>
           </div>
         </div>
         <hr />
@@ -384,7 +438,7 @@ const ClientDetailsPage = () => {
 
           <div className={styles.messageBody}>
             {
-              notification.length !==0 ? notification.map((data, i) => (
+              notification.length !== 0 ? notification.map((data, i) => (
                 <Notification key={i} data={data} />
               )) : <div className={styles.errContainer}>
                 {/* <p className={styles.err}></p> */}

@@ -206,7 +206,7 @@ const ApplicationDetails = () => {
     <div className={styles.applicationDetails}>
       {loading && <Loading />}
       <Topnav id={id} collection={"applications"} where={'applicationId'} deletion={"Application"} />
-     {!isCompleted && <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />}
+      {!isCompleted && <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />}
 
       {popUp && <div className={styles.addClientPopUp}>
         <div className={styles.popUpContainer}>

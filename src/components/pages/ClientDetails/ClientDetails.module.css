@@ -6,6 +6,68 @@
     justify-content: space-around;
 }
 
+
+.popUp {
+    position: fixed;
+    padding: 0px 20px;
+    top: 0px;
+    width: -webkit-fill-available;
+    height: 100vh;
+    -webkit-backdrop-filter: brightness(0.5);
+    backdrop-filter: brightness(0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.popUp .popUpContainer {
+    background: #fff;
+    border-radius: 20px;
+    width: 500px;
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    /* text-align: left; */
+    /* height: 530px; */
+    overflow-y: scroll;
+}
+
+.popUp .popUpContainer h1 {
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.popUp .popUpContainer .btns {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.popUp .popUpContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.popUp .popUpContainer button {
+    border-radius: 30px;
+    width: 140px;
+    border: 1px solid #D3D3D3;
+    background: #000;
+    padding: 15px;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.popUp .popUpContainer button:nth-child(1) {
+    background: #fff;
+    color: #000;
+}
+
 .clientDetailsPage .addClientPopUp {
     position: fixed;
     padding: 20px 30px;
@@ -160,6 +222,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.clientDetailsPage .detailsContainer .detailsHeader .buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.clientDetailsPage .detailsContainer .detailsHeader .buttons button {
+    padding: 5px 14px;
+    background: #e6e6e6;
+    border-radius: 30px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+
 }
 
 .clientDetailsPage .detailsContainer .messageSection {
