@@ -396,6 +396,19 @@ const ApplicationDetails = () => {
               {field.type === "link" && (
                 <>
                   <div className={styles.popUpFields}>
+                    <label htmlFor="">Heading</label>
+                    <input
+                      type="text"
+                      placeholder='Upload your passport'
+                      value={field.heading}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].heading = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.popUpFields}>
                     <label htmlFor="">Subheading</label>
                     <input
                       type="text"
@@ -404,6 +417,19 @@ const ApplicationDetails = () => {
                       onChange={(e) => {
                         const updatedFields = [...fields];
                         updatedFields[index].subtext = e.target.value;
+                        setFields(updatedFields);
+                      }}
+                    />
+                  </div>
+                  <div className={styles.popUpFields}>
+                    <label htmlFor="">Button Text</label>
+                    <input
+                      type="text"
+                      placeholder='Button text'
+                      value={field.btntxt}
+                      onChange={(e) => {
+                        const updatedFields = [...fields];
+                        updatedFields[index].btntxt = e.target.value;
                         setFields(updatedFields);
                       }}
                     />

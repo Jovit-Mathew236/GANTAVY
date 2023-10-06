@@ -6,6 +6,7 @@
     justify-content: space-around;
     text-align: center;
 }
+
 .applicationDetails h1 {
     text-align: left;
     font-size: 25px;
@@ -100,6 +101,39 @@
     position: relative;
 }
 
+.applicationDetails .addClientPopUp .popUpContainer .subContainer::after {
+    content: '\25BC';
+    font-size: 14px;
+    position: absolute;
+    top: 40px;
+    right: 30px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer .subContainer select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    padding: 10px;
+    padding-right: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.applicationDetails .addClientPopUp .popUpContainer .subContainer select option {
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    padding: 10px;
+}
+
+/* Style the hover state of options */
+.applicationDetails .addClientPopUp .popUpContainer .subContainer select option:hover {
+    background-color: #f0f0f0;
+}
+
 .applicationDetails .addClientPopUp .popUpContainer .subContainer .option {
     margin-bottom: -30px;
 }
@@ -146,13 +180,15 @@
     flex-direction: column;
     align-items: center;
 }
+
 .applicationDetails .applicationDetailsContainer .country_name {
     display: flex;
     gap: 10px;
     align-items: center;
     margin-top: 10px;
 }
-.applicationDetails .applicationDetailsContainer .country_name  .countryIcon {
+
+.applicationDetails .applicationDetailsContainer .country_name .countryIcon {
     height: 20px;
     width: 20px;
     border-radius: 50%;
