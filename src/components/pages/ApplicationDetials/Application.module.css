@@ -179,6 +179,7 @@
     gap: 30px;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
 .applicationDetails .applicationDetailsContainer .country_name {
@@ -207,8 +208,37 @@
     border-radius: 40px;
     background: #000;
     color: white;
+    padding-right: 40px;
 }
 
+.applicationDetails .applicationDetailsContainer  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.applicationDetails .applicationDetailsContainer  select option {
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.applicationDetails .applicationDetailsContainer  select option:hover {
+    background-color: #f0f0f0;
+}
+
+.applicationDetails .applicationDetailsContainer ::after {
+    content: '\25BC';
+    font-size: 8px;
+    position: absolute;
+    top: 54px;
+    right: 106px;
+    color: #fff;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
 .applicationDetails .applicationDetailsContainer .id {
     padding: 2px 40px;
     border-radius: 16px;
@@ -300,6 +330,8 @@
 .applicationDetails .stageContainer .stage .head {
     min-width: 260px;
     word-break: break-word;
+    font-size: 24px;
+    font-weight: 600;
 }
 
 .applicationDetails .stageContainer .stage a {

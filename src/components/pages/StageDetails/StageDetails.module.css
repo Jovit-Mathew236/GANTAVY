@@ -27,6 +27,42 @@
 
 }
 
+.StageDetailsPage .stageDetailsContainer .StageDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.StageDetailsPage .stageDetailsContainer .StageDetails .responseField {
+    margin: 0px 0px 20px 0px;
+    position: relative;
+}
+
+.StageDetailsPage .stageDetailsContainer .StageDetails .responseField button {
+    position: absolute;
+    right: 5px;
+    top: 3px;
+    border-radius: 50%;
+    background: #000;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.StageDetailsPage .stageDetailsContainer .StageDetails .responseField input {
+    border: 1px solid #D9D9D9;
+    border-radius: 30px;
+    padding: 15px 20px;
+    width: 310px;
+    font-size: 16px;
+    /* margin: 0px 0px 20px 0px; */
+}
+
 .StageDetailsPage .stageDetailsContainer .assetContainer {
     min-width: 100%;
     min-height: 100px;
@@ -57,6 +93,7 @@
     color: white;
     text-align: center;
 }
+
 .StageDetailsPage .bottomSelect {
     padding: 15px 20px;
 }

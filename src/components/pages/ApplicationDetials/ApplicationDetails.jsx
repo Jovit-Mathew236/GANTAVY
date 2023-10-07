@@ -17,8 +17,7 @@ const ApplicationDetails = () => {
   const [popUp, setPopUp] = useState(false);
   const [user, setUser] = useState(null);
   const [stageName, setStageName] = useState('');
-  // const [heading, setHeading] = useState('');
-  // const [type, setType] = useState('')
+
   const [docId, setDocId] = useState();
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -51,8 +50,8 @@ const ApplicationDetails = () => {
       btntxt: '', // if type is textbtn
       link: '', // if type is link / payment
       amount: '', // if type is payment
-      status: '', // notsubmitted/notverified/verified/rejected
-      response: null, // if type is fileupload answer will be URL, if type is textbtn response will be just completed
+      status: 'notsubmitted', // notsubmitted/notverified/verified/rejected
+      response: 'notdone', // if type is fileupload answer will be URL, if type is textbtn response will be just completed
       adminResponse: '', // if admin wants to send a response to the task
     },
   ]);
@@ -72,8 +71,8 @@ const ApplicationDetails = () => {
         btntxt: '',
         link: '',
         amount: '',
-        status: '',
-        response: null,
+        status: 'notsubmitted',
+        response: 'notdone',
         adminResponse: '',
       },
     ]);
@@ -119,7 +118,7 @@ const ApplicationDetails = () => {
         link: field.link,
         amount: field.amount,
         status: field.status,
-        response: field.response,
+        response: field.type === 'fileupload' ? '' : 'notdone',
         adminResponse: field.adminResponse,
       })),
       stageNumber: stageDetails.length + 1, // Increment automatically
@@ -148,7 +147,6 @@ const ApplicationDetails = () => {
         console.error('Error adding application: ', error);
       });
   };
-
   useEffect(() => {
     const auth = getAuth(firebase);
     onAuthStateChanged(auth, (user) => {

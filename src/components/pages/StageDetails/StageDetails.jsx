@@ -6,12 +6,14 @@ import Topnav from '../../molecules/Topnav'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebase from '../../../firebase/config';
 import Loading from '../../molecules/Loading';
+import { IoSend } from 'react-icons/io5'
 
 const StageDetails = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const docId = searchParams.get('docId');
     const [user, setUser] = useState(null);
+    const [adminResponse, setAdminResponse] = useState('')
     const [stageUpdate, setstageUpdate] = useState(false)
     const [stage, setStage] = useState({
         completed: false,
@@ -87,7 +89,53 @@ const StageDetails = () => {
                                         </div>
                                     </div>}
                                     {field.type === "link" && <p className={styles.assets}><a href={field.link} target='_blank'>{field.link}</a></p>}
-
+                                </div>
+                                <div className={styles.responseField}>
+                                    <input value={field.adminResponse} onChange={(e) => {
+                                        setAdminResponse(e.target.value)
+                                        setStage({
+                                            ...stage,
+                                            fields: stage.fields.map((item, index) => {
+                                                if (index === i) {
+                                                    return {
+                                                        ...item,
+                                                        adminResponse: e.target.value
+                                                    }
+                                                }
+                                                return item;
+                                            })
+                                        })
+                                    }} type="text" placeholder='Response' />
+                                    <button onClick={() => {
+                                        firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
+                                            snapshot.docs.forEach((doc) => {
+                                                const stageRef = firebase.firestore().collection('applications').doc(docId).collection('stages').doc(doc.id);
+                                                const updatedStatusObject = {
+                                                    link: doc.data().fields[i].link,
+                                                    response: doc.data().fields[i].response,
+                                                    subtext: doc.data().fields[i].subtext,
+                                                    heading: doc.data().fields[i].heading,
+                                                    btntxt: doc.data().fields[i].btntxt,
+                                                    adminResponse: adminResponse,
+                                                    type: doc.data().fields[i].type,
+                                                    status: doc.data().fields[i].status,
+                                                };
+                                                const currentFields = doc.data().fields;
+                                                currentFields[i] = updatedStatusObject;
+                                                // setTimeout(() => {
+                                                //     setstageUpdate(false);
+                                                // }, 3000);
+                                                // setstageUpdate(true);
+                                                stageRef.update({
+                                                    fields: currentFields
+                                                }).then(() => {
+                                                    console.log(`Status updated to ${adminResponse}`);
+                                                }).catch((error) => {
+                                                    console.error('Error updating status: ', error);
+                                                });
+                                            });
+                                        });
+                                    }}><IoSend color={"white"} /></button>
                                 </div>
                                 <select name="" id="" value={field.status} onChange={(e) => {
                                     setStage({

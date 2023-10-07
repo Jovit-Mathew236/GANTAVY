@@ -65,6 +65,17 @@
     cursor: pointer;
 }
 
+.searchBarContainer select option {
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.searchBarContainer select option:hover {
+    background-color: #f0f0f0;
+}
+
 .searchBarContainer::after {
     content: url("../atom/svgs/dd.svg");
     font-size: 14px;

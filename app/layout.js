@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import SideNav from "@/src/components/organisms/SideNavbar/SideNav";
 import "./globals.css";
 import { DM_Sans } from "next/font/google";
