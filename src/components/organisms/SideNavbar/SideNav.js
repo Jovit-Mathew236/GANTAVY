@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./SideNavBar.module.css";
 import { usePathname } from "next/navigation";
 import { GoHome } from "react-icons/go";
@@ -9,36 +9,52 @@ import { RiAdminLine } from "react-icons/ri";
 const SideNav = () => {
   const url = usePathname();
 
-  // const [marginTop, setMarginTop] = useState("0px");
-  // const [transform2, setTransform2] = useState("0deg");
-  // const [transform3, setTransform3] = useState("0deg");
-  // const [hamburgerIconDisplay, setHamburgerIconDisplay] = useState("block");
+  const [marginTop, setMarginTop] = useState("0px");
+  const [transform2, setTransform2] = useState("0deg");
+  const [transform3, setTransform3] = useState("0deg");
+  const [hamburgerIconDisplay, setHamburgerIconDisplay] = useState("block");
 
-  // const [sideNavDisplay, setSideNavDisplay] = useState(
-  //   window.innerWidth > 830 ? "flex" : "none"
-  // );
+  const [sideNavDisplay, setSideNavDisplay] = useState("flex");
 
-  // useEffect(() => {
-  //   const handleResize = () =>
-  //     setSideNavDisplay(window.innerWidth > 830 ? "flex" : "none");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Check if window is defined (client-side)
+      setSideNavDisplay(window.innerWidth > 830 ? "flex" : "none");
+    }
 
-  //   window.addEventListener("resize", handleResize);
-  //   return () => window.removeEventListener("resize", handleResize);
-  // }, []);
+    const handleResize = () => {
+      if (typeof window !== "undefined") {
+        // Check if window is defined (client-side)
+        setSideNavDisplay(window.innerWidth > 830 ? "flex" : "none");
+      }
+    };
 
-  // const animateHamburgerIcon = () => {
-  //   setMarginTop(sideNavDisplay === "none" ? "-20px" : "0px");
-  //   setTransform2(sideNavDisplay === "none" ? "45deg" : "0deg");
-  //   setTransform3(sideNavDisplay === "none" ? "135deg" : "0deg");
-  //   setHamburgerIconDisplay(sideNavDisplay === "none" ? "none" : "block");
-  // };
+    if (typeof window !== "undefined") {
+      // Check if window is defined (client-side)
+      window.addEventListener("resize", handleResize);
+    }
 
-  // const toggleSideNavBar = () => {
-  //   if (window.innerWidth <= 830) {
-  //     animateHamburgerIcon();
-  //     setSideNavDisplay(sideNavDisplay === "flex" ? "none" : "flex");
-  //   }
-  // };
+    return () => {
+      if (typeof window !== "undefined") {
+        // Check if window is defined (client-side)
+        window.removeEventListener("resize", handleResize);
+      }
+    };
+  }, []);
+
+  const animateHamburgerIcon = () => {
+    setMarginTop(sideNavDisplay === "none" ? "-20px" : "0px");
+    setTransform2(sideNavDisplay === "none" ? "45deg" : "0deg");
+    setTransform3(sideNavDisplay === "none" ? "135deg" : "0deg");
+    setHamburgerIconDisplay(sideNavDisplay === "none" ? "none" : "block");
+  };
+
+  const toggleSideNavBar = () => {
+    if (window.innerWidth <= 830) {
+      animateHamburgerIcon();
+      setSideNavDisplay(sideNavDisplay === "flex" ? "none" : "flex");
+    }
+  };
 
   if (
     url !== "/client-details" &&
@@ -48,7 +64,7 @@ const SideNav = () => {
   )
     return (
       <>
-        {/* <div className={styles.menu_btn} onClick={toggleSideNavBar}>
+        <div className={styles.menu_btn} onClick={toggleSideNavBar}>
           <p
             style={{ transform: `rotate(${transform2})` }}
             className={styles.lines}
@@ -60,9 +76,9 @@ const SideNav = () => {
             }}
             className={styles.lines}
           ></p>
-        </div> */}
-        {/* <nav style={{ display: `${sideNavDisplay}` }} className={styles.navBar}> */}
-        <nav className={styles.navBar}>
+        </div>
+        <nav style={{ display: `${sideNavDisplay}` }} className={styles.navBar}>
+        {/* <nav className={styles.navBar}> */}
           <div className={styles.logo}></div>
           <hr />
           <div className={styles.menu}>
