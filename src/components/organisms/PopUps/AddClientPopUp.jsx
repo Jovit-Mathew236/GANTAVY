@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import styles from './popUps.module.css'
+import styles from './PopUps.module.css'
 import firebase from '../../../firebase/config';
 
 const AddClientPopUp = ({ setPopUp, onSave, id }) => {
