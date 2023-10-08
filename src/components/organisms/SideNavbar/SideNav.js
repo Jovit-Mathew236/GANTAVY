@@ -61,7 +61,8 @@ const SideNav = () => {
             className={styles.lines}
           ></p>
         </div> */}
-        <nav  className={styles.navBar}>
+        {/* <nav style={{ display: `${sideNavDisplay}` }} className={styles.navBar}> */}
+        <nav className={styles.navBar}>
           <div className={styles.logo}></div>
           <hr />
           <div className={styles.menu}>
