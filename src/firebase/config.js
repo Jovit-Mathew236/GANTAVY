@@ -4,14 +4,12 @@ import "firebase/compat/storage";
 import "firebase/compat/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBZkthW1rW_qszLHuEvmHKvWcrASYhZMbU",
-  authDomain: "gantavy-immigration.firebaseapp.com",
-  projectId: "gantavy-immigration",
-  storageBucket: "gantavy-immigration.appspot.com",
-  messagingSenderId: "548836707032",
-  appId: "1:548836707032:web:4d8d53a80746ca42b1e5ad",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// const Firebase = firebase.initializeApp(firebaseConfig)
 export default firebase.initializeApp(firebaseConfig);
-// export { firebase as Firebase }

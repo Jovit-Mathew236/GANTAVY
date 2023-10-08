@@ -6,8 +6,12 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-.loginPage .error{
+
+.loginPage .error {
     position: absolute;
     bottom: 10px;
     padding: 20px;
