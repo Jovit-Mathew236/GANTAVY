@@ -137,86 +137,90 @@ const StageDetails = () => {
                                         });
                                     }}><IoSend color={"white"} /></button>
                                 </div>
-                                <select name="" id="" value={field.status} onChange={(e) => {
-                                    setStage({
-                                        ...stage,
-                                        fields: stage.fields.map((item, index) => {
-                                            if (index === i) {
-                                                return {
-                                                    ...item,
-                                                    status: e.target.value
+                                <div className={styles.selectContainer}>
+                                    <select name="" id="" value={field.status} onChange={(e) => {
+                                        setStage({
+                                            ...stage,
+                                            fields: stage.fields.map((item, index) => {
+                                                if (index === i) {
+                                                    return {
+                                                        ...item,
+                                                        status: e.target.value
+                                                    }
                                                 }
-                                            }
-                                            return item;
+                                                return item;
+                                            })
                                         })
-                                    })
-                                    const newStatus = e.target.value; // New status value
-                                    firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
-                                        snapshot.docs.forEach((doc) => {
-                                            const stageRef = firebase.firestore().collection('applications').doc(docId).collection('stages').doc(doc.id);
-                                            const updatedStatusObject = {
-                                                link: doc.data().fields[i].link,
-                                                response: doc.data().fields[i].response,
-                                                subtext: doc.data().fields[i].subtext,
-                                                heading: doc.data().fields[i].heading,
-                                                btntxt: doc.data().fields[i].btntxt,
-                                                adminResponse: doc.data().fields[i].adminResponse,
-                                                type: doc.data().fields[i].type,
-                                                status: e.target.value,
-                                            };
-                                            const currentFields = doc.data().fields;
-                                            currentFields[i] = updatedStatusObject;
-                                            setTimeout(() => {
-                                                setstageUpdate(false);
-                                            }, 3000);
-                                            setstageUpdate(true);
-                                            stageRef.update({
-                                                fields: currentFields
-                                            }).then(() => {
-                                                console.log(`Status updated to ${newStatus}`);
-                                            }).catch((error) => {
-                                                console.error('Error updating status: ', error);
+                                        const newStatus = e.target.value; // New status value
+                                        firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
+                                            snapshot.docs.forEach((doc) => {
+                                                const stageRef = firebase.firestore().collection('applications').doc(docId).collection('stages').doc(doc.id);
+                                                const updatedStatusObject = {
+                                                    link: doc.data().fields[i].link,
+                                                    response: doc.data().fields[i].response,
+                                                    subtext: doc.data().fields[i].subtext,
+                                                    heading: doc.data().fields[i].heading,
+                                                    btntxt: doc.data().fields[i].btntxt,
+                                                    adminResponse: doc.data().fields[i].adminResponse,
+                                                    type: doc.data().fields[i].type,
+                                                    status: e.target.value,
+                                                };
+                                                const currentFields = doc.data().fields;
+                                                currentFields[i] = updatedStatusObject;
+                                                setTimeout(() => {
+                                                    setstageUpdate(false);
+                                                }, 3000);
+                                                setstageUpdate(true);
+                                                stageRef.update({
+                                                    fields: currentFields
+                                                }).then(() => {
+                                                    console.log(`Status updated to ${newStatus}`);
+                                                }).catch((error) => {
+                                                    console.error('Error updating status: ', error);
+                                                });
                                             });
                                         });
-                                    });
-                                }}
-                                >
-                                    <option value="rejected">Reject</option>
-                                    <option value="verified">Approve</option>
-                                    <option value="notsubmitted">Not Submitted</option>
-                                    <option value="notverified">Not Verified</option>
-                                </select>
+                                    }}
+                                    >
+                                        <option value="rejected">Reject</option>
+                                        <option value="verified">Approve</option>
+                                        <option value="notsubmitted">Not Submitted</option>
+                                        <option value="notverified">Not Verified</option>
+                                    </select>
+                                </div>
                             </div>
                             <hr />
                         </>
                     )
                 })}
             </div>
-            <select className={styles.bottomSelect} value={stage.completed} onChange={(e) => {
-                setStage({
-                    ...stage,
-                    completed: JSON.parse(e.target.value)
-                })
-                firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
-                    snapshot.docs.forEach((doc) => {
-                        const stageRef = firebase.firestore().collection('applications').doc(docId).collection('stages').doc(doc.id);
-                        stageRef.update({
-                            addedAt: doc.data().addedAt,
-                            heading: doc.data().heading,
-                            stageNumber: doc.data().stageNumber,
-                            completed: JSON.parse(e.target.value),
-                            fields: doc.data().fields
-                        }).then(() => {
-                            console.log(`Status updated to ${JSON.parse(e.target.value)}`);
-                        }).catch((error) => {
-                            console.error('Error updating status: ', error);
+            <div className={styles.selectContainer}>
+                <select className={styles.bottomSelect} value={stage.completed} onChange={(e) => {
+                    setStage({
+                        ...stage,
+                        completed: JSON.parse(e.target.value)
+                    })
+                    firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
+                        snapshot.docs.forEach((doc) => {
+                            const stageRef = firebase.firestore().collection('applications').doc(docId).collection('stages').doc(doc.id);
+                            stageRef.update({
+                                addedAt: doc.data().addedAt,
+                                heading: doc.data().heading,
+                                stageNumber: doc.data().stageNumber,
+                                completed: JSON.parse(e.target.value),
+                                fields: doc.data().fields
+                            }).then(() => {
+                                console.log(`Status updated to ${JSON.parse(e.target.value)}`);
+                            }).catch((error) => {
+                                console.error('Error updating status: ', error);
+                            });
                         });
                     });
-                });
-            }}>
-                <option value={false}>Not Completed</option>
-                <option value={true}>Completed</option>
-            </select>
+                }}>
+                    <option value={false}>Not Completed</option>
+                    <option value={true}>Completed</option>
+                </select>
+            </div>
             {stageUpdate && <div class="error_message p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
                 <span class="font-medium">Success</span> Status updated successfully
             </div>}

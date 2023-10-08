@@ -34,6 +34,31 @@
 
 }
 
+
+.StageDetailsPage .stageDetailsContainer .StageDetails .selectContainer select option {
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    padding: 10px;
+    text-align: left;
+}
+
+.StageDetailsPage .stageDetailsContainer .StageDetails .selectContainer select option:hover {
+    background-color: #f0f0f0;
+}
+
+
+.StageDetailsPage .stageDetailsContainer .StageDetails .selectContainer::after {
+    content: '\25BC';
+    font-size: 8px;
+    position: absolute;
+    top: 22px;
+    right: 20px;
+    color: #fff;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
 .StageDetailsPage .stageDetailsContainer .StageDetails .responseField {
     margin: 0px 0px 20px 0px;
     position: relative;
@@ -62,6 +87,7 @@
     font-size: 16px;
     /* margin: 0px 0px 20px 0px; */
 }
+
 
 .StageDetailsPage .stageDetailsContainer .assetContainer {
     min-width: 100%;
@@ -96,6 +122,44 @@
 
 .StageDetailsPage .bottomSelect {
     padding: 15px 20px;
+}
+
+.StageDetailsPage .bottomSelectoption {
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.StageDetailsPage .selectContainer {
+    position: relative;
+}
+
+.StageDetailsPage .selectContainer select {
+    padding-right: 40px;
+}
+
+.StageDetailsPage .selectContainer select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.StageDetailsPage .selectContainer select option:hover {
+    background-color: #f0f0f0;
+}
+
+.StageDetailsPage .selectContainer::after {
+    content: '\25BC';
+    font-size: 8px;
+    position: absolute;
+    top: 28px;
+    right: 20px;
+    color: #fff;
+    transform: translateY(-50%);
+    pointer-events: none;
 }
 
 @media (max-width: 768px) {
