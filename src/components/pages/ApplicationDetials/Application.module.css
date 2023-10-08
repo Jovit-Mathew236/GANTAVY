@@ -16,8 +16,9 @@
 .applicationDetails .addClientPopUp {
     position: fixed;
     padding: 20px 30px;
-    margin-left: -30px;
+    /* margin-left: -30px; */
     top: 0px;
+    left: 0px;
     width: -webkit-fill-available;
     height: 100vh;
     -webkit-backdrop-filter: brightness(0.5);
@@ -152,7 +153,7 @@
 
 .applicationDetails .addClientPopUp .popUpContainer .btnS {
     display: flex;
-    gap: 20px;
+    gap: 10px 20px;
     justify-content: center;
 }
 
@@ -211,21 +212,21 @@
     padding-right: 40px;
 }
 
-.applicationDetails .applicationDetailsContainer  select {
+.applicationDetails .applicationDetailsContainer select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     cursor: pointer;
 }
 
-.applicationDetails .applicationDetailsContainer  select option {
+.applicationDetails .applicationDetailsContainer select option {
     background-color: #fff;
     color: #333;
     font-size: 14px;
     padding: 10px;
 }
 
-.applicationDetails .applicationDetailsContainer  select option:hover {
+.applicationDetails .applicationDetailsContainer select option:hover {
     background-color: #f0f0f0;
 }
 
@@ -239,6 +240,7 @@
     transform: translateY(-50%);
     pointer-events: none;
 }
+
 .applicationDetails .applicationDetailsContainer .id {
     padding: 2px 40px;
     border-radius: 16px;
@@ -386,5 +388,27 @@
     .applicationDetails .stageContainer {
         margin-top: 50px;
         width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+    .applicationDetails {
+        padding: 30px 0px;
+    }
+    .applicationDetails .addClientPopUp {
+        padding: 20px;
+    }
+    .applicationDetails .addClientPopUp .popUpContainer {
+        padding: 40px 20px;
+    }
+
+    .applicationDetails .addClientPopUp .popUpContainer .btnS {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .applicationDetails .addClientPopUp .popUpContainer .btnS button {
+        width: 100%;
+        margin-top: 0px;
     }
 }

@@ -108,7 +108,7 @@ function HomePage() {
       const sortedGroupedClients = Object.keys(groupedClients).sort((a, b) => {
         const dateA = new Date(a);
         const dateB = new Date(b);
-        return dateA - dateB;
+        return dateA + dateB;
       });
 
       const finalData = sortedGroupedClients.reduce((acc, key) => {

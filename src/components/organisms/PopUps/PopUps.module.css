@@ -60,7 +60,7 @@
 
 .popUp .popUpContainer .btnS {
     display: flex;
-    gap: 20px;
+    gap: 10px 20px;
     justify-content: center;
 }
 
@@ -93,4 +93,29 @@
 .popUp .popUpContainer .radioBtnsContainer .radioBtns input {
     margin-top: 0px;
     accent-color: #000;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .popUp .popUpContainer {
+        padding: 20px;
+    }
+
+    .popUp .popUpContainer .btnS {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .popUp .popUpContainer .btnS button {
+        width: 100%;
+        margin-top: 0px;
+    }
+
+    /* .popUp .popUpContainer .radioBtnsContainer {
+        flex-direction: column;
+    }
+
+    .popUp .popUpContainer .radioBtnsContainer .radioBtns {
+        flex-direction: column;
+    } */
 }
