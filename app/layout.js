@@ -5,15 +5,15 @@ import { DM_Sans } from "next/font/google";
 import TopNav from "@/src/components/organisms/TopNavbar/TopNav";
 // import { usePathname } from "next/navigation";
 
-const inter = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-});
+// const inter = DM_Sans({
+//   subsets: ["latin"],
+//   weight: ["400", "500", "700"],
+// });
 
-export const metadata = {
-  title: "GANTAVY",
-  description: "GANTAVY",
-};
+// export const metadata = {
+//   title: "GANTAVY",
+//   description: "GANTAVY",
+// };
 
 export default function RootLayout({ children }) {
   // const url = usePathname();
