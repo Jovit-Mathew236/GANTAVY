@@ -1,5 +1,7 @@
 .adminPage {
     margin-top: 30px;
+    margin-left: 230px;
+  max-width: calc(100vw - 230px);
 }
 
 .adminPage h1 {
@@ -107,6 +109,13 @@
     border: 1px solid #000;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 850px) {
+    .adminPage {
+        margin-left: 0px;
+        max-width: 100vw;
+    }
 }
 
 @media (max-width: 600px) {

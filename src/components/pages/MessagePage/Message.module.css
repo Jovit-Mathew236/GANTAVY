@@ -4,6 +4,8 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 30px;
+    margin-left: 230px;
+    max-width: calc(100vw - 230px);
 }
 
 .messagePage h1 {
@@ -70,7 +72,12 @@
     justify-content: space-between;
     gap: 20px;
 }
-
+@media (max-width: 850px) {
+    .messagePage {
+        margin-left: 0px;
+        max-width: 100vw;
+    }
+}
 @media (max-width: 768px) {
     .messagePage {
         margin-top: 70px;
@@ -80,6 +87,7 @@
         margin-left: -130px;
     }
 }
+
 @media (max-width: 500px) {
     .messagePage .messages .msgContainer .msgBox {
         flex-direction: column;

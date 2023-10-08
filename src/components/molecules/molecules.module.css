@@ -232,10 +232,12 @@
     .searchBarContainer input {
         width: 120px
     }
+
     .searchBarContainer::after {
         top: 172px;
-        right: 50px;    
+        right: 50px;
     }
+
     .addClientBtn {
         bottom: 20px;
         right: 20px;
@@ -243,5 +245,11 @@
 
     .topnav {
         padding: 20px 10px;
+    }
+}
+
+@media (max-width:500px) {
+    .searchBarContainer::after {
+        top: 142px;
     }
 }

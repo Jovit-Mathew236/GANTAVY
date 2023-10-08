@@ -25,8 +25,8 @@ html {
 }
 
 main {
-  margin-left: 230px;
-  max-width: calc(100vw - 230px);
+  /* margin-left: 230px;
+  max-width: calc(100vw - 230px); */
   padding: 40px 30px 0px;
 }
 

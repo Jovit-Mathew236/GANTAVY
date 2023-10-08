@@ -7,6 +7,7 @@ import { CgClose } from "react-icons/cg";
 import { MdNotificationsActive } from "react-icons/md";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { usePathname } from "next/navigation";
 
 const TopNav = () => {
   const [showLogout, setShowLogout] = useState(false);
@@ -14,6 +15,8 @@ const TopNav = () => {
   const [notifications, setNotifications] = useState([]);
   const [unReadNotifications, setUnReadNotifications] = useState(0);
   const [userProfilePicURL, setUserProfilePicURL] = useState(null); // Initialize with null
+
+  const url = usePathname();
 
   const toggleLogout = () => {
     setShowLogout(!showLogout);
@@ -106,69 +109,78 @@ const TopNav = () => {
     };
   }, []);
 
-  return (
-    <div className={styles.topNav}>
-      <div className={styles.notification}>
-        <div
-          className={styles.notificationIcon}
-          onClick={toggleNotification}
-        ></div>
-        {unReadNotifications !== 0 && (
-          <span className={styles.notificationCount}>
-            {unReadNotifications}
-          </span>
-        )}
-        {showNotification && (
-          <div className={styles.notificationContainer}>
-            <div className={styles.notificationHeader}>
-              <h2>Notifications</h2>
-              <div className={styles.closeIcon}>
-                <CgClose onClick={toggleNotification} />
+  if (
+    url !== "/client-details" &&
+    url !== "/login" &&
+    url !== "/client-details/application" &&
+    url !== "/client-details/application/stage"
+  )
+    return (
+      <div className={styles.topNav}>
+        <div className={styles.notification}>
+          <div
+            className={styles.notificationIcon}
+            onClick={toggleNotification}
+          ></div>
+          {unReadNotifications !== 0 && (
+            <span className={styles.notificationCount}>
+              {unReadNotifications}
+            </span>
+          )}
+          {showNotification && (
+            <div className={styles.notificationContainer}>
+              <div className={styles.notificationHeader}>
+                <h2>Notifications</h2>
+                <div className={styles.closeIcon}>
+                  <CgClose onClick={toggleNotification} />
+                </div>
+              </div>
+              <div className={styles.notificationBody}>
+                {Object.keys(notifications).map((date) => {
+                  return (
+                    <div key={date}>
+                      <p className={styles.notificationDate}>{date}</p>
+                      {notifications[date].map((notification) => {
+                        return (
+                          <p className={styles.notificationMessage}>
+                            {notification.messageStatus ? (
+                              <MdOutlineNotificationsActive />
+                            ) : (
+                              <MdNotificationsActive />
+                            )}{" "}
+                            {notification.message}
+                          </p>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            <div className={styles.notificationBody}>
-              {Object.keys(notifications).map((date) => {
-                return (
-                  <div key={date}>
-                    <p className={styles.notificationDate}>{date}</p>
-                    {notifications[date].map((notification) => {
-                      return (
-                        <p className={styles.notificationMessage}>
-                          {notification.messageStatus ? (
-                            <MdOutlineNotificationsActive />
-                          ) : (
-                            <MdNotificationsActive />
-                          )}{" "}
-                          {notification.message}
-                        </p>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          )}
+        </div>
+        <div
+          style={{
+            backgroundImage: `url(${userProfilePicURL})`,
+          }}
+          className={styles.profilePic}
+          onClick={toggleLogout}
+        >
+          {showLogout && (
+            <button onClick={handleLogout} className={styles.logoutButton}>
+              <IoExitOutline />
+              Log Out
+            </button>
+          )}
+        </div>
+        {(showLogout || showNotification) && (
+          <div className={styles.popUpContainer}></div>
         )}
       </div>
-      <div
-        style={{
-          backgroundImage: `url(${userProfilePicURL})`,
-        }}
-        className={styles.profilePic}
-        onClick={toggleLogout}
-      >
-        {showLogout && (
-          <button onClick={handleLogout} className={styles.logoutButton}>
-            <IoExitOutline />
-            Log Out
-          </button>
-        )}
-      </div>
-      {(showLogout || showNotification) && (
-        <div className={styles.popUpContainer}></div>
-      )}
-    </div>
-  );
+    );
+  else {
+    return <></>;
+  }
 };
 
 export default TopNav;

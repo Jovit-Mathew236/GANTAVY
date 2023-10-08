@@ -1,5 +1,7 @@
 .homePage {
     margin-top: 40px;
+    margin-left: 230px;
+    max-width: calc(100vw - 230px);
 }
 
 /* .homePage section p{
@@ -8,7 +10,8 @@ text-align: left;
 .homePage section {
     margin-top: 20px;
 }
-.homePage section .monthYear{
+
+.homePage section .monthYear {
     margin-top: 20px;
 }
 
@@ -129,6 +132,11 @@ text-align: left;
 }
 
 @media (max-width: 850px) {
+    .homePage {
+        margin-left: 0px;
+        max-width: 100vw;
+    }
+
     .homePage .cardsContainer {
         justify-content: center;
     }
