@@ -117,6 +117,8 @@
     position: relative;
     z-index: 100;
     cursor: pointer;
+    background-position: center;
+    background-size: cover;
 }
 
 .topNav .popUpContainer {

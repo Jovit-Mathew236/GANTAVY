@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
 import styles from "./TopNavBar.module.css";
 import firebase from "../../../firebase/config";
@@ -6,13 +6,14 @@ import { IoExitOutline } from "react-icons/io5";
 import { CgClose } from "react-icons/cg";
 import { MdNotificationsActive } from "react-icons/md";
 import { MdOutlineNotificationsActive } from "react-icons/md";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const TopNav = () => {
   const [showLogout, setShowLogout] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unReadNotifications, setUnReadNotifications] = useState(0);
-  const userProfilePicURL = localStorage.getItem("user_photoURL");
+  const [userProfilePicURL, setUserProfilePicURL] = useState(null); // Initialize with null
 
   const toggleLogout = () => {
     setShowLogout(!showLogout);
@@ -45,8 +46,19 @@ const TopNav = () => {
   };
 
   useEffect(() => {
+    const auth = getAuth(firebase);
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, you can access their photoURL
+        setUserProfilePicURL(user.photoURL);
+      } else {
+        // User is signed out
+        setUserProfilePicURL(null);
+      }
+    });
+
     const db = firebase.firestore();
-    const unsubscribe = db
+    const unsubscribeNotifications = db
       .collection("notifications")
       .where("recipient", "==", "admin")
       .onSnapshot((snapshot) => {
@@ -86,13 +98,21 @@ const TopNav = () => {
 
         setNotifications(finalData);
       });
-    return () => unsubscribe();
+
+    // Combine unsubscribe functions
+    return () => {
+      unsubscribeAuth();
+      unsubscribeNotifications();
+    };
   }, []);
 
   return (
     <div className={styles.topNav}>
-      <p className={styles.notification}>
-        <p className={styles.notificationIcon} onClick={toggleNotification}></p>
+      <div className={styles.notification}>
+        <div
+          className={styles.notificationIcon}
+          onClick={toggleNotification}
+        ></div>
         {unReadNotifications !== 0 && (
           <span className={styles.notificationCount}>
             {unReadNotifications}
@@ -102,14 +122,14 @@ const TopNav = () => {
           <div className={styles.notificationContainer}>
             <div className={styles.notificationHeader}>
               <h2>Notifications</h2>
-              <p className={styles.closeIcon}>
+              <div className={styles.closeIcon}>
                 <CgClose onClick={toggleNotification} />
-              </p>
+              </div>
             </div>
             <div className={styles.notificationBody}>
               {Object.keys(notifications).map((date) => {
                 return (
-                  <>
+                  <div key={date}>
                     <p className={styles.notificationDate}>{date}</p>
                     {notifications[date].map((notification) => {
                       return (
@@ -123,30 +143,27 @@ const TopNav = () => {
                         </p>
                       );
                     })}
-                  </>
+                  </div>
                 );
               })}
             </div>
           </div>
         )}
-      </p>
-      <p
+      </div>
+      <div
         style={{
-          background: `url(${userProfilePicURL})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundImage: `url(${userProfilePicURL})`,
         }}
         className={styles.profilePic}
-        onClick={toggleLogout} // Toggle the button on profile picture click
+        onClick={toggleLogout}
       >
-        {/* Logout button */}
         {showLogout && (
           <button onClick={handleLogout} className={styles.logoutButton}>
             <IoExitOutline />
             Log Out
           </button>
         )}
-      </p>
+      </div>
       {(showLogout || showNotification) && (
         <div className={styles.popUpContainer}></div>
       )}
