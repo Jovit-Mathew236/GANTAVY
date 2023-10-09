@@ -91,21 +91,26 @@ const StageDetails = () => {
                                     {field.type === "link" && <p className={styles.assets}><a href={field.link} target='_blank'>{field.link}</a></p>}
                                 </div>
                                 <div className={styles.responseField}>
-                                    <input value={field.adminResponse} onChange={(e) => {
-                                        setAdminResponse(e.target.value)
-                                        setStage({
-                                            ...stage,
-                                            fields: stage.fields.map((item, index) => {
-                                                if (index === i) {
-                                                    return {
-                                                        ...item,
-                                                        adminResponse: e.target.value
+                                    <textarea
+                                        value={field.adminResponse}
+                                        onChange={(e) => {
+                                            setAdminResponse(e.target.value);
+                                            setStage({
+                                                ...stage,
+                                                fields: stage.fields.map((item, index) => {
+                                                    if (index === i) {
+                                                        return {
+                                                            ...item,
+                                                            adminResponse: e.target.value,
+                                                        };
                                                     }
-                                                }
-                                                return item;
-                                            })
-                                        })
-                                    }} type="text" placeholder='Response' />
+                                                    return item;
+                                                }),
+                                            });
+                                        }}
+                                        placeholder="Response"
+                                        className="StageDetailsPage stageDetailsContainer StageDetails responseField"
+                                    ></textarea>
                                     <button onClick={() => {
                                         firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id)).get().then((snapshot) => {
                                             snapshot.docs.forEach((doc) => {

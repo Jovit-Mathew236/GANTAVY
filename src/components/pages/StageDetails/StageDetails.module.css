@@ -67,7 +67,7 @@
 .StageDetailsPage .stageDetailsContainer .StageDetails .responseField button {
     position: absolute;
     right: 5px;
-    top: 3px;
+    bottom: 9px;
     border-radius: 50%;
     background: #000;
     width: 50px;
@@ -79,12 +79,13 @@
     cursor: pointer;
 }
 
-.StageDetailsPage .stageDetailsContainer .StageDetails .responseField input {
+.StageDetailsPage .stageDetailsContainer .StageDetails .responseField textarea {
     border: 1px solid #D9D9D9;
     border-radius: 30px;
-    padding: 15px 20px;
+    padding: 3px 20px;
     width: 310px;
     font-size: 16px;
+    min-height: 55px;
     /* margin: 0px 0px 20px 0px; */
 }
 
