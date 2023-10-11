@@ -3,6 +3,11 @@
     justify-content: flex-end;
     gap: 20px;
     z-index: 90;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    position: fixed;
+    right: 30px;
 }
 
 .topNav .notification {
@@ -76,8 +81,11 @@
     margin-left: -35px;
     border-radius: 50px;
     height: 50px;
-    position: absolute;
+    position: fixed;
     background: #fff;
+}
+.topNav .notification .notificationContainer .notificationBody {
+    margin-top: 40px;
 }
 
 .topNav .notification .notificationContainer .notificationHeader .closeIcon {

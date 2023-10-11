@@ -18,6 +18,8 @@ const AdminPage = () => {
   const [isSuperAdmin, setIsSuperAdmin] = useState(false)
   const handleCancelClick = () => {
     setPopUp(false);
+    setEmail('')
+    setUpdatedEmail('')
   };
 
   useEffect(() => {
@@ -70,6 +72,8 @@ const AdminPage = () => {
                   setAdmins((prev) => {
                     return [...prev, { email: email }]
                   })
+                }).then(() => {
+                  setEmail('')
                 })
               }}
             >Add</button>
@@ -98,7 +102,9 @@ const AdminPage = () => {
                                 return item
                               })
                             })
-                            console.log('Document successfully updated!');
+                              .then(() => {
+                                setEmail('')
+                              })
                           })
                           .catch((error) => {
                             console.error('Error updating document: ', error);
@@ -129,8 +135,6 @@ const AdminPage = () => {
                 setPopUp(true)
                 setEmail(admin.email)
                 setUpdatedEmail(admin.email)
-
-
                 setIsEdit(true)
               }}><Edit /></p>
               <p onClick={() => {
@@ -174,14 +178,17 @@ const AdminPage = () => {
           <span class="font-medium">Sorry</span> You can't delete super admin
         </div>
       </div>}
-      <ClientButton setPopUP={setPopUp} />
+      <ClientButton setPopUP={setPopUp} setIsEdit={setIsEdit} setEmail={setEmail} setUpdatedEmail={setUpdatedEmail} />
     </div>
   )
 }
 
-const ClientButton = ({ setPopUP }) => {
+const ClientButton = ({ setPopUP, setIsEdit, setEmail, setUpdatedEmail }) => {
   const handleAddNewClick = () => {
+    setIsEdit(false)
     setPopUP(true);
+    setEmail('')
+    setUpdatedEmail('')
   };
 
   return (
