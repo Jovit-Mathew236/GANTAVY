@@ -351,7 +351,15 @@ const ClientDetailsPage = () => {
                 onClick={() => {
                   firebase.firestore().collection('clients').doc(clientDetails.id).delete()
                     .then(() => {
-                      router.push('/');
+                      // Delete all applications of the client
+                      clientApplicationDetails.forEach((data) => {
+                        firebase.firestore().collection('applications').doc(data.id).delete().then(() => {
+                          router.push('/');
+                        })
+                          .catch((error) => {
+                            console.error('Error deleting application: ', error);
+                          });
+                      });
                     })
                     .catch((error) => {
                       console.error('Error deleting client: ', error);
