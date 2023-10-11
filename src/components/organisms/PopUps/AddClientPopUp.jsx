@@ -10,6 +10,7 @@ const AddClientPopUp = ({ setPopUp, onSave, id }) => {
     const [clientId, setClientId] = useState('');
     const [addedAt, setAddedAt] = useState('');
     const [hasError, setHasError] = useState(false);
+    const [disable, setDisable] = useState(false)
     useEffect(() => {
         id && firebase
             .firestore()
@@ -34,12 +35,14 @@ const AddClientPopUp = ({ setPopUp, onSave, id }) => {
         setPopUp(false);
     };
     const handleSaveClick = () => {
+        setDisable(true)
         // Validate the input data
         // validate email
         const emailRegex = /\S+@\S+\.\S+/;
         const phoneRegex = /^\d{10}$/;
         if (!emailRegex.test(email) || !phoneRegex.test(phone) || !email || !name || !phone) {
             setHasError(true);
+            setDisable(false)
             setTimeout(() => {
                 setHasError(false);
             }, 3000);
@@ -107,7 +110,7 @@ const AddClientPopUp = ({ setPopUp, onSave, id }) => {
                 </div>
                 <div className={styles.btnS}>
                     <button onClick={handleCancelClick}>Cancel</button>
-                    <button onClick={handleSaveClick}>Save</button>
+                    <button disabled={disable} onClick={handleSaveClick}>Save</button>
                 </div>
             </div>
             {hasError &&

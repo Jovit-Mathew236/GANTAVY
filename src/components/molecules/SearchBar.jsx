@@ -3,28 +3,27 @@ import styles from './molecules.module.css';
 import SearchIcon from '../atom/svgs/SearchIcon';
 
 const SearchBar = ({ searchQuery, searchField, onSearchFieldChange, onSearchQueryChange }) => {
-  const months =[
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sept",
-      "Oct",
-      "Nov",
-      "Dec"]
-  
-  console.log(searchField);
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec"]
+
   return (
     <div>
       <div className={styles.searchBarContainer}>
         <p className={styles.searchIcon}>
           <SearchIcon />
         </p>
-       {searchField !== 'year' && searchField !== 'month' &&  <input
+        {searchField !== 'year' && searchField !== 'month' && <input
           type="text"
           id="searchBar"
           name="searchBar"
@@ -35,14 +34,14 @@ const SearchBar = ({ searchQuery, searchField, onSearchFieldChange, onSearchQuer
           onChange={onSearchQueryChange}
         />}
         {searchField === 'year' && <select
-        onChange={onSearchQueryChange}
+          onChange={onSearchQueryChange}
         >
           <option value="2023">2023</option>
           <option value="2024">2024</option>
           <option value="2024">2024</option>
         </select>}
-        {searchField === 'month' && <select 
-        onChange={onSearchQueryChange}
+        {searchField === 'month' && <select
+          onChange={onSearchQueryChange}
         >
           {
             months.map((month, i) => {

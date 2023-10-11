@@ -85,6 +85,14 @@ const ApplicationDetails = () => {
   };
 
   const handleSave = () => {
+    // validateing the stage name
+    if (!stageName) {
+      setHasError(true);
+      setTimeout(() => {
+        setHasError(false);
+      }, 3000);
+      return;
+    }
     // Validate the fields before saving
     const isAnyFieldEmpty = fields.some((field) => {
       if (field.type === 'fileupload') {
