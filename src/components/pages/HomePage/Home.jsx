@@ -60,6 +60,12 @@ function HomePage() {
       return client.email.toLowerCase().includes(query);
     } else if (searchField === 'phone') {
       return client.phone && client.phone.toLowerCase().includes(query);
+    } else if (searchField === 'year') {
+      const year = new Date(client.addedAt.seconds * 1000).getFullYear();
+      return year.toString().includes(query);
+    } else if (searchField === 'month') {
+      const month = new Date(client.addedAt.seconds * 1000).toLocaleString('en-US', { month: 'long' });
+      return month.toLowerCase().includes(query);
     }
     return false;
   };

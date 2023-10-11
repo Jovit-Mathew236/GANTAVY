@@ -11,6 +11,7 @@
     position: absolute;
     top: 40px;
     right: 190px;
+    justify-content: space-between;
 }
 
 .searchBarContainer .searchIcon {
@@ -52,6 +53,7 @@
     font-weight: lighter;
     color: #141220;
     margin-left: 10px;
+    margin-right: 20px;
 }
 
 .searchBarContainer select {
