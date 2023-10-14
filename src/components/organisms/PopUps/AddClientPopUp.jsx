@@ -45,7 +45,7 @@ const AddClientPopUp = ({ setPopUp, onSave, id }) => {
             setDisable(false)
             setTimeout(() => {
                 setHasError(false);
-            }, 30000);
+            }, 3000);
             return;
         }
 
