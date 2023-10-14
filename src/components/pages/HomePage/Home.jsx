@@ -111,16 +111,23 @@ function HomePage() {
         return acc;
       }, {});
 
+      for (const monthYear in groupedClients) {
+        groupedClients[monthYear].sort((a, b) => {
+          return b.addedAt.seconds - a.addedAt.seconds;
+        });
+      }
+
       const sortedGroupedClients = Object.keys(groupedClients).sort((a, b) => {
         const dateA = new Date(a);
         const dateB = new Date(b);
-        return dateA + dateB;
+        return dateB - dateA;
       });
 
       const finalData = sortedGroupedClients.reduce((acc, key) => {
         acc[key] = groupedClients[key];
         return acc;
       }, {});
+
 
       setClients(finalData);
       setLoading(false);
@@ -136,7 +143,7 @@ function HomePage() {
   const handleSaveClient = (clientData) => {
     let newClientId;
     let isIDUnique = false;
-    
+
     do {
       newClientId = generateClientID();
       // Check if the generated ID already exists in any client data array
@@ -144,7 +151,7 @@ function HomePage() {
         clientDataArray.some((client) => client.clientId === newClientId)
       );
     } while (!isIDUnique);
-    
+
     firebase
       .firestore()
       .collection('clients')
@@ -162,7 +169,6 @@ function HomePage() {
           return {
             ...prev,
             [key]: [
-              ...prev[key],
               {
                 ...clientData,
                 clientId: newClientId,
@@ -171,10 +177,12 @@ function HomePage() {
                   nanoseconds: (currentDate % 1000) * 1000000,
                 },
               },
+              ...prev[key],
             ],
           };
         });
       })
+      
       .catch((error) => {
         console.error('Error adding client data: ', error);
       });

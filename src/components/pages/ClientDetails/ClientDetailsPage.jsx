@@ -107,6 +107,8 @@ const ClientDetailsPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const id = parseInt(searchParams.get('id'));
+  const [disable, setDisable] = useState(false)
+
 
   const handleCancelClick = () => {
     setPopUp(false);
@@ -178,6 +180,7 @@ const ClientDetailsPage = () => {
     firebase.firestore()
       .collection('applications')
       .where('clientid', '==', clientId)
+      .orderBy('createdAt', 'desc')
       .get()
       .then((snapshot) => {
         const data = snapshot.docs.map((doc) => ({
@@ -185,14 +188,13 @@ const ClientDetailsPage = () => {
           ...doc.data(),
         }));
         setClientApplicationDetails(data);
-      })
-      .then(() => {
         setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching client application details: ', error);
       });
   };
+  
 
   useEffect(() => {
     const auth = getAuth(firebase);
@@ -248,9 +250,11 @@ const ClientDetailsPage = () => {
   };
 
   const handleSaveClick = () => {
+    setDisable(true)
     // validation
     if (country.trim() === '' || visa.trim() === '') {
       setHasError(true);
+      setDisable(false)
       setTimeout(() => {
         setHasError(false);
       }, 3000);
@@ -269,12 +273,12 @@ const ClientDetailsPage = () => {
       installment,
       clientid: id,
       createdAt: new Date(),
+      completed: false,
     })
       .then((docRef) => {
         const currentDate = Date.now();
         setClientApplicationDetails((prev) => {
           return [
-            ...prev,
             {
               applicationId: newApplicationID,
               id: docRef.id,
@@ -288,8 +292,10 @@ const ClientDetailsPage = () => {
                 nanoseconds: (currentDate % 1000) * 1000000,
               }
             },
+            ...prev,
           ];
         });
+        setDisable(false)
         setPopUp(false);
       })
       .catch((error) => {
@@ -332,6 +338,7 @@ const ClientDetailsPage = () => {
           handleCancelClick={handleCancelClick}
           handleSaveClick={handleSaveClick}
           hasError={hasError}
+          disable={disable}
         />
       )}
 
@@ -348,22 +355,22 @@ const ClientDetailsPage = () => {
                 No
               </button>
               <button
-                onClick={() => {
-                  firebase.firestore().collection('clients').doc(clientDetails.id).delete()
-                    .then(() => {
-                      // Delete all applications of the client
-                      clientApplicationDetails.forEach((data) => {
-                        firebase.firestore().collection('applications').doc(data.id).delete().then(() => {
-                          router.push('/');
-                        })
-                          .catch((error) => {
-                            console.error('Error deleting application: ', error);
-                          });
-                      });
-                    })
-                    .catch((error) => {
-                      console.error('Error deleting client: ', error);
-                    });
+                onClick={async () => {
+                  try {
+                    // Delete all applications of the client
+                    for (const data of clientApplicationDetails) {
+                      await firebase.firestore().collection('applications').doc(data.id).delete();
+                    }
+
+                    // Delete the client after all applications have been deleted
+                    await firebase.firestore().collection('clients').doc(clientDetails.id).delete();
+
+                    // Once everything is deleted successfully, navigate to the desired location
+                    router.push('/');
+                  } catch (error) {
+                    console.error('Error deleting data: ', error);
+                    setHasError(true);
+                  }
                 }}
               >
                 Yes

@@ -35,7 +35,7 @@
     margin-top: 20px;
 }
 
-.helpPage .btnS button {
+.helpPage .btnS a {
     font-size: 20px;
     padding: 10px 30px;
     border: 1px solid #D3D3D3;
@@ -46,7 +46,7 @@
     cursor: pointer;
 }
 
-.helpPage .btnS button:hover {
+.helpPage .btnS a:hover {
     background: #000;
     color: white;
     /* border: none; */

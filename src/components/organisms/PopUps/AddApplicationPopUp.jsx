@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './PopUps.module.css'
 
 const AddApplicationPopUp = ({
@@ -12,7 +12,9 @@ const AddApplicationPopUp = ({
     handleCancelClick,
     handleSaveClick,
     hasError,
+    disable
 }) => {
+    // const [disable, setDisable] = useState(disable)
     return (
         <div className={styles.popUp}>
             <div className={styles.popUpContainer}>
@@ -80,7 +82,7 @@ const AddApplicationPopUp = ({
                 )}
                 <div className={styles.btnS}>
                     <button onClick={handleCancelClick}>Cancel</button>
-                    <button onClick={handleSaveClick}>Save</button>
+                    <button disabled={disable} onClick={handleSaveClick}>Save</button>
                 </div>
             </div>
             {hasError &&

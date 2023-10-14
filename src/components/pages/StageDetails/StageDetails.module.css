@@ -88,7 +88,9 @@
     min-height: 55px;
     /* margin: 0px 0px 20px 0px; */
 }
-
+.StageDetailsPage .stageDetailsContainer .StageDetails .responseField textarea::placeholder {
+    padding-top: 11px;
+}
 
 .StageDetailsPage .stageDetailsContainer .assetContainer {
     min-width: 100%;

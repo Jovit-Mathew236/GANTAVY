@@ -23,6 +23,7 @@ const ApplicationDetails = () => {
   const [hasError, setHasError] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isNotPaymentAlreadyPresent, setIsNotPaymentAlreadyPresent] = useState(false)
+  const [disable, setDisable] = useState(false)
 
 
   const [clientApplicationDetails, setClientApplicationDetails] = useState([
@@ -37,9 +38,6 @@ const ApplicationDetails = () => {
     }
   ]);
   const [stageDetails, setStageDetails] = useState([])
-  const handleCancelClick = () => {
-    setPopUp(false);
-  };
   const searchParams = useSearchParams();
   const id = parseInt(searchParams.get('id'));
   const [fields, setFields] = useState([
@@ -78,6 +76,26 @@ const ApplicationDetails = () => {
     ]);
   };
 
+  const cleanUpStates = () => {
+    setStageName('');
+    setFields([
+      {
+        type: 'fileupload',
+        heading: '',
+        subtext: '',
+        btntxt: '',
+        link: '',
+        amount: '',
+        status: 'notsubmitted',
+        response: 'notdone',
+        adminResponse: '',
+      },
+    ]);
+  };
+  const handleCancelClick = () => {
+    setPopUp(false);
+    cleanUpStates();
+  };
   const removeField = (index) => {
     const updatedFields = [...fields];
     updatedFields.splice(index, 1);
@@ -85,9 +103,11 @@ const ApplicationDetails = () => {
   };
 
   const handleSave = () => {
+    setDisable(true)
     // validateing the stage name
     if (!stageName) {
       setHasError(true);
+      setDisable(false)
       setTimeout(() => {
         setHasError(false);
       }, 3000);
@@ -108,6 +128,7 @@ const ApplicationDetails = () => {
     });
     if (isAnyFieldEmpty) {
       setHasError(true);
+      setDisable(false)
       setTimeout(() => {
         setHasError(false);
       }, 3000);
@@ -149,6 +170,8 @@ const ApplicationDetails = () => {
           },
         },
       ]);
+      setDisable(false)
+      cleanUpStates();
       setPopUp(false);
     })
       .catch((error) => {
@@ -211,7 +234,7 @@ const ApplicationDetails = () => {
   return (
     <div className={styles.applicationDetails}>
       {loading && <Loading />}
-      <Topnav id={id} collection={"applications"} where={'applicationId'} deletion={"Application"} />
+      <Topnav id={id} collection={"applications"} where={'applicationId'} deletion={"Application"} isBtn={true} />
       {!isCompleted && <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />}
 
       {popUp && <div className={styles.addClientPopUp}>
@@ -468,7 +491,7 @@ const ApplicationDetails = () => {
           </p> */}
           <div className={styles.btnS}>
             <button onClick={handleCancelClick}>Cancel</button>
-            <button onClick={handleSave}>Save</button>
+            <button disabled={disable} onClick={handleSave}>Save</button>
           </div>
         </div>
         {hasError &&
@@ -496,17 +519,17 @@ const ApplicationDetails = () => {
       </div>}
 
       <div className={styles.applicationDetailsContainer}>
-        <select name="" id="" value={isCompleted} onChange={(e) => {
-          setIsCompleted(JSON.parse(e.target.value))
+        <select name="" id="" value={clientApplicationDetails[0].completed} onChange={(e) => {
+          setClientApplicationDetails([
+            {
+              ...clientApplicationDetails[0],
+              completed: JSON.parse(e.target.value)
+            }
+          ])
           firebase.firestore().collection('applications').doc(docId).update({
             completed: JSON.parse(e.target.value)
           }).then(() => {
-            setClientApplicationDetails([
-              {
-                ...clientApplicationDetails[0],
-                completed: JSON.parse(e.target.value)
-              }
-            ])
+
             console.log(`Status updated to ${JSON.parse(e.target.value)}`);
           }).catch((error) => {
             console.error('Error updating status: ', error);

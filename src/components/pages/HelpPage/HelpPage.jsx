@@ -29,8 +29,8 @@ const HelpPage = () => {
       <h2>We would like to hear suggestions</h2>
 
       <div className={styles.btnS}>
-        <button className={styles.btn}>Mail us</button>
-        <button className={styles.btn}>Call Us</button>
+        <a href="mailto:oroniumtechnologies@gmail.com" className={styles.btn}>Mail us</a>
+        <a href="https://wa.me/+919544517905" target='_blank' className={styles.btn}>Call Us</a>
       </div>
 
       <p className={styles.company}>Oronium Innovations</p>

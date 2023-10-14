@@ -53,6 +53,7 @@ const StageDetails = () => {
     }, [docId, id])
     const fields = stage.fields.map(field => ({
         link: field.link ? field.link : "",
+        amount: field.amount ? field.amount : "",
         response: field.response ? field.response : "",
         status: field.status ? field.status : "",
         subtext: field.subtext ? field.subtext : "",
@@ -81,7 +82,7 @@ const StageDetails = () => {
                                     {field.type === "payment" && <div>
                                         <div>
                                             <p className={styles.label}>Amount</p>
-                                            <p className={styles.assets}>RS 5000</p>
+                                            <p className={styles.assets}>RS {field.amount}</p>
                                         </div>
                                         <div>
                                             <p className={styles.label}>Payment link</p>
@@ -194,7 +195,7 @@ const StageDetails = () => {
                                     </select>
                                 </div>
                             </div>
-                            <hr />
+                            {stage.fields.length > 1 ? <hr /> : null}
                         </>
                     )
                 })}

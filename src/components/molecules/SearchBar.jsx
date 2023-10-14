@@ -17,6 +17,14 @@ const SearchBar = ({ searchQuery, searchField, onSearchFieldChange, onSearchQuer
     "Nov",
     "Dec"]
 
+  const currentYear = new Date().getFullYear();
+  const startYear = 2023;
+  const years = [];
+
+  for (let year = startYear; year <= currentYear; year++) {
+    years.push(year);
+  }
+
   return (
     <div>
       <div className={styles.searchBarContainer}>
@@ -36,9 +44,11 @@ const SearchBar = ({ searchQuery, searchField, onSearchFieldChange, onSearchQuer
         {searchField === 'year' && <select
           onChange={onSearchQueryChange}
         >
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2024">2024</option>
+          {
+            years.map((year, i) => {
+              return <option key={i} value={year}>{year}</option>
+            })
+          }
         </select>}
         {searchField === 'month' && <select
           onChange={onSearchQueryChange}
