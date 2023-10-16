@@ -53,7 +53,36 @@
     margin-top: 5px;
     outline: none;
 }
+.popUp .popUpContainer .popUpFields{
+    position: relative;
+}
+.popUp .popUpContainer .popUpFields select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
 
+.popUp .popUpContainer .popUpFields select option {
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.popUp .popUpContainer .popUpFields select option:hover {
+    background-color: #f0f0f0;
+}
+
+.popUp .popUpContainer .popUpFields::after {
+    content: url('../../atom/svgs/dd.svg');
+    font-size: 8px;
+    position: absolute;
+    top: 54px;
+    right: 26px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
 .popUp .popUpContainer input::placeholder {
     color: #A3A3A3;
     font-weight: 300;

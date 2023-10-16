@@ -21,17 +21,17 @@ const AddApplicationPopUp = ({
                 <div className={styles.popUpFields}>
                     <label htmlFor="">Country</label>
                     <select name="" id="" onChange={(e) => setCountry(e.target.value)}>
-                        <option value="">Select Country</option>
+                        <option hidden value="">Select Country</option>
                         <option value="usa">United States of America</option>
                         <option value="uk">United Kingdom</option>
                         <option value="canada">Canada</option>
                         <option value="australia">Australia</option>
                     </select>
                 </div>
-                <div>
+                <div className={styles.popUpFields}>
                     <label htmlFor="">Visa</label>
                     <select name="" id="" onChange={(e) => setVisa(e.target.value)}>
-                        <option value="">Select Visa type</option>
+                        <option hidden value="">Select Visa type</option>
                         <option value="Education Visa">Education Visa</option>
                         <option value="Visiting Visa">Visiting Visa</option>
                         <option value="Education Visa">Education Visa</option>
