@@ -44,5 +44,6 @@ body::-webkit-scrollbar {
 
 .error_message {
   position: absolute;
-  bottom: 10px;
+  top: 20px;
+  right: 20px;
 }
