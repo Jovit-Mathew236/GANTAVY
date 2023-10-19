@@ -16,8 +16,8 @@
 }
 
 .topNav .notificationIcon {
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
     border-radius: 50%;
     background: url(../../atom/images/notificationicon.png), #141220;
     background-position: center;
@@ -84,6 +84,7 @@
     position: fixed;
     background: #fff;
 }
+
 .topNav .notification .notificationContainer .notificationBody {
     margin-top: 40px;
 }
@@ -120,8 +121,8 @@
 }
 
 .topNav .profilePic {
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
     border-radius: 50%;
     position: relative;
     z-index: 100;
@@ -172,8 +173,18 @@
         padding: 20px;
     }
 
+    .topNav .notificationIcon {
+        height: 50px;
+        width: 50px;
+    }
+
     .topNav .notification .notificationContainer {
         right: -80px;
 
+    }
+
+    .topNav .profilePic {
+        height: 50px;
+        width: 50px;
     }
 }
