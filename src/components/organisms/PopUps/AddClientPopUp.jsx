@@ -69,7 +69,7 @@ const AddClientPopUp = ({ setPopUp, onSave, id }) => {
     return (
         <div className={styles.popUp}>
             <div className={styles.popUpContainer}>
-                <div className={styles.popUpFields}>
+                <div className={styles.popUpFieldsClient}>
                     <label htmlFor="name">Client full name</label>
                     <input
                         type="text"
