@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./TopNavBar.module.css";
 import firebase from "../../../firebase/config";
 import { IoExitOutline } from "react-icons/io5";
@@ -15,11 +15,60 @@ const TopNav = () => {
   const [notifications, setNotifications] = useState([]);
   const [unReadNotifications, setUnReadNotifications] = useState(0);
   const [userProfilePicURL, setUserProfilePicURL] = useState(null); // Initialize with null
+  // Add a ref to the profile pic div
+  const profilePicRef = useRef(null);
+
+  // Add a ref to the notification icon div
+  const notificationIconRef = useRef(null);
+  const notificationPopupRef = useRef(null);
+  useEffect(() => {
+    const closePopUpOnClickOutside = (e) => {
+      if (
+        profilePicRef.current &&
+        notificationIconRef.current &&
+        !profilePicRef.current.contains(e.target) &&
+        !notificationIconRef.current.contains(e.target)
+      ) {
+        // If the click is outside both profile pic and notification icon, close the pop-up
+        setShowLogout(false);
+        setShowNotification(false);
+      }
+    };
+
+    window.addEventListener("mousedown", closePopUpOnClickOutside);
+
+    return () => {
+      window.removeEventListener("mousedown", closePopUpOnClickOutside);
+    };
+  }, []);
+  // Add a click event listener to the notification pop-up to prevent propagation
+  useEffect(() => {
+    const preventPropagation = (e) => {
+      e.stopPropagation();
+    };
+
+    if (showNotification && notificationPopupRef.current) {
+      notificationPopupRef.current.addEventListener(
+        "click",
+        preventPropagation
+      );
+    }
+
+    return () => {
+      if (showNotification && notificationPopupRef.current) {
+        notificationPopupRef.current.removeEventListener(
+          "click",
+          preventPropagation
+        );
+      }
+    };
+  }, [showNotification]);
 
   const url = usePathname();
 
   const toggleLogout = () => {
     setShowLogout(!showLogout);
+    setShowNotification(false); // Close the notification pop-up
   };
 
   const toggleNotification = () => {
@@ -40,6 +89,7 @@ const TopNav = () => {
           });
     }
     setShowNotification(!showNotification);
+    setShowLogout(false);
   };
 
   const handleLogout = () => {
@@ -122,11 +172,6 @@ const TopNav = () => {
             className={styles.notificationIcon}
             onClick={toggleNotification}
           ></div>
-          {unReadNotifications !== 0 && (
-            <span className={styles.notificationCount}>
-              {unReadNotifications}
-            </span>
-          )}
           {showNotification && (
             <div className={styles.notificationContainer}>
               <div className={styles.notificationHeader}>

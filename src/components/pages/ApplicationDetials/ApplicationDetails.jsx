@@ -15,6 +15,8 @@ import { countryData } from '../../molecules/Countries';
 
 const ApplicationDetails = () => {
   const [popUp, setPopUp] = useState(false);
+  const [popUpProceed, setPopUpProceed] = useState(false);
+  const [popUpProceedConfirm, setPopUpProceedConfirm] = useState(false);
   const [user, setUser] = useState(null);
   const [stageName, setStageName] = useState('');
 
@@ -231,12 +233,47 @@ const ApplicationDetails = () => {
     }) : 'no date';
   };
   // console.log(clientApplicationDetails);
+  useEffect(() => {
+    if (popUp && stageDetails.length >= 1) {
+      clientApplicationDetails[0].paymenttype === "Installment" ? setPopUpProceed(true) : setPopUpProceed(false)
+    }
+  }, [popUp])
   return (
     <div className={styles.applicationDetails}>
       {loading && <Loading />}
-      <Topnav id={id} collection={"applications"} where={'applicationId'} deletion={"Application"} isBtn={true} />
+      <Topnav id={id} collection={"applications"} where={'applicationId'} deletion={"Application"} isBtn={true} home={true} />
       {!isCompleted && <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />}
-
+      {popUpProceed && <div className={styles.popUp}>
+        <div className={styles.popUpContainer}>
+          <h1>Installment due alert !</h1>
+          <div className={styles.btns}>
+            <button onClick={() => {
+              setPopUpProceedConfirm(true)
+              setPopUpProceed(false)
+            }}>Proceed</button>
+            <button onClick={() => {
+              const updatedFields = [...fields];
+              updatedFields[updatedFields.length - 1].type = 'payment';
+              setFields(updatedFields);
+              setPopUpProceed(false)
+            }}>Payment</button>
+          </div>
+        </div>
+      </div>}
+      {popUpProceedConfirm && <div className={styles.popUp}>
+        <div className={styles.popUpContainer}>
+          <h1>Are you sure you want to Proceed</h1>
+          <div className={styles.btns}>
+            <button onClick={() => {
+              setPopUpProceedConfirm(false)
+              setPopUpProceed(true)
+            }}>No</button>
+            <button onClick={() => {
+              setPopUpProceedConfirm(false)
+            }}>Yes</button>
+          </div>
+        </div>
+      </div>}
       {popUp && <div className={styles.addClientPopUp}>
         <div className={styles.popUpContainer}>
           <div className={styles.popUpFields}>
@@ -606,9 +643,9 @@ const ApplicationDetails = () => {
           : (
             <div className={styles.errContainer}>
               <p className={styles.err}></p>
-              <p className={styles.errMessage}><span>Oops!</span>
+              <p className={styles.errMessage}>
                 <br />
-                no records found.</p>
+                Add new stages </p>
             </div>)
         }
 

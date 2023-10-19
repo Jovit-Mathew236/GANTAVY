@@ -194,7 +194,7 @@ const ClientDetailsPage = () => {
         console.error('Error fetching client application details: ', error);
       });
   };
-  
+
 
   useEffect(() => {
     const auth = getAuth(firebase);
@@ -457,9 +457,9 @@ const ClientDetailsPage = () => {
                 <Notification key={i} data={data} />
               )) : <div className={styles.errContainer}>
                 {/* <p className={styles.err}></p> */}
-                <p className={styles.errMessage}><span>Oops!</span>
+                <p className={styles.errMessage}>
                   <br />
-                  no records found.</p>
+                  Send new message</p>
               </div>
 
             }
@@ -477,9 +477,9 @@ const ClientDetailsPage = () => {
               ))
               : <div className={styles.errContainer}>
                 <p className={styles.err}></p>
-                <p className={styles.errMessage}><span>Oops!</span>
+                <p className={styles.errMessage}>
                   <br />
-                  no records found.</p>
+                  Add new appliaction.</p>
               </div>
           }
         </div>

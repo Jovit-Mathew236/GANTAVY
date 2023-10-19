@@ -118,6 +118,7 @@
     position: fixed;
     padding: 0px 20px;
     top: 0px;
+    left: 0;
     width: -webkit-fill-available;
     height: 100vh;
     -webkit-backdrop-filter: brightness(0.5);
@@ -189,6 +190,17 @@
 
 .topnav p {
     cursor: pointer;
+}
+
+.topnav .homeBtn {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eeeeee;
+    font-size: 26px;
 }
 
 .topnav .btns {

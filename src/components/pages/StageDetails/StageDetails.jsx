@@ -67,7 +67,7 @@ const StageDetails = () => {
     return (
         <div className={styles.StageDetailsPage}>
             {loading && <Loading />}
-            <Topnav id={id} collection={`applications/${docId}/stages`} where={"stageNumber"} deletion={"stage"} />
+            <Topnav id={id} collection={`applications/${docId}/stages`} where={"stageNumber"} deletion={"stage"} isBtn={true} home={true}/>
 
             <div className={styles.stageDetailsContainer}>
                 {fields.map((field, i) => {
@@ -78,7 +78,7 @@ const StageDetails = () => {
                                 <p>{field.subtext}</p>
                                 <div className={styles.assetContainer}>
                                     {field.type === "fileupload" && <p className={styles.assets}>{field.response ? <a href={field.response}>{field.response}</a> : "No file uploaded"}</p>}
-                                    {field.type === "textbtn" && <p className={styles.assets}>{field.btntxt}</p>}
+                                    {field.type === "textbtn" && <p className={styles.assets} style={field.response === 'done'?{background:"#048e00",color:"#fff"}:{}}>{field.btntxt}</p>}
                                     {field.type === "payment" && <div>
                                         <div>
                                             <p className={styles.label}>Amount</p>

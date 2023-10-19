@@ -13,6 +13,70 @@
     font-weight: 600;
 }
 
+.applicationDetails .popUp {
+    position: fixed;
+    padding: 0px 20px;
+    top: 0px;
+    left: 0;
+    width: -webkit-fill-available;
+    height: 100vh;
+    -webkit-backdrop-filter: brightness(0.5);
+    backdrop-filter: brightness(0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 60;
+}
+
+.applicationDetails .popUp .popUpContainer {
+    background: #fff;
+    border-radius: 20px;
+    width: 500px;
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    /* text-align: left; */
+    /* height: 530px; */
+    overflow-y: scroll;
+}
+
+.applicationDetails .popUp .popUpContainer h1 {
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.applicationDetails .popUp .popUpContainer .btns {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.applicationDetails .popUp .popUpContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.applicationDetails .popUp .popUpContainer button {
+    border-radius: 30px;
+    width: 140px;
+    border: 1px solid #D3D3D3;
+    background: #000;
+    padding: 10px 15px;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.applicationDetails .popUp .popUpContainer button:nth-child(1) {
+    background: #fff;
+    color: #000;
+}
+
+
+
 .applicationDetails .addClientPopUp {
     position: fixed;
     padding: 20px 30px;
@@ -395,9 +459,11 @@
     .applicationDetails {
         padding: 30px 0px;
     }
+
     .applicationDetails .addClientPopUp {
         padding: 20px;
     }
+
     .applicationDetails .addClientPopUp .popUpContainer {
         padding: 40px 20px;
     }

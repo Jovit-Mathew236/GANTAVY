@@ -5,10 +5,13 @@ import Back from '../atom/svgs/Back'
 import Edit2 from '../atom/svgs/Edit2'
 import Delete2 from '../atom/svgs/Delete2'
 import firebase from '../../firebase/config';
+import { AiFillHome } from 'react-icons/ai'
+import { useRouter } from 'next/navigation'
 
 
-const Topnav = ({ id, collection, where, deletion, setEditClientPopUp ,isBtn}) => {
+const Topnav = ({ id, collection, where, deletion, setEditClientPopUp, isBtn, home }) => {
     // console.log(id, collection, where);
+    const router = useRouter()
     const [popUp, setPopUp] = useState(false);
     return (
         <>
@@ -47,15 +50,21 @@ const Topnav = ({ id, collection, where, deletion, setEditClientPopUp ,isBtn}) =
                         window.history.back()
                     }
                 }><Back /> </p>
-                {isBtn &&<div className={styles.btns}>
+                {isBtn && <div className={styles.btns}>
                     {setEditClientPopUp && <p onClick={() => {
                         setEditClientPopUp(true)
                     }}><Edit2 /></p>}
-                    <p
+                    {deletion && <p
                         onClick={() => {
                             setPopUp(true)
                         }}
-                    ><Delete2 /></p>
+                    ><Delete2 /></p>}
+                    {home && <p
+                        onClick={() => {
+                            router.push('/')
+                        }}
+                        className={styles.homeBtn}
+                    ><AiFillHome /></p>}
                 </div>}
             </div>
         </>
