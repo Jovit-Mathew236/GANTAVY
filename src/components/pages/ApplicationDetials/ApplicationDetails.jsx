@@ -136,9 +136,6 @@ const ApplicationDetails = () => {
       }, 3000);
       return;
     }
-
-
-
     // Prepare the data to submit
     const dataToSubmit = {
       fields: fields.map((field) => ({
@@ -161,7 +158,6 @@ const ApplicationDetails = () => {
     firebase.firestore().collection('applications').doc(docId).collection('stages').add(dataToSubmit).then((docRef) => {
       const currentDate = new Date();
       setStageDetails([
-        ...stageDetails,
         {
           completed: false,
           stageNumber: stageDetails.length + 1,
@@ -171,6 +167,7 @@ const ApplicationDetails = () => {
             nanoseconds: (currentDate % 1000) * 1000000,
           },
         },
+        ...stageDetails,
       ]);
       setDisable(false)
       cleanUpStates();
@@ -214,7 +211,7 @@ const ApplicationDetails = () => {
             };
           });
           // sort data by stageNumber
-          setStageDetails(data.sort((a, b) => a.stageNumber - b.stageNumber));
+          setStageDetails(data.sort((a, b) => b.stageNumber - a.stageNumber));
         })
         setLoading(false);
       })

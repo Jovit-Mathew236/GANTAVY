@@ -7,6 +7,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebase from '../../../firebase/config';
 import Loading from '../../molecules/Loading';
 import { IoSend } from 'react-icons/io5'
+import { AiFillFileText } from 'react-icons/ai'
 
 const StageDetails = () => {
     const searchParams = useSearchParams();
@@ -67,7 +68,7 @@ const StageDetails = () => {
     return (
         <div className={styles.StageDetailsPage}>
             {loading && <Loading />}
-            <Topnav id={id} collection={`applications/${docId}/stages`} where={"stageNumber"} deletion={"stage"} isBtn={true} home={true}/>
+            <Topnav id={id} collection={`applications/${docId}/stages`} where={"stageNumber"} deletion={"stage"} isBtn={true} home={true} />
 
             <div className={styles.stageDetailsContainer}>
                 {fields.map((field, i) => {
@@ -77,8 +78,8 @@ const StageDetails = () => {
                                 <h1>{field.heading}</h1>
                                 <p>{field.subtext}</p>
                                 <div className={styles.assetContainer}>
-                                    {field.type === "fileupload" && <p className={styles.assets}>{field.response ? <a href={field.response}>{field.response}</a> : "No file uploaded"}</p>}
-                                    {field.type === "textbtn" && <p className={styles.assets} style={field.response === 'done'?{background:"#048e00",color:"#fff"}:{}}>{field.btntxt}</p>}
+                                    {field.type === "fileupload" && <><p className={styles.assets}>{field.response ? <AiFillFileText fontSize={"30px"} /> : "No file uploaded"}</p> <a href={field.response} target='_blank'>Open file</a></>}
+                                    {field.type === "textbtn" && <p className={styles.assets} style={field.response === 'done' ? { background: "#048e00", color: "#fff" } : {}}>{field.btntxt}</p>}
                                     {field.type === "payment" && <div>
                                         <div>
                                             <p className={styles.label}>Amount</p>

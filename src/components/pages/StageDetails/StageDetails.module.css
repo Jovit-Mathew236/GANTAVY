@@ -88,6 +88,7 @@
     min-height: 55px;
     /* margin: 0px 0px 20px 0px; */
 }
+
 .StageDetailsPage .stageDetailsContainer .StageDetails .responseField textarea::placeholder {
     padding-top: 11px;
 }
@@ -103,6 +104,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.StageDetailsPage .stageDetailsContainer .assetContainer a {
+    padding: 10px 15px;
+    background: #eeeeee;
+    border-radius: 10px;
 }
 
 .StageDetailsPage .stageDetailsContainer .assetContainer .label {
