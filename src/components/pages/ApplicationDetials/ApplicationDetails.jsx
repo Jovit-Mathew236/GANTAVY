@@ -5,14 +5,13 @@ import styles from './Application.module.css'
 import Topnav from '../../molecules/Topnav'
 import BottomIcon from '../../molecules/BottomIcon'
 import New from '../../atom/svgs/New'
-import RightArrow from '../../atom/svgs/RightArrow'
 import firebase from '../../../firebase/config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import Add2 from '../../atom/svgs/Add2';
 import Loading from '../../molecules/Loading';
-import Remove from '../../atom/svgs/Remove';
 import { countryData } from '../../molecules/Countries';
-import Page404 from '../../molecules/Page404';
+import ApplicationStageDeatils from '../../molecules/ApplicationStageDeatils';
+import ApplicationDetailsBox from '../../molecules/ApplicationDetailsBox';
+import AddStagePopup from '../../organisms/PopUps/AddStagePopup';
 
 const ApplicationDetails = () => {
   const [popUp, setPopUp] = useState(false);
@@ -25,7 +24,6 @@ const ApplicationDetails = () => {
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [isNotPaymentAlreadyPresent, setIsNotPaymentAlreadyPresent] = useState(false)
   const [disable, setDisable] = useState(false)
 
 
@@ -223,14 +221,6 @@ const ApplicationDetails = () => {
     }
   }, [id])
 
-  const formattedDate = (date) => {
-    return date ? new Date(date[0].createdAt.seconds * 1000).toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }) : 'no date';
-  };
-  // console.log(clientApplicationDetails);
   useEffect(() => {
     if (popUp && stageDetails.length >= 1) {
       clientApplicationDetails[0].paymenttype === "Installment" ? setPopUpProceed(true) : setPopUpProceed(false)
@@ -272,377 +262,29 @@ const ApplicationDetails = () => {
           </div>
         </div>
       </div>}
-      {popUp && <div className={styles.addClientPopUp}>
-        <div className={styles.popUpContainer}>
-          <div className={styles.popUpFields}>
-            <label htmlFor="">Stage Name</label>
-            <input type="text" placeholder='Level 1' onChange={(e) => {
-              setStageName(e.target.value)
-            }} />
-          </div>
+      <AddStagePopup
+        popUp={popUp}
+        setStageName={setStageName}
+        fields={fields}
+        removeField={removeField}
+        setFields={setFields}
+        addField={addField}
+        handleCancelClick={handleCancelClick}
+        handleSave={handleSave}
+        disable={disable}
+        hasError={hasError}
+      />
 
-          {fields.map((field, index) => (
-            <div key={index} className={styles.subContainer}>
-              {index > 0 && (
-                <p className={styles.rmvBtn} onClick={() => removeField(index)}>
-                  <Remove />
-                </p>
-              )}
-              <select
-                name="options"
-                id="option"
-                value={field.type}
-                onChange={(e) => {
-                  if (e.target.value === 'payment') {
-                    const isNotPaymentAlreadyPresent = fields.some((field) => field.type !== 'payment' && fields.length !== 1);
-                    if (isNotPaymentAlreadyPresent) {
-                      setIsNotPaymentAlreadyPresent(true);
-                      setTimeout(() => {
-                        setIsNotPaymentAlreadyPresent(false);
-                      }, 3000);
-                      return;
-                    }
-                  }
-                  const updatedFields = [...fields];
-                  updatedFields[index].type = e.target.value;
-                  setFields(updatedFields);
-                }}
-              >
-                <option value="fileupload">File Upload</option>
-                <option value="textbtn">Text button</option>
-                <option value="payment">Payment info</option>
-                <option value="link">Link share</option>
-              </select>
-
-              {field.type === "fileupload" && (
-                <>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Heading</label>
-                    <input
-                      type="text"
-                      placeholder='Upload your passport'
-                      value={field.heading}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].heading = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Sub Heading</label>
-                    <input
-                      type="text"
-                      placeholder="Enter details"
-                      value={field.subtext}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].subtext = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                </>
-              )}
-              {field.type === "textbtn" && (
-                <>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Heading</label>
-                    <input
-                      type="text"
-                      placeholder='Upload your passport'
-                      value={field.heading}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].heading = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Sub Heading</label>
-                    <input
-                      type="text"
-                      placeholder="Enter details"
-                      value={field.subtext}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].subtext = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Button Text</label>
-                    <input
-                      type="text"
-                      placeholder='Button text'
-                      value={field.btntxt}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].btntxt = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                </>
-              )}
-              {field.type === "payment" && (
-                <>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Heading</label>
-                    <input
-                      type="text"
-                      placeholder='Upload your passport'
-                      value={field.heading}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].heading = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Sub Heading</label>
-                    <input
-                      type="text"
-                      placeholder='Enter sub heading'
-                      value={field.subtext}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].subtext = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Amount</label>
-                    <input
-                      type="text"
-                      placeholder='Amount'
-                      value={field.amount}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].amount = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Button Text</label>
-                    <input
-                      type="text"
-                      placeholder='Button text'
-                      value={field.btntxt}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].btntxt = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Payment Link</label>
-                    <input
-                      type="text"
-                      placeholder='Payment link'
-                      value={field.link}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].link = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                </>
-              )}
-
-              {field.type === "link" && (
-                <>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Heading</label>
-                    <input
-                      type="text"
-                      placeholder='Upload your passport'
-                      value={field.heading}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].heading = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Subheading</label>
-                    <input
-                      type="text"
-                      placeholder="Enter subheading"
-                      value={field.subtext}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].subtext = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Button Text</label>
-                    <input
-                      type="text"
-                      placeholder='Button text'
-                      value={field.btntxt}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].btntxt = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                  <div className={styles.popUpFields}>
-                    <label htmlFor="">Link</label>
-                    <input
-                      type="text"
-                      placeholder="Enter link"
-                      value={field.link}
-                      onChange={(e) => {
-                        const updatedFields = [...fields];
-                        updatedFields[index].link = e.target.value;
-                        setFields(updatedFields);
-                      }}
-                    />
-                  </div>
-                </>
-              )}
-              {index === fields.length - 1 && (
-                <p className={styles.addAndRmvBtn} onClick={addField}>
-                  <Add2 />
-                </p>
-              )}
-            </div>
-          ))}
-
-          {/* <p className={styles.addAndRmvBtn} onClick={addField}>
-            <Add2 />
-          </p> */}
-          <div className={styles.btnS}>
-            <button onClick={handleCancelClick}>Cancel</button>
-            <button disabled={disable} onClick={handleSave}>Save</button>
-          </div>
-        </div>
-        {hasError &&
-          <div class="error_message flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div>
-              <span class="font-medium">Invalid Felid!</span> Enter valid data
-            </div>
-          </div>
-        }
-        {isNotPaymentAlreadyPresent &&
-          <div class="error_message flex items-center p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 " role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-            </svg>
-            <span class="sr-only">Info</span>
-            <div>
-              <span class="font-medium">Sorry!</span>You cannot add a payment field as there is already a field present
-            </div>
-          </div>
-        }
-      </div>}
-
-      <div className={styles.applicationDetailsContainer}>
-        <select name="" id="" value={clientApplicationDetails[0].completed} onChange={(e) => {
-          setClientApplicationDetails([
-            {
-              ...clientApplicationDetails[0],
-              completed: JSON.parse(e.target.value)
-            }
-          ])
-          firebase.firestore().collection('applications').doc(docId).update({
-            completed: JSON.parse(e.target.value)
-          }).then(() => {
-
-            console.log(`Status updated to ${JSON.parse(e.target.value)}`);
-          }).catch((error) => {
-            console.error('Error updating status: ', error);
-          });
-        }}>
-          <option value={false}>Not Completed</option>
-          <option value={true}>Completed</option>
-        </select>
-
-        <div className={styles.id}>#{
-          clientApplicationDetails.map((clientApplicationDetail) => {
-            return clientApplicationDetail.applicationId
-          })
-        }</div>
-
-        <h1>{
-          clientApplicationDetails.map((clientApplicationDetail) => {
-            return clientApplicationDetail.visatype
-          })
-        }</h1>
-        <h1 className={styles.country_name}>{
-          clientApplicationDetails.map((clientApplicationDetail) => {
-            return (countryData[clientApplicationDetail.country].name)
-          })}
-          <p className={styles.countryIcon}>
-            <img
-              width="15"
-              height="15"
-              src={`https://img.icons8.com/emoji/48/${countryData[clientApplicationDetails[0].country].name.split(' ').join('-').toLowerCase()}-emoji.png`}
-              alt={`${clientApplicationDetails[0].country}-emoji`}
-            />
-          </p></h1>
-
-        <p className={styles.paymentType}>{
-          clientApplicationDetails.map((clientApplicationDetail) => {
-            return clientApplicationDetail.paymenttype
-          })
-        }{clientApplicationDetails[0].installment ? <span>{clientApplicationDetails[0].installment}</span> : null}</p>
-
-        <p className={styles.createdDate}>Created on {formattedDate(clientApplicationDetails)}</p>
-      </div>
+      <ApplicationDetailsBox
+        clientApplicationDetails={clientApplicationDetails}
+        docId={docId}
+        setClientApplicationDetails={setClientApplicationDetails}
+        countryData={countryData}
+      />
 
       <div className={styles.stageContainer}>
         <h1>Stages</h1>
-
-        {stageDetails.length !== 0 ?
-          stageDetails.map((stageDetail) => {
-            const milliseconds = stageDetail.addedAt ? stageDetail.addedAt.seconds * 1000 : 0;
-            const date = new Date(milliseconds);
-
-            const day = date.getDate();
-            const month = date.toLocaleString('en-US', { month: 'long' });
-            const year = date.getFullYear();
-
-            const formattedDate = `${day} ${month} ${year}`;
-            return (
-              <div className={styles.stage}>
-                <p className={styles.date}>{formattedDate ? formattedDate : ""}</p>
-                <div className={styles.level}>
-                  <p>{stageDetail.stageNumber}</p>
-                </div>
-                <div>
-                  <h2 className={styles.head}>{stageDetail.heading}</h2>
-                  <p className={styles.status} style={!stageDetail.completed ? { color: "#FF6060" } : { color: "#8AB867" }}>{
-                    stageDetail.completed ? 'Completed' : 'On going'
-                  }</p>
-                </div>
-                <a href={`/client-details/application/stage?id=${stageDetail.stageNumber}&docId=${docId}`}>
-                  <RightArrow />
-                </a>
-              </div>
-            )
-          })
-          : (
-            <Page404 errMessage={"Add new stages"} oops={false}/>
-            )
-        }
-
+        <ApplicationStageDeatils stageDetails={stageDetails} docId={docId} />
       </div>
 
 

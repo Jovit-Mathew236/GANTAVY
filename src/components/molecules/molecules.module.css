@@ -280,6 +280,7 @@
     font-size: 14px;
 
 }
+
 /* Client Chat Box */
 
 .messageSection {
@@ -345,6 +346,165 @@
     font-weight: 500;
     margin: 5px 0px;
 }
+
+/* application stage detials section css */
+
+.stage {
+    padding: 20px;
+    border: 1px solid #D9D9D9;
+    border-radius: 20px;
+    display: flex;
+    min-height: 150px;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+    text-align: center;
+}
+
+.stage .date {
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    color: #AEAEAE;
+}
+
+.stage .level {
+    height: 70px;
+    width: 70px;
+    border: 1px solid #E0E0E0;
+    display: flex;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 50px;
+    color: #A4A4A4;
+    position: absolute;
+    left: 25px;
+}
+
+.stage .head {
+    min-width: 260px;
+    word-break: break-word;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.stage a {
+    position: absolute;
+    bottom: 15px;
+    right: 30px;
+}
+
+/* application details box on application details page */
+
+.applicationDetailsContainer {
+    border-radius: 20px;
+    background: #F4F4F4;
+    /* min-width: 380px; */
+    padding: 30px 70px;
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.applicationDetailsContainer .country_name {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.applicationDetailsContainer .country_name .countryIcon {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #E6F5F5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+    font-weight: 100;
+}
+
+.applicationDetailsContainer select {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 40px;
+    background: #000;
+    color: white;
+    padding-right: 40px;
+}
+
+.applicationDetailsContainer select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.applicationDetailsContainer select option {
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.applicationDetailsContainer select option:hover {
+    background-color: #f0f0f0;
+}
+
+.applicationDetailsContainer ::after {
+    content: '\25BC';
+    font-size: 8px;
+    position: absolute;
+    top: 54px;
+    right: 106px;
+    color: #fff;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.applicationDetailsContainer .id {
+    padding: 2px 40px;
+    border-radius: 16px;
+    border: 0.5px solid #DEDEDE;
+    background: #E8E8E8;
+    font-weight: bold;
+}
+
+.applicationDetailsContainer .paymentType {
+    padding: 5px 7px 5px 20px;
+    border: 1px solid #CAC9C9;
+    border-radius: 20px;
+    display: flex;
+    gap: 20px;
+    font-weight: 600;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.applicationDetailsContainer .paymentType span {
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    height: 30px;
+    width: 30px;
+    background: #E8E8E8;
+    align-items: center;
+    font-weight: 100;
+    justify-content: center;
+}
+
+.applicationDetailsContainer .createdDate {
+    margin-top: 150px;
+}
+
+
+
 @keyframes fade {
     0% {
         opacity: 0.4;
@@ -412,6 +572,11 @@
 
     .topnav {
         padding: 20px 10px;
+    }
+
+    .applicationDetailsContainer {
+        width: 100%;
+        margin-top: 30px;
     }
 }
 

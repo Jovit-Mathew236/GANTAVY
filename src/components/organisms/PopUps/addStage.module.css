@@ -1,0 +1,157 @@
+.popUp {
+    position: fixed;
+    padding: 20px 30px;
+    /* margin-left: -30px; */
+    top: 0px;
+    left: 0px;
+    width: -webkit-fill-available;
+    height: 100vh;
+    -webkit-backdrop-filter: brightness(0.5);
+    backdrop-filter: brightness(0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.popUp .popUpContainer {
+    background: #fff;
+    border-radius: 20px;
+    width: 500px;
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: left;
+    height: 530px;
+    overflow-y: scroll;
+}
+
+.popUp .popUpContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.popUp .popUpContainer .popUpFields {
+    width: 100%;
+}
+
+.popUp .popUpContainer button {
+    border-radius: 10px;
+    margin-top: 30px;
+    font-weight: 500;
+    border: 1px solid #D3D3D3;
+    background: #000;
+    padding: 10px 10px;
+    color: white;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.popUp .popUpContainer label {
+    margin-left: 10px;
+    font-weight: 500;
+}
+
+.popUp .popUpContainer input,
+.popUp .popUpContainer select {
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 26px;
+    border: none;
+    border: 1px solid #EDEDED;
+    background: #FCFCFC;
+    margin-top: 5px;
+    outline: none;
+}
+
+.popUp .popUpContainer select {
+    width: fit-content;
+    border-radius: 10px;
+}
+
+.popUp .popUpContainer input::placeholder {
+    color: #A3A3A3;
+    font-weight: 300;
+}
+
+.popUp .popUpContainer .subContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 10px 20px;
+    border: 1px solid #EDEDED;
+    border-radius: 20px;
+    position: relative;
+}
+
+.popUp .popUpContainer .subContainer::after {
+    content: '\25BC';
+    font-size: 14px;
+    position: absolute;
+    top: 40px;
+    right: 30px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.popUp .popUpContainer .subContainer select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    padding: 10px;
+    padding-right: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.popUp .popUpContainer .subContainer select option {
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    padding: 10px;
+}
+
+/* Style the hover state of options */
+.popUp .popUpContainer .subContainer select option:hover {
+    background-color: #f0f0f0;
+}
+
+.popUp .popUpContainer .subContainer .option {
+    margin-bottom: -30px;
+}
+
+.popUp .popUpContainer .addAndRmvBtn {
+    margin-top: -10px;
+    cursor: pointer;
+    margin: 0 0 0 auto;
+}
+
+.popUp .popUpContainer .subContainer .rmvBtn {
+    position: absolute;
+    left: 12px;
+    cursor: pointer;
+}
+
+.popUp .popUpContainer .btnS {
+    display: flex;
+    gap: 10px 20px;
+    justify-content: center;
+}
+
+.popUp .popUpContainer .btnS button {
+    width: 100px;
+    font-weight: 300;
+    margin-top: 20px;
+}
+
+.popUp .popUpContainer .btnS button:nth-child(1) {
+    background: #fff;
+    color: #000;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
