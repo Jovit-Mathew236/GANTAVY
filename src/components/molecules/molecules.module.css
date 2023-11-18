@@ -221,6 +221,130 @@
     z-index: 110;
 }
 
+/*client details header */
+
+.detailsHeader {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin: 20px 30px;
+}
+
+.detailsHeader .id {
+    padding: 2px 40px;
+    border-radius: 16px;
+    border: 0.5px solid #DEDEDE;
+    background: #E6E6E6;
+    font-weight: bold;
+}
+
+.detailsHeader .email,
+.detailsHeader .phone {
+    font-size: 14px;
+    margin-top: -5px;
+}
+
+.detailsHeader .countries {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.detailsHeader .countries .country {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: #E6F5F5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.detailsHeader .buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.detailsHeader .buttons button {
+    padding: 5px 14px;
+    background: #e6e6e6;
+    border-radius: 30px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+
+}
+/* Client Chat Box */
+
+.messageSection {
+    border-radius: 30px;
+    background: #fff;
+    overflow: hidden;
+    margin-top: 20px;
+    margin: 30px 50px;
+}
+
+.messageSection .messageHeader {
+    background: #2D2D2D;
+    padding: 25px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.messageSection .messageHeader input {
+    background: transparent;
+    border: 1px solid #858585;
+    border-radius: 30px;
+    padding: 8px 10px;
+    width: 100%;
+    color: white;
+}
+
+.messageSection .messageHeader button {
+    border: none;
+    border-radius: 20pc;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 2px 2px 2px 15px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    cursor: pointer;
+    background: #fff;
+}
+
+.messageSection .messageBody {
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 270px;
+    overflow-y: scroll;
+}
+
+.messageSection .messageBody::-webkit-scrollbar {
+    display: none;
+}
+
+.messageSection .messageBody .message .date {
+    font-size: 14px;
+    color: #B8B8B8;
+}
+
+.messageSection .messageBody .message .body h2 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 5px 0px;
+}
 @keyframes fade {
     0% {
         opacity: 0.4;

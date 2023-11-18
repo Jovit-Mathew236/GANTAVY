@@ -8,40 +8,14 @@ import Loading from "../../molecules/Loading";
 import Topnav from "../../molecules/Topnav";
 import BottomIcon from "../../molecules/BottomIcon";
 import New from "../../atom/svgs/New";
-import SendBlack from "../../atom/svgs/SendBlack";
 import AddApplicationPopUp from "../../organisms/PopUps/AddApplicationPopUp";
 import AddClientPopUp from "../../organisms/PopUps/AddClientPopUp";
 import { countryData } from "../../molecules/Countries";
-// import Edit2 from "../../atom/svgs/Edit2";
-// import Delete2 from "../../atom/svgs/Delete2";
-import { MdEdit } from "react-icons/md";
-import Delete3 from "../../atom/svgs/Delete3";
 import Card from "../../organisms/Card/Card";
 import DeleteConfirmationPopup from "../../organisms/PopUps/DeleteConfirmationPopup";
 import Page404 from "../../molecules/Page404";
-
-// Component for rendering a single notification
-function Notification({ data }) {
-  const formattedDate = new Date(data.sendAt.seconds * 1000).toLocaleDateString(
-    "en-US",
-    {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }
-  );
-
-  return (
-    <div className={styles.message}>
-      <p className={styles.date}>{formattedDate}</p>
-      <div className={styles.body}>
-        <h2>{data.title}</h2>
-        <p>{data.message}</p>
-      </div>
-      {data.length !== 0 ? <hr /> : null}
-    </div>
-  );
-}
+import MessageSection from "../../molecules/ChatBox";
+import DetailsHeader from "../../molecules/ClientDetailsHeader";
 
 const ClientDetailsPage = () => {
   const [popUp, setPopUp] = useState(false);
@@ -80,11 +54,7 @@ const ClientDetailsPage = () => {
 
   const fetchClientDetails = async (clientId) => {
     try {
-      const snapshot = await firebase
-        .firestore()
-        .collection("clients")
-        .where("clientId", "==", clientId)
-        .get();
+      const snapshot = await firebase.firestore().collection("clients").where("clientId", "==", clientId).get();
       const data = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -92,11 +62,7 @@ const ClientDetailsPage = () => {
 
       const clientsWithCountries = await Promise.all(
         data.map(async (doc) => {
-          const snapshot = await firebase
-            .firestore()
-            .collection("applications")
-            .where("clientid", "==", doc.clientId)
-            .get();
+          const snapshot = await firebase.firestore().collection("applications").where("clientid", "==", doc.clientId).get();
           const allDocs = snapshot.docs.map((infos) => ({
             ...infos.data(),
             id: infos.id,
@@ -105,7 +71,6 @@ const ClientDetailsPage = () => {
           return { ...doc, country: countries };
         })
       );
-
       setClientDetails(clientsWithCountries[0]);
     } catch (error) {
       console.error("Error fetching client details: ", error);
@@ -113,42 +78,29 @@ const ClientDetailsPage = () => {
   };
 
   const fetchNotifications = (clientId) => {
-    firebase
-      .firestore()
-      .collection("notifications")
-      .where("recipient", "==", clientId)
-      .get()
-      .then((snapshot) => {
-        const allDocs = snapshot.docs.map((infos) => ({
-          ...infos.data(),
-          id: infos.id,
-        }));
-        const sorted = allDocs.sort((a, b) => b.sendAt - a.sendAt);
-        setNotification(sorted);
-      })
-      .catch((error) => {
-        console.error("Error fetching notifications: ", error);
-      });
+    firebase.firestore().collection("notifications").where("recipient", "==", clientId).get().then((snapshot) => {
+      const allDocs = snapshot.docs.map((infos) => ({
+        ...infos.data(),
+        id: infos.id,
+      }));
+      const sorted = allDocs.sort((a, b) => b.sendAt - a.sendAt);
+      setNotification(sorted);
+    }).catch((error) => {
+      console.error("Error fetching notifications: ", error);
+    });
   };
 
   const fetchClientApplicationDetails = (clientId) => {
-    firebase
-      .firestore()
-      .collection("applications")
-      .where("clientid", "==", clientId)
-      .orderBy("createdAt", "desc")
-      .get()
-      .then((snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setClientApplicationDetails(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching client application details: ", error);
-      });
+    firebase.firestore().collection("applications").where("clientid", "==", clientId).orderBy("createdAt", "desc").get().then((snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setClientApplicationDetails(data);
+      setLoading(false);
+    }).catch((error) => {
+      console.error("Error fetching client application details: ", error);
+    });
   };
 
   useEffect(() => {
@@ -177,35 +129,31 @@ const ClientDetailsPage = () => {
       return;
     }
     const currentDate = Date.now();
-    firebase
-      .firestore()
-      .collection("notifications")
-      .add({
-        title,
-        message,
-        recipient: id,
-        messageStatus: false,
-        sendAt: new Date(),
-        sender: "admin",
-      })
-      .then(() => {
-        setTitle("");
-        setMessage("");
-        setNotification((prev) => [
-          {
-            title,
-            message,
-            recipient: id,
-            messageStatus: false,
-            sendAt: {
-              seconds: Math.floor(currentDate / 1000),
-              nanoseconds: (currentDate % 1000) * 1000000,
-            },
-            sender: "admin",
+    firebase.firestore().collection("notifications").add({
+      title,
+      message,
+      recipient: id,
+      messageStatus: false,
+      sendAt: new Date(),
+      sender: "admin",
+    }).then(() => {
+      setTitle("");
+      setMessage("");
+      setNotification((prev) => [
+        {
+          title,
+          message,
+          recipient: id,
+          messageStatus: false,
+          sendAt: {
+            seconds: Math.floor(currentDate / 1000),
+            nanoseconds: (currentDate % 1000) * 1000000,
           },
-          ...prev,
-        ]);
-      });
+          sender: "admin",
+        },
+        ...prev,
+      ]);
+    });
   };
 
   const handleSaveClick = () => {
@@ -228,67 +176,57 @@ const ClientDetailsPage = () => {
         (data) => data.applicationId === newApplicationID
       )
     );
-    firebase
-      .firestore()
-      .collection("applications")
-      .add({
-        applicationId: newApplicationID,
-        country,
-        visatype: visa,
-        paymenttype: paymentType,
-        installment,
-        clientid: id,
-        createdAt: new Date(),
-        completed: false,
-      })
-      .then((docRef) => {
-        const currentDate = Date.now();
-        setClientApplicationDetails((prev) => {
-          return [
-            {
-              applicationId: newApplicationID,
-              id: docRef.id,
-              country,
-              visatype: visa,
-              paymenttype: paymentType,
-              installment: parseInt(installment),
-              clientid: id,
-              createdAt: {
-                seconds: Math.floor(currentDate / 1000),
-                nanoseconds: (currentDate % 1000) * 1000000,
-              },
+    firebase.firestore().collection("applications").add({
+      applicationId: newApplicationID,
+      country,
+      visatype: visa,
+      paymenttype: paymentType,
+      installment,
+      clientid: id,
+      createdAt: new Date(),
+      completed: false,
+    }).then((docRef) => {
+      const currentDate = Date.now();
+      setClientApplicationDetails((prev) => {
+        return [
+          {
+            applicationId: newApplicationID,
+            id: docRef.id,
+            country,
+            visatype: visa,
+            paymenttype: paymentType,
+            installment: parseInt(installment),
+            clientid: id,
+            createdAt: {
+              seconds: Math.floor(currentDate / 1000),
+              nanoseconds: (currentDate % 1000) * 1000000,
             },
-            ...prev,
-          ];
-        });
-        setDisable(false);
-        setPopUp(false);
-      })
+          },
+          ...prev,
+        ];
+      });
+      setDisable(false);
+      setPopUp(false);
+    })
       .catch((error) => {
         console.error("Error adding application: ", error);
       });
   };
 
   const handleEditClient = (clientData) => {
-    firebase
-      .firestore()
-      .collection("clients")
-      .doc(clientDetails.id)
-      .update({
-        ...clientData,
-      })
-      .then(() => {
-        setClientDetails((prev) => {
-          return {
-            ...prev,
-            ...clientData,
-          };
-        });
-        setEditClientPopUp(false);
-      })
-      .catch((error) => {
-        console.error("Error adding client data: ", error);
+    firebase.firestore().collection("clients").doc(clientDetails.id).update({
+      ...clientData,
+    }).then(() => {
+      setClientDetails((prev) => {
+        return {
+          ...prev,
+          ...clientData,
+        };
       });
+      setEditClientPopUp(false);
+    }).catch((error) => {
+      console.error("Error adding client data: ", error);
+    });
   };
 
   return (
@@ -338,92 +276,21 @@ const ClientDetailsPage = () => {
       )}
 
       <div className={styles.detailsContainer}>
-        <div className={styles.detailsHeader}>
-          <p className={styles.id}>
-            #ID{clientDetails && clientDetails.clientId}
-          </p>
-          <h1>{clientDetails && clientDetails.name}</h1>
-          <p className={styles.email}>{clientDetails && clientDetails.email}</p>
-          <p className={styles.phone}>{clientDetails && clientDetails.phone}</p>
-          <div className={styles.countries}>
-            {clientDetails &&
-              clientDetails.country.map((country, k) => {
-                return (
-                  <p key={k} className={styles.country}>
-                    <img
-                      width="20"
-                      height="20"
-                      src={`https://img.icons8.com/emoji/48/${countryData[
-                        country
-                      ].name
-                        .split(" ")
-                        .join("-")
-                        .toLowerCase()}-emoji.png`}
-                      alt="united-states-emoji"
-                    />
-                  </p>
-                );
-              })}
-          </div>
-          <div className={styles.buttons}>
-            <button
-              onClick={() => {
-                setEditClientPopUp(true);
-              }}
-            >
-              <MdEdit />
-              Edit Profile
-            </button>
-            <button
-              onClick={() => {
-                setDeletePopUp(true);
-              }}
-            >
-              <Delete3 />
-              Delete Profile
-            </button>
-          </div>
-        </div>
+        <DetailsHeader
+          clientDetails={clientDetails}
+          setEditClientPopUp={setEditClientPopUp}
+          setDeletePopUp={setDeletePopUp}
+          countryData={countryData}
+        />
         <hr />
-        <div className={styles.messageSection}>
-          <div className={styles.messageHeader}>
-            <input
-              type="text"
-              placeholder="Caption"
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
-            />
-            <input
-              type="text"
-              placeholder="Message"
-              value={message}
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
-            />
-            <button onClick={handleSendClick}>
-              Send <SendBlack />
-            </button>
-          </div>
-
-          <div className={styles.messageBody}>
-            {notification.length !== 0 ? (
-              notification.map((data, i) => (
-                <Notification key={i} data={data} />
-              ))
-            ) : (
-              <div className={styles.errContainer}>
-                {/* <p className={styles.err}></p> */}
-                <p className={styles.errMessage}>
-                  <br />
-                  Send new message
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+        <MessageSection
+          handleSendClick={handleSendClick}
+          title={title}
+          setTitle={setTitle}
+          message={message}
+          setMessage={setMessage}
+          notification={notification}
+        />
       </div>
 
       <div className={styles.applicationContainer}>
