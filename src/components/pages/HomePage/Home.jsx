@@ -9,7 +9,7 @@ import Loading from '../../molecules/Loading';
 import AddClientPopUp from '../../organisms/PopUps/AddClientPopUp';
 import Card from '../../organisms/Card/Card';
 import checkAuth from '@/src/utils/auth';
-import Page404 from '../../molecules/page404'
+import Page404 from '../../molecules/Page404'
 
 
 function HomePage() {
@@ -217,7 +217,7 @@ function HomePage() {
           })
         }
         {!anyFilteredData && (
-          <Page404 errMessage={"No records Found"} />
+          <Page404 errMessage={"No records Found"} oops={true}/>
         )}
       </section>
 

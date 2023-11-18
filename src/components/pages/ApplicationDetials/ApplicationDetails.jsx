@@ -12,6 +12,7 @@ import Add2 from '../../atom/svgs/Add2';
 import Loading from '../../molecules/Loading';
 import Remove from '../../atom/svgs/Remove';
 import { countryData } from '../../molecules/Countries';
+import Page404 from '../../molecules/Page404';
 
 const ApplicationDetails = () => {
   const [popUp, setPopUp] = useState(false);
@@ -638,12 +639,8 @@ const ApplicationDetails = () => {
             )
           })
           : (
-            <div className={styles.errContainer}>
-              <p className={styles.err}></p>
-              <p className={styles.errMessage}>
-                <br />
-                Add new stages </p>
-            </div>)
+            <Page404 errMessage={"Add new stages"} oops={false}/>
+            )
         }
 
       </div>
