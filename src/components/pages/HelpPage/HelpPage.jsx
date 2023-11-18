@@ -3,23 +3,15 @@ import React, { useEffect, useState } from 'react';
 import styles from './Help.module.css';
 import firebase from '../../../firebase/config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import checkAuth from '@/src/utils/auth';
 
 const HelpPage = () => {
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    const auth = getAuth(firebase);
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, you can access their display name
-        setUserName(user.displayName || '');
-      } else {
-        // User is signed out
-        setUserName('');
-      }
-    });
-
-    return () => unsubscribe();
+    checkAuth((user) => {
+      setUserName(user.displayName);
+    })
   }, []);
 
   return (

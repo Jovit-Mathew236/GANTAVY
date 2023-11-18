@@ -1,40 +1,30 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
 import SearchBar from '../../molecules/SearchBar'
 import styles from './Home.module.css'
-import RightArrow from '../../atom/svgs/RightArrow'
 import Add from '../../atom/svgs/Add'
 import BottomIcon from '../../molecules/BottomIcon'
 import firebase from '../../../firebase/config'
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Loading from '../../molecules/Loading';
 import AddClientPopUp from '../../organisms/PopUps/AddClientPopUp';
-import { countryData } from '../../molecules/Countries';
+import Card from '../../organisms/Card/Card';
+import checkAuth from '@/src/utils/auth';
+import Page404 from '../../molecules/page404'
 
 
 function HomePage() {
   const [popUp, setPopUp] = useState(false);
   const [clients, setClients] = useState({});
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [user, setUser] = useState(null);
-  const router = useRouter();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchField, setSearchField] = useState('name');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const auth = getAuth(firebase);
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        router.push('/login');
-      }
-    });
+    checkAuth((user) => {
+      setUser(user);
+    })
   }, []);
 
   const generateClientID = () => {
@@ -54,29 +44,27 @@ function HomePage() {
 
   const filterClients = (client) => {
     const query = searchQuery.toLowerCase();
-    if (searchField === 'name') {
-      return client.name.toLowerCase().includes(query);
-    } else if (searchField === 'email') {
-      return client.email.toLowerCase().includes(query);
-    } else if (searchField === 'phone') {
-      return client.phone && client.phone.toLowerCase().includes(query);
-    } else if (searchField === 'year') {
-      const year = new Date(client.addedAt.seconds * 1000).getFullYear();
-      return year.toString().includes(query);
-    } else if (searchField === 'month') {
-      const month = new Date(client.addedAt.seconds * 1000).toLocaleString('en-US', { month: 'long' });
-      return month.toLowerCase().includes(query);
+    switch (searchField) {
+      case 'name':
+        return client.name.toLowerCase().includes(query);
+      case 'email':
+        return client.email.toLowerCase().includes(query);
+      case 'phone':
+        return client.phone && client.phone.toLowerCase().includes(query);
+      case 'year':
+        const year = new Date(client.addedAt.seconds * 1000).getFullYear();
+        return year.toString().includes(query);
+      case 'month':
+        const month = new Date(client.addedAt.seconds * 1000).toLocaleString('en-US', { month: 'long' });
+        return month.toLowerCase().includes(query);
+      default:
+        return false;
     }
-    return false;
-  };
-
-  const handleCancelClick = () => {
-    setPopUp(false);
   };
 
   const fetchClients = async () => {
     try {
-      const snapshot = await firebase.firestore().collection('clients').get();
+      const snapshot = await firebase.firestore().collection('clients').orderBy('addedAt', 'desc').get();
       const allDocs = snapshot.docs.map((infos) => ({
         ...infos.data(),
         id: infos.id,
@@ -111,25 +99,7 @@ function HomePage() {
         return acc;
       }, {});
 
-      for (const monthYear in groupedClients) {
-        groupedClients[monthYear].sort((a, b) => {
-          return b.addedAt.seconds - a.addedAt.seconds;
-        });
-      }
-
-      const sortedGroupedClients = Object.keys(groupedClients).sort((a, b) => {
-        const dateA = new Date(a);
-        const dateB = new Date(b);
-        return dateB - dateA;
-      });
-
-      const finalData = sortedGroupedClients.reduce((acc, key) => {
-        acc[key] = groupedClients[key];
-        return acc;
-      }, {});
-
-
-      setClients(finalData);
+      setClients(groupedClients);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching clients:', error);
@@ -152,6 +122,14 @@ function HomePage() {
       );
     } while (!isIDUnique);
 
+    const currentDate = Date.now();
+    const month = new Date().toLocaleString('en-US', { month: 'long' });
+    const year = new Date().getFullYear();
+    const key = `${month} ${year}`;
+
+    // Capture the current state of clients before the firebase operation
+    const currentClients = { ...clients };
+
     firebase
       .firestore()
       .collection('clients')
@@ -161,11 +139,8 @@ function HomePage() {
         addedAt: new Date(),
       })
       .then(() => {
-        const currentDate = Date.now();
+        // Use the captured state in the setClients callback
         setClients((prev) => {
-          const month = new Date().toLocaleString('en-US', { month: 'long' });
-          const year = new Date().getFullYear();
-          const key = `${month} ${year}`;
           return {
             ...prev,
             [key]: [
@@ -177,16 +152,16 @@ function HomePage() {
                   nanoseconds: (currentDate % 1000) * 1000000,
                 },
               },
-              ...prev[key],
+              ...(currentClients[key] || []), // Use the captured state here
             ],
           };
         });
       })
-      
       .catch((error) => {
         console.error('Error adding client data: ', error);
       });
   };
+
   let anyFilteredData = false;
 
   const formatDate = (date) => {
@@ -230,33 +205,8 @@ function HomePage() {
                     <p className={styles.monthYear}>{monthYear}</p>
                     <div className={styles.cardsContainer}>
                       {filteredClientData.map((client, j) => {
-
-                        // console.log(client.country);
                         return (
-                          <div key={j} className={styles.card}>
-                            <div className={styles.cardTopSection}>
-                              <p className={styles.id}>#ID{client.clientId}</p>
-                              <p className={styles.date}>{formatDate(client.addedAt)}</p>
-                            </div>
-                            <div className={styles.cardMainSection}>
-                              <p>{client.name}</p>
-                              <p>{client.email}</p>
-                            </div>
-                            <div className={styles.cardBottomSection}>
-                              <div className={styles.countries}>
-                                {client.country && client.country.map((country, k) => {
-                                  return (
-                                    <p key={k} className={styles.country}>
-                                      <img width="20" height="20" src={`https://img.icons8.com/emoji/48/${countryData[country].name.split(' ').join('-').toLowerCase()}-emoji.png`} alt="united-states-emoji" />
-                                    </p>
-                                  )
-                                })}
-                              </div>
-                              <a href={`/client-details?id=${client.clientId}`}>
-                                <RightArrow />
-                              </a>
-                            </div>
-                          </div>
+                          <Card key={j} data={client} type="client" />
                         )
                       })}
                     </div>
@@ -267,12 +217,7 @@ function HomePage() {
           })
         }
         {!anyFilteredData && (
-          <div className={styles.errContainer}>
-            <p className={styles.err}></p>
-            <p className={styles.errMessage}><span>Oops!</span>
-              <br />
-              no records found.</p>
-          </div>
+          <Page404 errMessage={"No records Found"} />
         )}
       </section>
 

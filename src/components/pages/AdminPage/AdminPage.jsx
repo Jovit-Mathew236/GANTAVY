@@ -6,6 +6,7 @@ import Delete from '../../atom/svgs/Delete'
 import firebase from '../../../firebase/config'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Loading from '../../molecules/Loading'
+import checkAuth from '@/src/utils/auth'
 
 const AdminPage = () => {
   const [popUp, setPopUp] = useState(false)
@@ -23,14 +24,9 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
-    const auth = getAuth(firebase);
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        router.push('/login');
-      }
-    });
+    checkAuth((user) => {
+      setUser(user);
+    })
   }, []);
 
   useEffect(() => {

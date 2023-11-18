@@ -78,7 +78,7 @@ const StageDetails = () => {
                                 <h1>{field.heading}</h1>
                                 <p>{field.subtext}</p>
                                 <div className={styles.assetContainer}>
-                                    {field.type === "fileupload" && <><p className={styles.assets}>{field.response ? <AiFillFileText fontSize={"30px"} /> : "No file uploaded"}</p> <a href={field.response} target='_blank'>Open file</a></>}
+                                    {field.type === "fileupload" && <><p className={styles.assets}>{field.response ? <AiFillFileText fontSize={"30px"} /> : "No file uploaded"}</p> {field.response && <a href={field.response} target='_blank'>Open file</a>}</>}
                                     {field.type === "textbtn" && <p className={styles.assets} style={field.response === 'done' ? { background: "#048e00", color: "#fff" } : {}}>{field.btntxt}</p>}
                                     {field.type === "payment" && <div>
                                         <div>

@@ -1,0 +1,119 @@
+/* Card.module.css */
+.card {
+    min-width: 300px;
+    border: 0.5px solid #DEDEDE;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 20px;
+    min-width: 350px;
+  }
+  
+  .card .cardTopSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card .cardTopSection p:nth-child(1) {
+    padding: 2px 30px;
+    border-radius: 16px;
+    border: 0.5px solid #DEDEDE;
+    background: #FAF8F9;
+    font-weight: bold;
+  }
+  
+  .card .cardTopSection p:nth-child(2) {
+    font-size: 12px;
+    color: #B8B8B8;
+  }
+  
+  .card .cardMainSection p:nth-child(1) {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  .card .cardMainSection p:nth-child(2) {
+    color: rgba(0, 0, 0, 0.69);
+  }
+  
+  .card .cardMainSection h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+  }
+  
+  .card .cardMainSection .countryIcon {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #E6F5F5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 100;
+  }
+  
+  .card .cardMainSection .visaType {
+    font-size: 14px;
+  }
+  
+  .card .cardBottomSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  
+  .card .cardBottomSection a {
+    height: 37px;
+  }
+  
+  .card .cardBottomSection .countries {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .card .cardBottomSection .countries .country {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: #E6F5F5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card .cardBottomSection .paymentType {
+    padding: 5px 10px;
+    border: 1px solid #EAEAEA;
+    border-radius: 20px;
+    display: flex;
+    gap: 20px;
+    font-weight: 600;
+    align-items: center;
+    margin-top: 5px;
+  }
+  
+  .card .cardBottomSection .paymentType span {
+    border-radius: 50%;
+    padding: 5px;
+    margin-right: -7px;
+    display: flex;
+    height: 30px;
+    width: 30px;
+    background: #FAFAFA;
+    align-items: center;
+    font-weight: 100;
+    justify-content: center;
+  }
+  
+  @media (max-width: 850px) {
+    .card {
+      min-width: 300px;
+    }
+  }
+  

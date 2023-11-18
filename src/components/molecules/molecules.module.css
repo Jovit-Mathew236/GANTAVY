@@ -235,6 +235,35 @@
     }
 }
 
+.errContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100dvh - 300px);
+}
+
+.errContainer .err {
+    background-image: url(../atom/images/404.png);
+    background-size: contain;
+    height: 300px;
+    width: 420px;
+    background-repeat: no-repeat;
+}
+
+.errContainer p {
+    text-align: center;
+}
+
+.errContainer .errMessage span {
+    color: #8B8B8B;
+    font-size: 30px;
+}
+
+.errContainer .errMessage {
+    color: #8B8B8B;
+    font-size: 25px;
+}
 
 @media (max-width: 700px) {
     .searchBarContainer {
