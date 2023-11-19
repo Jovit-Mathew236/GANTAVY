@@ -16,6 +16,8 @@ import DeleteConfirmationPopup from "../../organisms/PopUps/DeleteConfirmationPo
 import Page404 from "../../molecules/Page404";
 import MessageSection from "../../molecules/ChatBox";
 import DetailsHeader from "../../molecules/ClientDetailsHeader";
+import { useCallback } from "react";
+import CheckAuth from "@/src/firebase/auth";
 
 const ClientDetailsPage = () => {
   const [popUp, setPopUp] = useState(false);
@@ -37,6 +39,12 @@ const ClientDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const id = parseInt(searchParams.get("id"));
   const [disable, setDisable] = useState(false);
+
+
+  const authCallback = useCallback((user) => {
+    setUser(user);
+  }, []);
+
 
   const handleCancelClick = () => {
     setPopUp(false);
@@ -103,16 +111,6 @@ const ClientDetailsPage = () => {
     });
   };
 
-  useEffect(() => {
-    const auth = getAuth(firebase);
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        router.push("/login");
-      }
-    });
-  }, []);
 
   useEffect(() => {
     if (id && id !== "") {
@@ -231,6 +229,7 @@ const ClientDetailsPage = () => {
 
   return (
     <div className={styles.clientDetailsPage}>
+      <CheckAuth callback={authCallback} />
       {loading && <Loading />}
       <Topnav
         id={id}

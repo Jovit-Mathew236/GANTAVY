@@ -12,6 +12,8 @@ import { countryData } from '../../molecules/Countries';
 import ApplicationStageDeatils from '../../molecules/ApplicationStageDeatils';
 import ApplicationDetailsBox from '../../molecules/ApplicationDetailsBox';
 import AddStagePopup from '../../organisms/PopUps/AddStagePopup';
+import { useCallback } from 'react';
+import CheckAuth from '@/src/firebase/auth';
 
 const ApplicationDetails = () => {
   const [popUp, setPopUp] = useState(false);
@@ -25,6 +27,10 @@ const ApplicationDetails = () => {
   const [hasError, setHasError] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [disable, setDisable] = useState(false)
+
+  const authCallback = useCallback((user) => {
+    setUser(user);
+  }, []);
 
 
   const [clientApplicationDetails, setClientApplicationDetails] = useState([
@@ -176,16 +182,6 @@ const ApplicationDetails = () => {
         console.error('Error adding application: ', error);
       });
   };
-  useEffect(() => {
-    const auth = getAuth(firebase);
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        router.push('/login');
-      }
-    });
-  }, []);
 
   let documentID;
   useEffect(() => {
@@ -228,6 +224,7 @@ const ApplicationDetails = () => {
   }, [popUp])
   return (
     <div className={styles.applicationDetails}>
+      <CheckAuth callback={authCallback} />
       {loading && <Loading />}
       <Topnav id={id} collection={"applications"} where={'applicationId'} deletion={"Application"} isBtn={true} home={true} />
       {!isCompleted && <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />}

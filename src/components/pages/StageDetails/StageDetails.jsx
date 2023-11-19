@@ -8,6 +8,8 @@ import firebase from '../../../firebase/config';
 import Loading from '../../molecules/Loading';
 import { IoSend } from 'react-icons/io5'
 import { AiFillFileText } from 'react-icons/ai'
+import { useCallback } from 'react';
+import CheckAuth from '@/src/firebase/auth';
 
 const StageDetails = () => {
     const searchParams = useSearchParams();
@@ -31,16 +33,10 @@ const StageDetails = () => {
     })
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const auth = getAuth(firebase);
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUser(user);
-            } else {
-                router.push('/login');
-            }
-        });
-    }, []);
+    const authCallback = useCallback((user) => {
+        setUser(user);
+      }, []);
+    
     useEffect(() => {
         const query = firebase.firestore().collection('applications').doc(docId).collection('stages').where('stageNumber', '==', parseInt(id));
         const unsubscribe = query.onSnapshot((snapshot) => {
@@ -67,6 +63,7 @@ const StageDetails = () => {
     // console.log(stage.fields);
     return (
         <div className={styles.StageDetailsPage}>
+            <CheckAuth callback={authCallback} />
             {loading && <Loading />}
             <Topnav id={id} collection={`applications/${docId}/stages`} where={"stageNumber"} deletion={"stage"} isBtn={true} home={true} />
 
