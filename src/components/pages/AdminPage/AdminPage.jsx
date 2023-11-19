@@ -6,7 +6,8 @@ import Delete from '../../atom/svgs/Delete'
 import firebase from '../../../firebase/config'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Loading from '../../molecules/Loading'
-import checkAuth from '@/src/utils/auth'
+import CheckAuth from '@/src/firebase/auth'
+import { useCallback } from 'react'
 
 const AdminPage = () => {
   const [popUp, setPopUp] = useState(false)
@@ -23,10 +24,8 @@ const AdminPage = () => {
     setUpdatedEmail('')
   };
 
-  useEffect(() => {
-    checkAuth((user) => {
-      setUser(user);
-    })
+  const authCallback = useCallback((user) => {
+    setUser(user);
   }, []);
 
   useEffect(() => {
@@ -48,6 +47,7 @@ const AdminPage = () => {
 
   return (
     <div className={styles.adminPage}>
+       <CheckAuth callback={authCallback} />
       {loading && <Loading />}
       {popUp && <div className={styles.addAdminPopUp}>
         <div className={styles.popUpContainer}>

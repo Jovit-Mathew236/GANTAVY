@@ -1,21 +1,20 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import styles from './Help.module.css';
-import firebase from '../../../firebase/config';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import checkAuth from '@/src/utils/auth';
+import CheckAuth from '@/src/firebase/auth';
+import { useCallback } from 'react';
 
 const HelpPage = () => {
   const [userName, setUserName] = useState('');
 
-  useEffect(() => {
-    checkAuth((user) => {
-      setUserName(user.displayName);
-    })
+  const authCallback = useCallback((user) => {
+    setUser(user);
   }, []);
+
 
   return (
     <div className={styles.helpPage}>
+      <CheckAuth callback={authCallback} />
       <p className={styles.img}></p>
       <h1>{userName}</h1>
       <h2>We would like to hear suggestions</h2>

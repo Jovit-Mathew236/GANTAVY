@@ -231,6 +231,7 @@ const ApplicationDetails = () => {
       {loading && <Loading />}
       <Topnav id={id} collection={"applications"} where={'applicationId'} deletion={"Application"} isBtn={true} home={true} />
       {!isCompleted && <BottomIcon setPopUp={setPopUp} icon={<New />} text={"Add stage"} />}
+      
       {popUpProceed && <div className={styles.popUp}>
         <div className={styles.popUpContainer}>
           <h1>Installment due alert !</h1>
@@ -248,6 +249,7 @@ const ApplicationDetails = () => {
           </div>
         </div>
       </div>}
+
       {popUpProceedConfirm && <div className={styles.popUp}>
         <div className={styles.popUpContainer}>
           <h1>Are you sure you want to Proceed</h1>

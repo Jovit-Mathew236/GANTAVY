@@ -8,8 +8,9 @@ import firebase from '../../../firebase/config'
 import Loading from '../../molecules/Loading';
 import AddClientPopUp from '../../organisms/PopUps/AddClientPopUp';
 import Card from '../../organisms/Card/Card';
-import checkAuth from '@/src/utils/auth';
 import Page404 from '../../molecules/Page404'
+import CheckAuth from '@/src/firebase/auth'
+import { useCallback } from 'react'
 
 
 function HomePage() {
@@ -21,10 +22,8 @@ function HomePage() {
   const [searchField, setSearchField] = useState('name');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    checkAuth((user) => {
-      setUser(user);
-    })
+  const authCallback = useCallback((user) => {
+    setUser(user);
   }, []);
 
   const generateClientID = () => {
@@ -163,16 +162,9 @@ function HomePage() {
   };
 
   let anyFilteredData = false;
-
-  const formatDate = (date) => {
-    return new Date(date.seconds * 1000).toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-  };
   return (
     <div className={styles.homePage}>
+      <CheckAuth callback={authCallback} />
       {loading && <Loading />}
       <SearchBar
         searchQuery={searchQuery}
@@ -217,7 +209,7 @@ function HomePage() {
           })
         }
         {!anyFilteredData && (
-          <Page404 errMessage={"No records Found"} oops={true}/>
+          <Page404 errMessage={"No records Found"} oops={true} />
         )}
       </section>
 

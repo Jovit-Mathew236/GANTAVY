@@ -6,6 +6,8 @@ import Message from '../../atom/svgs/Message'
 import firebase from '../../../firebase/config'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Loading from '../../molecules/Loading'
+import { useCallback } from 'react'
+import CheckAuth from '@/src/firebase/auth'
 
 const MessagePage = () => {
   const [user, setUser] = useState(null);
@@ -14,16 +16,10 @@ const MessagePage = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  useEffect(() => {
-    const auth = getAuth(firebase);
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        router.push('/login');
-      }
-    });
+  const authCallback = useCallback((user) => {
+    setUser(user);
   }, []);
+
 
   useEffect(() => {
     firebase.firestore().collection('notifications').get().then((snapshot) => {
@@ -42,6 +38,7 @@ const MessagePage = () => {
 
   return (
     <div className={styles.messagePage}>
+      <CheckAuth callback={authCallback} />
       {loading && <Loading />}
 
       <input className={styles.msgHeading} type="text" id="msgHeading" name="msgHeading" placeholder='Heading' autoComplete="off" required onChange={(e) => {
