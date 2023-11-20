@@ -8,7 +8,7 @@
     align-items: center;
     padding: 5px;
     background: #fff;
-    position: absolute;
+    position: fixed;
     top: 40px;
     right: 190px;
     justify-content: space-between;
@@ -462,7 +462,7 @@
     font-size: 8px;
     position: absolute;
     top: 54px;
-    right: 106px;
+    right: 112px;
     color: #fff;
     transform: translateY(-50%);
     pointer-events: none;

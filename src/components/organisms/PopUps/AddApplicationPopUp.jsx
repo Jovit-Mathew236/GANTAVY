@@ -69,15 +69,17 @@ const AddApplicationPopUp = ({
                 </div>
                 {paymentType === 'Installment' && (
                     <div id="installment">
-                        <label htmlFor="">Number of installments</label>
-                        <select name="" id="" onChange={(e) => setInstallment(e.target.value)}>
-                            <option value="">Select number of installments</option>
-                            {[...Array(10)].map((_, i) => (
-                                <option key={i} value={i + 1}>
-                                    {i + 1}
-                                </option>
-                            ))}
-                        </select>
+                        <div className={styles.popUpFields}>
+                            <label htmlFor="">Number of installments</label>
+                            <select name="" id="" onChange={(e) => setInstallment(e.target.value)}>
+                                <option value="">Select number of installments</option>
+                                {[...Array(10)].map((_, i) => (
+                                    <option key={i} value={i + 1}>
+                                        {i + 1}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                 )}
                 <div className={styles.btnS}>
