@@ -47,7 +47,7 @@ const AdminPage = () => {
 
   return (
     <div className={styles.adminPage}>
-       <CheckAuth callback={authCallback} />
+      <CheckAuth callback={authCallback} />
       {loading && <Loading />}
       {popUp && <div className={styles.addAdminPopUp}>
         <div className={styles.popUpContainer}>

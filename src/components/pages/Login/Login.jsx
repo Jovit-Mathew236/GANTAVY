@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Login.module.css';
 import firebase from '../../../firebase/config';
-import { GoogleAuthProvider } from 'firebase/auth';
+import { GoogleAuthProvider, signOut } from 'firebase/auth';
 import { getAuth, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 
@@ -36,6 +36,7 @@ const Login = () => {
                             setTimeout(() => {
                                 setHasError(false);
                             }, 3000);
+                            unsubscribe();
                         }
                     })
                     .catch((error) => {
