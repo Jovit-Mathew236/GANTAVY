@@ -1,11 +1,9 @@
-// AddClientPopUp.js
 import React, { useState } from 'react';
 import styles from './addStage.module.css';
 import Add2 from '../../atom/svgs/Add2';
 import Remove from '../../atom/svgs/Remove';
 
 const FieldInput = ({ label, placeholder, value, onChange }) => (
-
     <div className={styles.popUpFields}>
         <label htmlFor="">{label}</label>
         <input
@@ -29,7 +27,7 @@ const AddStagePopup = ({
     disable,
     hasError,
 }) => {
-    const [isNotPaymentAlreadyPresent, setIsNotPaymentAlreadyPresent] = useState(false)
+    const [isNotPaymentAlreadyPresent, setIsNotPaymentAlreadyPresent] = useState(false);
 
     const handleFieldTypeChange = (e, index) => {
         if (e.target.value === 'payment') {
@@ -56,43 +54,38 @@ const AddStagePopup = ({
     };
 
     const renderFieldInputs = (field, index) => {
-        switch (field.type) {
-            case 'fileupload':
-            case 'textbtn':
-            case 'payment':
-            case 'link':
-                return (
-                    <>
-                        <FieldInput
-                            label="Heading"
-                            placeholder="Enter heading"
-                            value={field.heading}
-                            onChange={(value) => handleFieldChange('heading', index, value)}
-                        />
-                        <FieldInput
-                            label="Sub Heading"
-                            placeholder="Enter sub heading"
-                            value={field.subtext}
-                            onChange={(value) => handleFieldChange('subtext', index, value)}
-                        />
-                        {/* Other input fields... */}
-                    </>
-                );
-            default:
-                return null;
-        }
+        const fieldInputs = {
+            fileupload: ['Heading', 'Sub Heading'],
+            textbtn: ['Heading', 'Sub Heading', 'Button Text'],
+            payment: ['Heading', 'Sub Heading', 'Amount', 'Button Text', 'Payment Link'],
+            link: ['Heading', 'Subheading', 'Button Text', 'Link'],
+        };
+
+        return fieldInputs[field.type].map((inputType) => (
+            <FieldInput
+                key={inputType}
+                label={inputType}
+                placeholder={`Enter ${inputType.toLowerCase()}`}
+                value={field[inputType.toLowerCase()]}
+                onChange={(value) => handleFieldChange(inputType.toLowerCase(), index, value)}
+            />
+        ));
     };
 
     return (
         popUp && (
             <div className={styles.popUp}>
                 <div className={styles.popUpContainer}>
-                    <FieldInput
-                        label="Stage Name"
-                        placeholder="Level 1"
-                        value={fields[0].stageName}
-                        onChange={(value) => setStageName(value)}
-                    />
+                    <div className={styles.popUpFields}>
+                        <label htmlFor="">Stage Name</label>
+                        <input
+                            type="text"
+                            placeholder="Level 1"
+                            onChange={(e) => {
+                                setStageName(e.target.value);
+                            }}
+                        />
+                    </div>
 
                     {fields.map((field, index) => (
                         <div key={index} className={styles.subContainer}>
@@ -101,7 +94,6 @@ const AddStagePopup = ({
                                     <Remove />
                                 </p>
                             )}
-
                             <select
                                 name="options"
                                 id="option"
@@ -131,7 +123,6 @@ const AddStagePopup = ({
                         </button>
                     </div>
                 </div>
-
                 {hasError &&
                     <div class="error_message flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
                         <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
