@@ -15,6 +15,7 @@ const FieldInput = ({ label, placeholder, value, onChange }) => (
     </div>
 );
 
+
 const AddStagePopup = ({
     popUp,
     setStageName,
@@ -23,9 +24,9 @@ const AddStagePopup = ({
     setFields,
     addField,
     handleCancelClick,
-    handleSave,
     disable,
     hasError,
+    handleSave,
 }) => {
     const [isNotPaymentAlreadyPresent, setIsNotPaymentAlreadyPresent] = useState(false);
 
@@ -61,7 +62,7 @@ const AddStagePopup = ({
             link: ['Heading', 'Subheading', 'Button Text', 'Link'],
         };
 
-        return fieldInputs[field.type].map((inputType) => (
+        return fieldInputs[field.type]?.map((inputType) => (
             <FieldInput
                 key={inputType}
                 label={inputType}
