@@ -172,6 +172,11 @@ const TopNav = () => {
             className={styles.notificationIcon}
             onClick={toggleNotification}
           ></div>
+          {unReadNotifications > 0 && (
+            <div className={styles.notificationCount}>
+              <p>{unReadNotifications}</p>
+            </div>
+          )}
           {showNotification && (
             <div className={styles.notificationContainer}>
               <div className={styles.notificationHeader}>
