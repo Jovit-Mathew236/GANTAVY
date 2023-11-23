@@ -8,7 +8,7 @@ const HelpPage = () => {
   const [userName, setUserName] = useState('');
 
   const authCallback = useCallback((user) => {
-    setUser(user);
+    setUserName(user.displayName);
   }, []);
 
 
