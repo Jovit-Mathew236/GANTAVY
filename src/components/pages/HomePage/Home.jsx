@@ -151,7 +151,7 @@ function HomePage() {
                   nanoseconds: (currentDate % 1000) * 1000000,
                 },
               },
-              ...(currentClients[key] || []), // Use the captured state here
+              ...prev[key],
             ],
           };
         });
