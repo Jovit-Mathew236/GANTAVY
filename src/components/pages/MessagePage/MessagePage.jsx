@@ -22,15 +22,14 @@ const MessagePage = () => {
 
 
   useEffect(() => {
-    firebase.firestore().collection('notifications').get().then((snapshot) => {
+    firebase.firestore().collection('notifications').where('recipient', '==', 'all').orderBy('sendAt', 'desc').get().then((snapshot) => {
       const allDocs = snapshot.docs.map((infos) => {
         return {
           ...infos.data(),
           id: infos.id,
         };
       });
-      const sorted = allDocs.sort((a, b) => b.sendAt - a.sendAt);
-      setNotification(sorted);
+      setNotification(allDocs);
     }).then(() => {
       setLoading(false);
     })
