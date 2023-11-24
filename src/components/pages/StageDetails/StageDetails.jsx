@@ -87,7 +87,7 @@ const StageDetails = () => {
                                             <p className={styles.assets}>{field.link}</p>
                                         </div>
                                     </div>}
-                                    {field.type === "link" && <p className={styles.assets}><a href={field.link} target='_blank'>{field.link}</a></p>}
+                                    {field.type === "link" && <p className={styles.assets} style={field.response === 'done' ? { background: "#048e00", color: "#fff" } : {}}><a href={field.link} target='_blank' style={field.response === 'done' ? { background: "#048e00", color: "#fff" } : {}}>{field.link}</a></p>}
                                 </div>
                                 <div className={styles.responseField}>
                                     <textarea
