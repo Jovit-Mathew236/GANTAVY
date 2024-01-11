@@ -41,6 +41,19 @@ function HomePage() {
     setSearchQuery(e.target.value);
   };
 
+  const sortClientsYearMonthWise = (clients) => {
+    return Object.keys(clients)
+      .sort((a, b) => {
+        const [aMonth, aYear] = a.split(' ');
+        const [bMonth, bYear] = b.split(' ');
+        return new Date(`${bMonth} 1, ${bYear}`) - new Date(`${aMonth} 1, ${aYear}`);
+      })
+      .reduce((acc, key) => {
+        acc[key] = clients[key];
+        return acc;
+      }, {});
+  };
+
   const filterClients = (client) => {
     const query = searchQuery.toLowerCase();
     switch (searchField) {
@@ -140,7 +153,7 @@ function HomePage() {
       .then(() => {
         // Use the captured state in the setClients callback
         setClients((prev) => {
-          return {
+          const updatedClients = {
             ...prev,
             [key]: [
               {
@@ -151,11 +164,12 @@ function HomePage() {
                   nanoseconds: (currentDate % 1000) * 1000000,
                 },
               },
-              ...(prev[key] ? Object.values(prev[key]) : []), // Check if prev[key] is defined
+              ...(prev[key] ? Object.values(prev[key]) : []),
             ],
           };
+          const sortedClientsYearMonthWise = sortClientsYearMonthWise(updatedClients);
+          return sortedClientsYearMonthWise;
         });
-        
       })
       .catch((error) => {
         console.error('Error adding client data: ', error);
