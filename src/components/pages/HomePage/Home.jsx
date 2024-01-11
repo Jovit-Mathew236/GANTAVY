@@ -151,10 +151,11 @@ function HomePage() {
                   nanoseconds: (currentDate % 1000) * 1000000,
                 },
               },
-              ...prev[key],
+              ...(prev[key] ? Object.values(prev[key]) : []), // Check if prev[key] is defined
             ],
           };
         });
+        
       })
       .catch((error) => {
         console.error('Error adding client data: ', error);
